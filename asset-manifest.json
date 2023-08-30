@@ -1,9 +1,8 @@
 {
   "files": {
-    "main.css": "/react-memo/static/css/main.88ecad88.css",
-    "main.js": "/react-memo/static/js/main.93222d9c.js",
-    "static/media/StratosSkyeng.woff": "/react-memo/static/media/StratosSkyeng.d20eb275042a513c8d55.woff",
-    "static/media/StratosSkyeng.woff2": "/react-memo/static/media/StratosSkyeng.ec4882423f79afa46408.woff2",
+    "main.css": "/react-memo/static/css/main.38496486.css",
+    "main.js": "/react-memo/static/js/main.2bd3b906.js",
+    "static/media/StratosSkyeng.woff2": "/react-memo/static/media/StratosSkyeng.ce93393e831d32412096.woff2",
     "static/media/celebration.png": "/react-memo/static/media/celebration.2577e3c3835ac1f32429.png",
     "static/media/dead.png": "/react-memo/static/media/dead.bfb3f81b5110f1b62252.png",
     "static/media/сard-shirt.svg": "/react-memo/static/media/сard-shirt.4d53d3f942979a0dcb35c53a2889e78b.svg",
@@ -12,11 +11,11 @@
     "static/media/hearts.svg": "/react-memo/static/media/hearts.be33f4a44d6f0430c5e08883a0ad5e5b.svg",
     "static/media/spades.svg": "/react-memo/static/media/spades.93f2e7c8261b046c228b40965b4493ec.svg",
     "static/media/diamonds.svg": "/react-memo/static/media/diamonds.6d6202122f9a41366f7da20cfe4cf5b7.svg",
-    "main.88ecad88.css.map": "/react-memo/static/css/main.88ecad88.css.map",
-    "main.93222d9c.js.map": "/react-memo/static/js/main.93222d9c.js.map"
+    "main.38496486.css.map": "/react-memo/static/css/main.38496486.css.map",
+    "main.2bd3b906.js.map": "/react-memo/static/js/main.2bd3b906.js.map"
   },
   "entrypoints": [
-    "static/css/main.88ecad88.css",
-    "static/js/main.93222d9c.js"
+    "static/css/main.38496486.css",
+    "static/js/main.2bd3b906.js"
   ]
 }
