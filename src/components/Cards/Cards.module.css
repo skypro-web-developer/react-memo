@@ -70,3 +70,10 @@
 
   margin-bottom: -12px;
 }
+
+.statusText {
+  color: #fff;
+  font-family: StratosSkyeng;
+  font-size: 24px;
+  margin-top: 26px;
+}
