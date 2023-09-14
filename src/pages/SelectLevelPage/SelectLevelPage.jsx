@@ -31,6 +31,9 @@ export function SelectLevelPage() {
             setIsEasyMode(prev => !prev);
           }}
         ></Checkbox>
+        <Link to="/leaderboard" className={styles.link}>
+          Перейти в лидерборд
+        </Link>
       </div>
     </div>
   );

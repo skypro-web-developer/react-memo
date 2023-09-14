@@ -62,3 +62,10 @@
 .levelLink:visited {
   color: #0080c1;
 }
+
+.link {
+  color: #004980;
+  font-family: StratosSkyeng;
+  margin: 18px 0 0;
+  font-size: 18px;
+}
