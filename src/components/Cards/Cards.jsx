@@ -215,7 +215,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, mode = false}) {
       <div className={styles.header}>
         <div className={styles.timer}>
           {status === STATUS_PREVIEW ? (
-            <div>
+            <div className={styles.title}>
               <p className={styles.previewText}>Запоминайте пары!</p>
               <p className={styles.previewDescription}>Игра начнется через {previewSeconds} секунд</p>
             </div>

@@ -35,7 +35,7 @@ export function SelectLevelPage() {
             <label htmlFor="pill4"></label>
         </div>
 
-        {mode ? <p className={styles.mode}>Игра с жизнями</p> : <p className={styles.noMode}>Стандартная игра</p> }
+        {mode ? <p className={styles.mode}>Легкий режим (3 жизни)</p> : <p className={styles.noMode}>Стандартная игра</p> }
 
       </div>
     </div>
