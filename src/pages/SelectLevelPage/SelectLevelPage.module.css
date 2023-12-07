@@ -1,3 +1,5 @@
+
+
 .container {
   width: 100%;
   min-height: 100%;
@@ -46,6 +48,12 @@
 
   border-radius: 12px;
   background: #fff;
+  opacity: 0.7;
+  transition: 0.3s;
+}
+
+.level:hover {
+  opacity: 1;
 }
 
 .levelLink {
@@ -61,4 +69,18 @@
 
 .levelLink:visited {
   color: #0080c1;
+}
+
+.noMode {
+  font-family: StratosSkyeng;
+  color: #004980;
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.mode {
+  font-family: StratosSkyeng;
+  font-size: 17px;
+  font-weight: 500;
+  color: #33b238;
 }

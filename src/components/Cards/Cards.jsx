@@ -1,3 +1,4 @@
+import hpImg from "./images/hp.svg"
 import { shuffle } from "lodash";
 import { useEffect, useState } from "react";
 import { generateDeck } from "../../utils/cards";
@@ -5,6 +6,7 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -14,11 +16,14 @@ const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 // Начало игры: игрок видит все карты в течении нескольких секунд
 const STATUS_PREVIEW = "STATUS_PREVIEW";
 
+// задержка для анимаций
+const delay = 500;
+
 function getTimerValue(startDate, endDate) {
   if (!startDate && !endDate) {
     return {
       minutes: 0,
-      seconds: 0,
+      seconds: 0
     };
   }
 
@@ -31,7 +36,7 @@ function getTimerValue(startDate, endDate) {
   const seconds = diffInSecconds % 60;
   return {
     minutes,
-    seconds,
+    seconds
   };
 }
 
@@ -40,7 +45,7 @@ function getTimerValue(startDate, endDate) {
  * pairsCount - сколько пар будет в игре
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
-export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+export function Cards({ pairsCount = 3, previewSeconds = 5, mode = false}) {
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -51,16 +56,19 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   // Дата конца игры
   const [gameEndDate, setGameEndDate] = useState(null);
 
+  const [hp, setHp] = useState(() => mode ? 3 : null);
+
   // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
   const [timer, setTimer] = useState({
     seconds: 0,
-    minutes: 0,
+    minutes: 0
   });
 
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
     setStatus(status);
   }
+
   function startGame() {
     const startDate = new Date();
     setGameEndDate(null);
@@ -68,7 +76,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
   }
+
   function resetGame() {
+    mode && setHp(3)
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
@@ -95,7 +105,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
       return {
         ...card,
-        open: true,
+        open: true
       };
     });
 
@@ -126,9 +136,38 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     const playerLost = openCardsWithoutPair.length >= 2;
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
+
     if (playerLost) {
-      finishGame(STATUS_LOST);
-      return;
+      if (mode) {
+        if (hp === 1) {
+          setTimeout(() => {
+            finishGame(STATUS_LOST);
+          }, delay);
+          return;
+        } else {
+          setHp(() => hp - 1);
+          console.log(hp);
+          // Игровое поле после открытия неверной карты
+          setTimeout(() => {
+            const nextCards = cards.map(card => {
+              if (card.id !== clickedCard.id) {
+                return card;
+              }
+
+              return {
+                ...card,
+                open: false
+              };
+            });
+            setCards(nextCards);
+          }, delay);
+
+          return;
+        }
+      } else {
+        finishGame(STATUS_LOST);
+        return;
+      }
     }
 
     // ... игра продолжается
@@ -171,7 +210,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       clearInterval(intervalId);
     };
   }, [gameStartDate, gameEndDate]);
-
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -194,6 +232,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
               </div>
             </>
           )}
+        </div>
+        <div className={styles.hpBox}>
+          {(status === STATUS_IN_PROGRESS) && mode ? Array.from(Array(hp).keys()).map(i => <img key={i} className={styles.hp} src={hpImg} alt="Жизнь"/>) : null}
+
         </div>
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>

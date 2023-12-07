@@ -13,7 +13,7 @@ const images = {
   [HEARTS_SUIT]: heartsImageUrl,
   [CROSS_SUIT]: crossImageUrl,
   [SPADES_SUIT]: spadesImageUrl,
-  [DIAMONDS_SUIT]: diamondsImageUrl,
+  [DIAMONDS_SUIT]: diamondsImageUrl
 };
 
 const OpenCard = ({ rank, suit }) => {
@@ -51,7 +51,7 @@ export function Card({ onClick, suit, rank, open }) {
     <div>
       <div
         className={cn(styles.flipContainer, {
-          [styles.flip]: open,
+          [styles.flip]: open
         })}
       >
         <div className={styles.flipper}>

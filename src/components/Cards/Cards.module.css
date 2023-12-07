@@ -70,3 +70,14 @@
 
   margin-bottom: -12px;
 }
+
+.hpBox {
+  display: flex;
+  gap: 5px;
+}
+
+.hp{
+  width: 20px;
+  height: 20px;
+  margin-bottom: 15px;
+}
