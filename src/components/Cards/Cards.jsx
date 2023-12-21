@@ -6,6 +6,8 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import axios from "axios";
+import BASE_URL from "../../api";
 
 
 // Игра закончилась
@@ -57,6 +59,17 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, mode = false}) {
   const [gameEndDate, setGameEndDate] = useState(null);
 
   const [hp, setHp] = useState(() => mode ? 3 : null);
+
+  useEffect(() => {
+    if (status === STATUS_WON){
+      axios.post(BASE_URL, JSON.stringify({
+        "name": localStorage.name,
+        "time": getTimerValue(gameStartDate, gameEndDate).minutes * 60 + getTimerValue(gameStartDate, gameEndDate).seconds
+      })).catch(error => {
+        console.error(error.message);
+      } )
+    }
+  }, [status]);
 
   // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
   const [timer, setTimer] = useState({
