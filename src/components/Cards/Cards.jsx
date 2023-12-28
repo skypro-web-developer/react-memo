@@ -1,4 +1,4 @@
-import hpImg from "./images/hp.svg"
+import hpImg from "./images/hp.svg";
 import { shuffle } from "lodash";
 import { useEffect, useState } from "react";
 import { generateDeck } from "../../utils/cards";
@@ -8,6 +8,8 @@ import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
 import axios from "axios";
 import BASE_URL from "../../api";
+import Popup from "../Popup/Popup";
+import SuperItems from "../SuperItems/SuperItems";
 
 
 // Игра закончилась
@@ -47,7 +49,7 @@ function getTimerValue(startDate, endDate) {
  * pairsCount - сколько пар будет в игре
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
-export function Cards({ pairsCount = 3, previewSeconds = 5, mode = false}) {
+export function Cards({ pairsCount = 3, previewSeconds = 5, mode = false }) {
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -57,19 +59,27 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, mode = false}) {
   const [gameStartDate, setGameStartDate] = useState(null);
   // Дата конца игры
   const [gameEndDate, setGameEndDate] = useState(null);
-
+  // Жизни
   const [hp, setHp] = useState(() => mode ? 3 : null);
-
   useEffect(() => {
     if (status === STATUS_WON){
-      axios.post(BASE_URL, JSON.stringify({
-        "name": localStorage.name,
-        "time": getTimerValue(gameStartDate, gameEndDate).minutes * 60 + getTimerValue(gameStartDate, gameEndDate).seconds
-      })).catch(error => {
-        console.error(error.message);
-      } )
+      fetch(BASE_URL, {
+          method: "POST",
+          body: JSON.stringify({
+            name: localStorage.name,
+            time: getTimerValue(gameStartDate, gameEndDate).minutes * 60 + getTimerValue(gameStartDate, gameEndDate).seconds,
+            achievements: [1,2]
+          })
+        }
+      ).then(r => {
+        console.log(r);
+      }).catch(error => {
+        console.log(error.message);
+      });
     }
-  }, [status]);
+  },
+  [status]
+)
 
   // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
   const [timer, setTimer] = useState({
@@ -91,7 +101,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, mode = false}) {
   }
 
   function resetGame() {
-    mode && setHp(3)
+    mode && setHp(3);
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
@@ -246,9 +256,15 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, mode = false}) {
             </>
           )}
         </div>
+        <SuperItems/>
         <div className={styles.hpBox}>
-          {(status === STATUS_IN_PROGRESS) && mode ? Array.from(Array(hp).keys()).map(i => <img key={i} className={styles.hp} src={hpImg} alt="Жизнь"/>) : null}
-
+          {(status === STATUS_IN_PROGRESS) && mode ? Array.from(
+            Array(hp).keys())
+              .map(i => <img key={i}
+                             className={styles.hp}
+                             src={hpImg}
+                             alt="Жизнь" />) : null
+          }
         </div>
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>

@@ -7,17 +7,20 @@ import Leader from "../../components/Leader/Leader";
 import BASE_URL from "../../api";
 
 function LeaderBoard(props) {
-  const [leaderList, setLeaderList] = useState()
-  const [error, setError] = useState()
+  const [leaderList, setLeaderList] = useState(null);
+  const [error, setError] = useState(null);
+  const [contextMenu, setContextMenu] = useState(false);
 
-  useEffect( () => {
-      axios.get(BASE_URL).then(
-        leaderListJson => {
-          setLeaderList(leaderListJson.data.leaders)
-        }
-      ).catch(error => setError(error.message))
+
+  useEffect(() => {
+    axios.get(BASE_URL).then(
+      leaderListJson => {
+        leaderListJson = leaderListJson.data.leaders;
+        const data = leaderListJson?.sort((a, b) => a.time > b.time ? 1 : -1);
+        setLeaderList(data);
+      }
+    ).catch(error => setError(error.message));
   }, []);
-  console.log(leaderList);
 
   return (
     <div className={styles.container}>
@@ -32,10 +35,19 @@ function LeaderBoard(props) {
           <div className={styles.leader}>
             <p>Позиция</p>
             <p>Пользователь</p>
+            <p>Достижения</p>
             <p>Время</p>
           </div>
           {leaderList?.map((leader, index) => {
-            return <Leader key={leader.id} name={leader.name} position={index + 1 } time={leader.time}/>
+            return <Leader
+              key={leader.id}
+              name={leader.name}
+              position={index + 1}
+              time={leader.time}
+              achievements={leader?.achievements}
+              contextMenu={contextMenu}
+              setContextMenu={setContextMenu}
+            />;
           })}
         </div>
         <p className={styles.error}>{error}</p>

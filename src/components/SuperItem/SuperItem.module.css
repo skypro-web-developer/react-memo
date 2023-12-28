@@ -1,0 +1,18 @@
+
+.superItem {
+    position: relative;
+    background: #0022ff;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.popup {
+    position: absolute;
+    right: 0;
+    top: 0;
+}
