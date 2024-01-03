@@ -4,14 +4,12 @@ export const useClose = (ref, callback) => {
   useEffect(() => {
     document.addEventListener("click", (e) => {
       if (e.target !== ref.current){
-        console.log("eokfoekfoekfoekf");
         callback()
       }
     });
     return () => {
-      document.removeEventListener("click", () => {
+      document.removeEventListener("click", (e) => {
         if (e.target !== ref.current){
-          console.log("eokfoekfoekfoekf");
           callback()
         }
       });

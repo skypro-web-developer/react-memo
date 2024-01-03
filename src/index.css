@@ -9,14 +9,7 @@ body {
 }
 
 body::-webkit-scrollbar {
-  width: 8px;                 /* ширина scrollbar */
-}
-body::-webkit-scrollbar-track {
-  display: none;        /* цвет дорожки */
-}
-body::-webkit-scrollbar-thumb {
-  background-color: #7ac100;    /* цвет плашки */
-  border-radius: 20px;
+  width: 0;                 /* ширина scrollbar */
 }
 
 #root {

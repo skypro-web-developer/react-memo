@@ -32,7 +32,8 @@
 
 .nameBox{
   position: absolute;
-  left: 34vw;
+  left: auto;
+  right: auto;
   top: 10vh;
   width: 480px;
   display: flex;

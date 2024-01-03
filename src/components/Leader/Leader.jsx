@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "./Leader.module.css"
-import { useClose } from "../../hoock/useClose";
+import { useClose } from "../../hooks/useClose";
 
 
 
