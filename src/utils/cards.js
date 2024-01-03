@@ -23,7 +23,6 @@ function createUniqueDeck() {
       deck.push({ rank, suit });
     });
   });
-
   return deck;
 }
 

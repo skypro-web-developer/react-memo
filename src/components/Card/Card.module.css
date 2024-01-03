@@ -75,13 +75,17 @@
 /* Анимация переворота */
 /* весь контейнер поддерживает перспективу */
 .flipContainer {
-  perspective: 1000;
+  perspective: 1000px;
 }
 
-.flipContainer:hover .flipper {
-  transition: 0.2s;
-  transform: rotateY(35deg);
-}
+/*@media (hover: hover) {*/
+/*  .flipContainer:hover .flipper {*/
+/*    transition: 0.2s;*/
+/*    transform: rotateY(25deg);*/
+/*  }*/
+/*}*/
+
+
 
 .flipContainer.flip .flipper {
   transform: rotateY(180deg);

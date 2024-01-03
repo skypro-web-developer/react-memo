@@ -1,10 +1,25 @@
 {
-  "extends": ["eslint:recommended", "prettier", "react-app", "react-app/jest"],
-  "plugins": ["prettier"],
+  "env": {
+    "browser": true,
+    "es2021": true
+  },
+  "extends": [
+    "plugin:react/recommended",
+    "prettier",
+    "plugin:react/jsx-runtime"
+  ],
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true,
+      "js": true
+    },
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "plugins": ["react"],
   "rules": {
-    "camelcase": ["error", { "properties": "never" }],
-    "prettier/prettier": "error",
-    "eqeqeq": ["error", "always"],
-    "no-unused-vars": ["error"]
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/prop-types": 0,
+    "react/destructuring-assignment": [0]
   }
 }
