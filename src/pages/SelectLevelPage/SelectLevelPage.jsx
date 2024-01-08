@@ -23,6 +23,10 @@ export function SelectLevelPage() {
             </Link>
           </li>
         </ul>
+        <div className={styles.rules}>
+          <h2 className={styles.heading}>Играть до 3 ошибок</h2>
+          <input className={styles.input} type="checkbox" />
+        </div>
       </div>
     </div>
   );
