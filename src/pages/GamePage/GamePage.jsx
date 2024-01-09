@@ -6,12 +6,12 @@ import { useSelector } from "react-redux";
 
 export function GamePage() {
   const { pairsCount } = useParams();
-  const isActiveGameMode = useSelector(state => state.game.isActiveGameMode);
+  const isActiveEasyMode = useSelector(state => state.game.isActiveEasyMode);
 
   return (
     <>
       <Cards pairsCount={parseInt(pairsCount, 10)} previewSeconds={5}></Cards>
-      {isActiveGameMode && <ErrorCounter />}
+      {isActiveEasyMode && <ErrorCounter />}
     </>
   );
 }
