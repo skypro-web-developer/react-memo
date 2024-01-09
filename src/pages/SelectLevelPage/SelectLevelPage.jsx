@@ -1,11 +1,8 @@
 import { Link } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
-import { useDispatch } from "react-redux";
-import { setIsActiveGameMode } from "../../store/slices";
+import { Checkbox } from "../../components/Checkbox/Checkbox";
 
 export function SelectLevelPage() {
-  const dispatch = useDispatch();
-
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
@@ -27,10 +24,7 @@ export function SelectLevelPage() {
             </Link>
           </li>
         </ul>
-        <div className={styles.rules}>
-          <h2 className={styles.heading}>Играть до 3 ошибок</h2>
-          <input className={styles.input} type="checkbox" onClick={dispatch(setIsActiveGameMode())} />
-        </div>
+        <Checkbox />
       </div>
     </div>
   );
