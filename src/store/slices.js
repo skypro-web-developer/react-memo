@@ -12,7 +12,6 @@ const gameSlice = createSlice({
     },
     updateErrors(state) {
       state.errors = state.errors + 1;
-      console.log(state.errors);
     },
     removeErrors(state) {
       state.errors = 0;
