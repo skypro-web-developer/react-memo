@@ -146,6 +146,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
       if (!isActiveEasyMode) {
         finishGame(STATUS_LOST);
+        dispatch(removeErrors());
       } else {
         const updatedCards = nextCards.map(card => {
           if (openCardsWithoutPair.some(openCard => openCard.id === card.id)) {
