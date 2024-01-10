@@ -40,15 +40,13 @@ function getTimerValue(startDate, endDate) {
  * pairsCount - сколько пар будет в игре
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
-export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
   const [status, setStatus] = useState(STATUS_PREVIEW);
 
-  // Дата начала игры
   const [gameStartDate, setGameStartDate] = useState(null);
-  // Дата конца игры
   const [gameEndDate, setGameEndDate] = useState(null);
 
   // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate

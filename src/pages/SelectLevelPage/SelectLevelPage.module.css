@@ -62,3 +62,17 @@
 .levelLink:visited {
   color: #0080c1;
 }
+
+.easyMode {
+  display: flex;
+  width: 75%;
+  margin: 15px auto;
+
+  font-family: StratosSkyeng;
+  font-size: 18px;
+}
+
+.easyMode_label {
+  display: flex;
+  gap: 10px;
+}
