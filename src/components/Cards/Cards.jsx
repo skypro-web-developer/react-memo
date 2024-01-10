@@ -43,12 +43,12 @@ function getTimerValue(startDate, endDate) {
 export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
-  // Текущий статус игры
   const [status, setStatus] = useState(STATUS_PREVIEW);
 
   const [gameStartDate, setGameStartDate] = useState(null);
   const [gameEndDate, setGameEndDate] = useState(null);
-
+  // Количество попыток
+  const [tryes] = useState(3);
   // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
   const [timer, setTimer] = useState({
     seconds: 0,
@@ -193,6 +193,11 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
             </>
           )}
         </div>
+        {status === STATUS_IN_PROGRESS && isEasyMode && (
+          <div className={styles.tryes_container}>
+            <p className={styles.tryes_description}>Осталось попыток</p> <p className={styles.tryes_count}>{tryes}</p>
+          </div>
+        )}
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
 
