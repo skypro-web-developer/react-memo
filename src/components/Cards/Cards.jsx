@@ -48,7 +48,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
   const [gameStartDate, setGameStartDate] = useState(null);
   const [gameEndDate, setGameEndDate] = useState(null);
   // Количество попыток
-  const [tryes] = useState(3);
+  const [tryes, setTryes] = useState(3);
   // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
   const [timer, setTimer] = useState({
     seconds: 0,
@@ -71,6 +71,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
+    setTryes(3);
   }
 
   /**
@@ -85,6 +86,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
     if (clickedCard.open) {
       return;
     }
+    const previousCards = [...cards];
     // Игровое поле после открытия кликнутой карты
     const nextCards = cards.map(card => {
       if (card.id !== clickedCard.id) {
@@ -124,8 +126,22 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
     const playerLost = openCardsWithoutPair.length >= 2;
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
+
+    if (isEasyMode && playerLost) {
+      setTryes(tryes - 1);
+      setCards(nextCards);
+      setTimeout(() => {
+        if (tryes <= 1) finishGame(STATUS_LOST);
+        setCards(previousCards);
+      }, 500);
+      return;
+    }
+
+    if (tryes < 1) finishGame(STATUS_LOST);
+
     if (playerLost) {
       finishGame(STATUS_LOST);
+
       return;
     }
 
