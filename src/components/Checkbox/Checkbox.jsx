@@ -12,10 +12,10 @@ export function Checkbox() {
 
   return (
     <div className={styles.rules}>
-      <h2 className={styles.heading}>Играть до 3 ошибок</h2>
       <label htmlFor="activateMode">
         <input className={styles.input} type="checkbox" checked={isActiveEasyMode} onChange={handleCheckboxChange} />
       </label>
+      <h2 className={styles.heading}>Легкий режим (3 жизни)</h2>
     </div>
   );
 }
