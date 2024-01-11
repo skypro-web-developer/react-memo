@@ -40,17 +40,16 @@ function getTimerValue(startDate, endDate) {
  * pairsCount - сколько пар будет в игре
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
-export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
-  // Текущий статус игры
   const [status, setStatus] = useState(STATUS_PREVIEW);
 
-  // Дата начала игры
   const [gameStartDate, setGameStartDate] = useState(null);
-  // Дата конца игры
   const [gameEndDate, setGameEndDate] = useState(null);
-
+  const [previousCards, setPreviousCards] = useState(cards);
+  // Количество попыток
+  const [tryes, setTryes] = useState(3);
   // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
   const [timer, setTimer] = useState({
     seconds: 0,
@@ -73,6 +72,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
+    setTryes(3);
   }
 
   /**
@@ -98,6 +98,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         open: true,
       };
     });
+
+    const prevCards = [...cards];
 
     setCards(nextCards);
 
@@ -126,11 +128,25 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     const playerLost = openCardsWithoutPair.length >= 2;
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
-    if (playerLost) {
-      finishGame(STATUS_LOST);
+
+    if (isEasyMode && playerLost) {
+      setTryes(tryes - 1);
+      setCards(nextCards);
+      setTimeout(() => {
+        if (tryes <= 1) finishGame(STATUS_LOST);
+        setCards(previousCards);
+      }, 500);
       return;
     }
 
+    if (tryes < 1) finishGame(STATUS_LOST);
+
+    if (playerLost) {
+      finishGame(STATUS_LOST);
+
+      return;
+    }
+    setPreviousCards(prevCards);
     // ... игра продолжается
   };
 
@@ -195,6 +211,11 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
+        {status === STATUS_IN_PROGRESS && isEasyMode && (
+          <div className={styles.tryes_container}>
+            <p className={styles.tryes_description}>Осталось попыток</p> <p className={styles.tryes_count}>{tryes}</p>
+          </div>
+        )}
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
 
