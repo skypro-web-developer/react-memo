@@ -47,6 +47,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
 
   const [gameStartDate, setGameStartDate] = useState(null);
   const [gameEndDate, setGameEndDate] = useState(null);
+  const [previousCards, setPreviousCards] = useState(cards);
   // Количество попыток
   const [tryes, setTryes] = useState(3);
   // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
@@ -86,7 +87,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
     if (clickedCard.open) {
       return;
     }
-    const previousCards = [...cards];
     // Игровое поле после открытия кликнутой карты
     const nextCards = cards.map(card => {
       if (card.id !== clickedCard.id) {
@@ -98,6 +98,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
         open: true,
       };
     });
+
+    const prevCards = [...cards];
 
     setCards(nextCards);
 
@@ -144,7 +146,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
 
       return;
     }
-
+    setPreviousCards(prevCards);
     // ... игра продолжается
   };
 
