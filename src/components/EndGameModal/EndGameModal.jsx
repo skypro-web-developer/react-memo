@@ -22,6 +22,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
     return leader.time > time;
   });
 
+  console.log(leaders);
   console.log(isLeader);
   console.log(isWon);
   console.log(time);
