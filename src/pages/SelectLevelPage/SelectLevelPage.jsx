@@ -4,13 +4,16 @@ import { Checkbox } from "../../components/Checkbox/Checkbox";
 import { Button } from "../../components/Button/Button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 
 export function SelectLevelPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [choosenLevel, setChoosenLevel] = useState(null);
 
   const handleButtonClick = () => {
     if (choosenLevel !== null) {
+      dispatch(setChoosenLevel(choosenLevel));
       navigate(`/game/${choosenLevel}`);
     }
   };

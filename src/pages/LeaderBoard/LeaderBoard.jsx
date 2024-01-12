@@ -11,7 +11,6 @@ export function LeaderBoard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const leaders = useSelector(state => state.game.leaders);
-  console.log(leaders);
 
   useEffect(() => {
     getLeaders().then(leaders => dispatch(setLeaders(leaders)));

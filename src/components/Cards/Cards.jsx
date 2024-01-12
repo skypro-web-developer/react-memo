@@ -44,6 +44,8 @@ function getTimerValue(startDate, endDate) {
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   const dispatch = useDispatch();
+  // Получаем массив лидеров
+  const leaders = useSelector(state => state.game.leaders);
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -170,6 +172,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   };
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
+  const isLeader = leaders.filter(leader => leader.time < timer.minutes * 60 + timer.seconds);
 
   // Игровой цикл
   useEffect(() => {
@@ -249,6 +252,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         <div className={styles.modalContainer}>
           <EndGameModal
             isWon={status === STATUS_WON}
+            isLeader={isLeader}
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}
