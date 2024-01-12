@@ -10,7 +10,8 @@ import { Link } from "react-router-dom";
 import { addLeader } from "../../api";
 
 export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
-  const [username, setUsername] = useState("");
+  const [username, setUsername] = useState("Пользователь");
+  const [isFinishedAddingToLeaderboard, setIsFinishedAddingToLeaderboard] = useState(false);
   const buttonRef = useRef();
 
   const time = gameDurationMinutes * 60 + gameDurationSeconds;
@@ -21,11 +22,6 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   const isLeader = leaders.filter(leader => {
     return leader.time > time;
   });
-
-  console.log(leaders);
-  console.log(isLeader);
-  console.log(isWon);
-  console.log(time);
 
   function isAddToLeaders() {
     if (isWon === true && isLeader.length > 0 && currentLevel === 9 && isActiveEasyMode === false) {
@@ -40,6 +36,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
 
     addLeader({ username, time }).then(() => {
       buttonRef.disabled = false;
+      setIsFinishedAddingToLeaderboard(true);
       setUsername("");
     });
   }
@@ -54,7 +51,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
     <div className={styles.modal}>
       <img className={styles.image} src={imgSrc} alt={imgAlt} />
       <h2 className={styles.title}>{title}</h2>
-      {isAddToLeaders() === true && (
+      {isAddToLeaders() === true && isFinishedAddingToLeaderboard === false && (
         <>
           <input
             className={styles.username}

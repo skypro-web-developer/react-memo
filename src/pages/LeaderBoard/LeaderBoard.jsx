@@ -14,7 +14,7 @@ export function LeaderBoard() {
 
   useEffect(() => {
     getLeaders().then(leaders => dispatch(setLeaders(leaders)));
-  });
+  }, [dispatch]);
 
   return (
     <div className={styles.container}>
