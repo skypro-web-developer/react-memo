@@ -47,4 +47,4 @@ https://skypro-web-developer.github.io/react-memo/
 
 Затреченное время 
 план 6 часов
-факт 8 часов
+факт 6 часов
