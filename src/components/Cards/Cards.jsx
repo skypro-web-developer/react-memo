@@ -105,7 +105,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         open: true,
       };
     });
-    console.log(nextCards);
+    // console.log(nextCards);
     setCards(nextCards);
 
     const isPlayerWon = nextCards.every(card => card.open);
@@ -118,11 +118,11 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     // Открытые карты на игровом поле
     const openCards = nextCards.filter(card => card.open);
-    console.log(openCards);
+    // console.log(openCards);
     // Ищем открытые карты, у которых нет пары среди других открытых
     const openCardsWithoutPair = openCards.filter(card => {
       const sameCards = openCards.filter(openCard => card.suit === openCard.suit && card.rank === openCard.rank);
-      console.log(sameCards);
+      // console.log(sameCards);
       if (sameCards.length < 2) {
         return true;
       }
@@ -131,24 +131,24 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     });
 
     const playerLost = openCardsWithoutPair.length >= 2;
-    console.log(openCardsWithoutPair);
-    console.log(playerLost);
+    // console.log(openCardsWithoutPair);
+    // console.log(playerLost);
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (gameRegime) {
       if (playerLost) {
         setLossCounter(lossCounter - 1);
-        console.log(lossCounter);
+        // console.log(lossCounter);
         // return;
       }
       if (lossCounter === 1) {
         finishGame(STATUS_LOST);
-        console.log(lossCounter, 1);
+        // console.log(lossCounter, 1);
         return;
       }
     } else {
       if (playerLost) {
         finishGame(STATUS_LOST);
-        console.log(lossCounter);
+        // console.log(lossCounter);
         return;
       }
     }

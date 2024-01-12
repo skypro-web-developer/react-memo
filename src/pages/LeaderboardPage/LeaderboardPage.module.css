@@ -1,0 +1,85 @@
+.main{
+  margin: 52px 40px;
+}
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+}
+.title {
+  color: #FFF;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32px;
+  font-family: StratosSkyeng;
+}
+.link {
+  width: 246px;
+  height: 50px;
+  border-radius: 12px;
+  background: #7ac100;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.link:hover {
+  background: #7ac100cc;
+}
+
+.link_text{
+  color: #FFF;
+  text-align: center;
+  font-family: StratosSkyeng;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32px;
+  margin-top: 8px;
+}
+
+.leaderboard {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.leaderboardTitle{
+  box-sizing: border-box;
+  color: #999999;
+  font-family: StratosSkyeng;
+  font-size: 24px;
+  line-height: 32px;
+  display: flex;
+  /* justify-content: space-between; */
+  background: #fff;
+  padding: 16px 20px;
+  border-radius: 12px;
+  gap: 150px;
+}
+.leaderPosition{
+  width: 190px;
+}
+.leaderBlock{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.leaders{
+  box-sizing: border-box;
+  color: #000;
+  font-family: StratosSkyeng;
+  font-size: 24px;
+  display: flex;
+  /* justify-content: space-between; */
+  background: #fff;
+  padding: 16px 20px;
+  border-radius: 12px;
+  gap: 150px;
+}
+.loader {
+  font-size: 24px;
+  color: #fff;
+  font-family: StratosSkyeng;
+}

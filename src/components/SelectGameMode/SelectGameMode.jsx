@@ -15,7 +15,7 @@ export function SelectGameMode() {
         type="checkBox"
         className={styles.input}
       ></input>
-      <h2>Играть до 3-х ошибок</h2>
+      <h2 className={styles.title}>Легкий режим (3 жизни)</h2>
     </div>
   );
 }
