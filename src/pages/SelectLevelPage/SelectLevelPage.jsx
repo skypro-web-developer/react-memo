@@ -5,6 +5,7 @@ import { Button } from "../../components/Button/Button";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { setCurrentLevel } from "../../store/slices";
 
 export function SelectLevelPage() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export function SelectLevelPage() {
 
   const handleButtonClick = () => {
     if (choosenLevel !== null) {
-      dispatch(setChoosenLevel(choosenLevel));
+      dispatch(setCurrentLevel({ choosenLevel }));
       navigate(`/game/${choosenLevel}`);
     }
   };

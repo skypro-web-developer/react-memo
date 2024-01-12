@@ -4,7 +4,7 @@ const gameSlice = createSlice({
   name: "game",
   initialState: {
     leaders: [],
-    choosenLevel: null,
+    currentLevel: null,
     isActiveEasyMode: false,
     errors: 0,
   },
@@ -12,9 +12,8 @@ const gameSlice = createSlice({
     setLeaders(state, action) {
       state.leaders = action.payload.leaders;
     },
-    setChoosenLevel(state, action) {
-      state.choosenLevel = action.payload.choosenLevel;
-      console.log(state.choosenLevel);
+    setCurrentLevel(state, action) {
+      state.currentLevel = action.payload.choosenLevel;
     },
     setIsActiveEasyMode(state) {
       state.isActiveEasyMode = !state.isActiveEasyMode;
@@ -28,5 +27,5 @@ const gameSlice = createSlice({
   },
 });
 
-export const { setLeaders, setChoosenLevel, setIsActiveEasyMode, updateErrors, removeErrors } = gameSlice.actions;
+export const { setLeaders, setCurrentLevel, setIsActiveEasyMode, updateErrors, removeErrors } = gameSlice.actions;
 export const gameReducer = gameSlice.reducer;
