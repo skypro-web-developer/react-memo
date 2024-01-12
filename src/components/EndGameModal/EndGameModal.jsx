@@ -9,12 +9,15 @@ import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { addLeader } from "../../api";
 
-export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick, time }) {
+export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
   const [username, setUsername] = useState("");
   const buttonRef = useRef();
 
+  const time = gameDurationMinutes * 60 + gameDurationSeconds;
   const currentLevel = useSelector(state => state.game.currentLevel);
+  const isActiveEasyMode = useSelector(state => state.game.isActiveEasyMode);
   const leaders = useSelector(state => state.game.leaders);
+
   const isLeader = leaders.filter(leader => {
     return leader.time > time;
   });
@@ -24,7 +27,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   console.log(time);
 
   function isAddToLeaders() {
-    if (isWon === true && isLeader.length > 0 && currentLevel === 9) {
+    if (isWon === true && isLeader.length > 0 && currentLevel === 9 && isActiveEasyMode === false) {
       return true;
     } else {
       return false;
@@ -36,10 +39,11 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
 
     addLeader({ username, time }).then(() => {
       buttonRef.disabled = false;
+      setUsername("");
     });
   }
 
-  const title = isWon ? (isAddToLeaders === true ? "Вы попали на Лидерборд!" : "Вы победили!") : "Вы проиграли!";
+  const title = isWon ? (isAddToLeaders() === true ? "Вы попали на Лидерборд!" : "Вы победили!") : "Вы проиграли!";
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
 
@@ -49,7 +53,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
     <div className={styles.modal}>
       <img className={styles.image} src={imgSrc} alt={imgAlt} />
       <h2 className={styles.title}>{title}</h2>
-      {isAddToLeaders === true && (
+      {isAddToLeaders() === true && (
         <>
           <input
             className={styles.username}
@@ -58,7 +62,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
             value={username}
             onChange={event => setUsername(event.target.value)}
           />
-          <button className={styles.addButton} ref={buttonRef} onClick={addToLeaderboard({ username, time })}>
+          <button className={styles.addButton} ref={buttonRef} onClick={() => addToLeaderboard({ username, time })}>
             Отправить
           </button>
         </>
