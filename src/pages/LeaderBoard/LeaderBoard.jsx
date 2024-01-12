@@ -2,9 +2,20 @@ import styles from "./LeaderBoard.module.css";
 import { Button } from "../../components/Button/Button";
 import { LeaderBoardItem } from "../../components/LeaderBoardItem/LeaderBoardItem";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { getLeaders } from "../../api";
+import { useDispatch, useSelector } from "react-redux";
+import { setLeaders } from "../../store/slices";
 
 export function LeaderBoard() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const leaders = useSelector(state => state.game.leaders);
+  console.log(leaders);
+
+  useEffect(() => {
+    getLeaders().then(leaders => dispatch(setLeaders(leaders)));
+  });
 
   return (
     <div className={styles.container}>
@@ -13,7 +24,18 @@ export function LeaderBoard() {
           <h1 className={styles.heading}>Лидерборд</h1>
           <Button children={"Начать игру"} onClick={() => navigate("/")} />
         </div>
-        <LeaderBoardItem position={"Позиция"} user={"Пользователь"} time={"Время"} isTemplate={true} />
+        <LeaderBoardItem isTemplate={true} />
+        {leaders.map(leader => {
+          return (
+            <LeaderBoardItem
+              key={leader.id}
+              position={leader.id}
+              user={leader.name}
+              time={leader.time}
+              isTemplate={false}
+            />
+          );
+        })}
       </div>
     </div>
   );
