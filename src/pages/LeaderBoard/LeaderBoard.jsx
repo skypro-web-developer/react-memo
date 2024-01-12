@@ -10,6 +10,7 @@ import { setLeaders } from "../../store/slices";
 export function LeaderBoard() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  let position = 1;
   const leaders = useSelector(state => state.game.leaders);
 
   useEffect(() => {
@@ -28,7 +29,7 @@ export function LeaderBoard() {
           return (
             <LeaderBoardItem
               key={leader.id}
-              position={leader.id}
+              position={position++}
               user={leader.name}
               time={leader.time}
               isTemplate={false}
