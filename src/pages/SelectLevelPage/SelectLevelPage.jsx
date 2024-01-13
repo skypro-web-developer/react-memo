@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
 import { useState } from "react";
 
@@ -33,9 +33,12 @@ export function SelectLevelPage() {
                 console.log(isEasyMode);
               }}
             />
-            Включить облегченный режим с тремя попытками
+            Лёгкий режим (3 жизни)
           </label>
         </div>
+        <Link className={styles.leaderLink} to="/leaderboard">
+          Перейти к лидерборду
+        </Link>
       </div>
     </div>
   );

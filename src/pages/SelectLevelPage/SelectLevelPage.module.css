@@ -69,10 +69,16 @@
   margin: 15px auto;
 
   font-family: StratosSkyeng;
-  font-size: 18px;
+  font-size: 24px;
 }
 
 .easyMode_label {
   display: flex;
   gap: 10px;
+}
+
+.leaderLink {
+  font-family: StratosSkyeng, sans-serif;
+
+  font-size: 18px;
 }
