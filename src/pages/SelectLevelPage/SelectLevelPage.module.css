@@ -46,6 +46,7 @@
 
   border-radius: 12px;
   background: #fff;
+  cursor: pointer;
 }
 
 .levelLink {
@@ -75,6 +76,7 @@
 .easyMode_label {
   display: flex;
   gap: 10px;
+  cursor: pointer;
 }
 
 .leaderLink {
