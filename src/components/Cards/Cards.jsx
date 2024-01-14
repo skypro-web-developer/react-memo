@@ -1,10 +1,12 @@
 import { shuffle } from "lodash";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { generateDeck } from "../../utils/cards";
 import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { getLeaders } from "../../services/API";
+import { getTimeInSeconds, sortLeadersByTime } from "../../utils/helpers";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -44,6 +46,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   const [status, setStatus] = useState(STATUS_PREVIEW);
+  const [isOnLeaderboard, setIsOnLeaderboard] = useState(false);
 
   const [gameStartDate, setGameStartDate] = useState(null);
   const [gameEndDate, setGameEndDate] = useState(null);
@@ -55,6 +58,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
     seconds: 0,
     minutes: 0,
   });
+
+  const intervalID = useRef(0);
 
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
@@ -73,6 +78,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
     setTryes(3);
+    setIsOnLeaderboard(false);
   }
 
   /**
@@ -82,7 +88,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
    * - "Игрок проиграл", если на поле есть две открытые карты без пары
    * - "Игра продолжается", если не случилось первых двух условий
    */
-  const openCard = clickedCard => {
+  const openCard = async clickedCard => {
     // Если карта уже открыта, то ничего не делаем
     if (clickedCard.open) {
       return;
@@ -107,6 +113,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
 
     // Победа - все карты на поле открыты
     if (isPlayerWon) {
+      const leaders = await getLeaders();
+      const sortedLeaders = sortLeadersByTime(leaders.leaders);
+      const leadersLength = sortedLeaders.length;
+      const isLeadResult = sortedLeaders[leadersLength - 1].time > getTimeInSeconds(timer) && pairsCount === 9;
+
+      setIsOnLeaderboard(isLeadResult);
+
       finishGame(STATUS_WON);
       return;
     }
@@ -152,6 +165,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
 
+  isGameEnded && clearInterval(intervalID.current);
+
   // Игровой цикл
   useEffect(() => {
     // В статусах кроме превью доп логики не требуется
@@ -180,11 +195,11 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
 
   // Обновляем значение таймера в интервале
   useEffect(() => {
-    const intervalId = setInterval(() => {
+    intervalID.current = setInterval(() => {
       setTimer(getTimerValue(gameStartDate, gameEndDate));
     }, 300);
     return () => {
-      clearInterval(intervalId);
+      clearInterval(intervalID.current);
     };
   }, [gameStartDate, gameEndDate]);
 
@@ -235,6 +250,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
         <div className={styles.modalContainer}>
           <EndGameModal
             isWon={status === STATUS_WON}
+            isOnLeaderboard={isOnLeaderboard}
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}

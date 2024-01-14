@@ -2,7 +2,7 @@
 
 ## Homework#2
 
-Plan: 10 hours, Fact: ?
+Plan: 10 hours, Fact: 6 hours
 
 ## Homework #1
 Plan: 4,5 hours, Fact: 5 hours
