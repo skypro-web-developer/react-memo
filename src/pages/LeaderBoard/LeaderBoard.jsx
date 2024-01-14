@@ -30,7 +30,6 @@ export function LeaderBoard() {
         </div>
         <LeaderBoardItem isTemplate={true} />
         {sortedLeaders.map(leader => {
-          console.log(sortedLeaders);
           return (
             <LeaderBoardItem
               key={leader.id}
