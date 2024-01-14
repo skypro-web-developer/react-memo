@@ -18,8 +18,8 @@ export function WithoutSuperpowerAchievement(withoutSuperpower) {
           y2="27.061"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#FFB500" />
-          <stop offset="1" stop-color="#FFE052" />
+          <stop stopColor="#FFB500" />
+          <stop offset="1" stopColor="#FFE052" />
         </linearGradient>
         <radialGradient
           id="paint1_radial_201_104"
@@ -29,8 +29,8 @@ export function WithoutSuperpowerAchievement(withoutSuperpower) {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(10.8536 21.6406) rotate(90) scale(16.0758 16.1156)"
         >
-          <stop offset="0.015625" stop-color="#7F12F4" />
-          <stop offset="1" stop-color="#E0C5FF" />
+          <stop offset="0.015625" stopColor="#7F12F4" />
+          <stop offset="1" stopColor="#E0C5FF" />
         </radialGradient>
       </defs>
     </svg>
@@ -56,9 +56,9 @@ export function WithoutSuperpowerAchievement(withoutSuperpower) {
           width="21.6641"
           height="8.59647"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feColorMatrix
             in="SourceAlpha"
@@ -79,9 +79,9 @@ export function WithoutSuperpowerAchievement(withoutSuperpower) {
           width="21.7026"
           height="22.6488"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feColorMatrix
             in="SourceAlpha"

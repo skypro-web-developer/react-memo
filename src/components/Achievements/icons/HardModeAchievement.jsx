@@ -14,14 +14,14 @@ export function HardModeAchievement(hardMode) {
           gradientUnits="userSpaceOnUse"
           gradientTransform="translate(12.654 -7.18504) scale(27.084 26.5541)"
         >
-          <stop offset="0.508" stop-color="#B7D118" />
-          <stop offset="0.572" stop-color="#B2D019" />
-          <stop offset="0.643" stop-color="#A5CD1D" />
-          <stop offset="0.717" stop-color="#8FC922" />
-          <stop offset="0.793" stop-color="#70C22A" />
-          <stop offset="0.871" stop-color="#48BA34" />
-          <stop offset="0.949" stop-color="#18B040" />
-          <stop offset="0.981" stop-color="#02AB46" />
+          <stop offset="0.508" stopColor="#B7D118" />
+          <stop offset="0.572" stopColor="#B2D019" />
+          <stop offset="0.643" stopColor="#A5CD1D" />
+          <stop offset="0.717" stopColor="#8FC922" />
+          <stop offset="0.793" stopColor="#70C22A" />
+          <stop offset="0.871" stopColor="#48BA34" />
+          <stop offset="0.949" stopColor="#18B040" />
+          <stop offset="0.981" stopColor="#02AB46" />
         </radialGradient>
       </defs>
     </svg>
@@ -41,9 +41,9 @@ export function HardModeAchievement(hardMode) {
           width="26"
           height="27"
           filterUnits="userSpaceOnUse"
-          color-interpolation-filters="sRGB"
+          colorInterpolationFilters="sRGB"
         >
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape" />
           <feColorMatrix
             in="SourceAlpha"
