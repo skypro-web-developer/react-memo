@@ -30,12 +30,14 @@ export function LeaderBoard() {
         </div>
         <LeaderBoardItem isTemplate={true} />
         {sortedLeaders.map(leader => {
+          console.log(sortedLeaders);
           return (
             <LeaderBoardItem
               key={leader.id}
               position={position++}
               user={leader.name}
               time={leader.time}
+              achievements={leader.achievements}
               isTemplate={false}
             />
           );
