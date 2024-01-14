@@ -7,6 +7,7 @@ import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { removeErrors, updateErrors } from "../../store/slices";
+import { Superpowers } from "../Superpowers/Superpowers";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -230,6 +231,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
+        {status === STATUS_IN_PROGRESS ? <Superpowers /> : null}
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
 
