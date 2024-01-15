@@ -17,6 +17,7 @@ const STATUS_WON = "STATUS_WON";
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 // Начало игры: игрок видит все карты в течении нескольких секунд
 const STATUS_PREVIEW = "STATUS_PREVIEW";
+const STATUS_PAUSED = "STATUS_PAUSED";
 
 function getTimerValue(startDate, endDate) {
   if (!startDate && !endDate) {
@@ -205,15 +206,21 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   // Обновляем значение таймера в интервале
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTimer(getTimerValue(gameStartDate, gameEndDate));
-    }, 300);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [gameStartDate, gameEndDate]);
+    if (status !== STATUS_PAUSED) {
+      const intervalId = setInterval(() => {
+        setTimer(getTimerValue(gameStartDate, gameEndDate));
+      }, 300);
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, [gameStartDate, gameEndDate, status]);
 
   function onEpiphanyClick() {
+    const currentTime = getTimerValue(gameStartDate, gameEndDate);
+    console.log(currentTime);
+    console.log(getTimerValue(gameStartDate, gameEndDate));
+    setStatus(STATUS_PAUSED);
     setIsEpiphanyAvailable(false);
     const closedCards = cards.filter(card => !card.open);
 
@@ -229,6 +236,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           }
         }),
       );
+      setTimer(currentTime);
+      setStatus(STATUS_IN_PROGRESS);
     }, 5000);
   }
 
@@ -278,13 +287,15 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
-        {status === STATUS_IN_PROGRESS ? (
+        {status === STATUS_IN_PROGRESS || status === STATUS_PAUSED ? (
           <div className={styles.superPowersContainer}>
             <Epiphany isAvailable={isEpiphanyAvailable} onClick={onEpiphanyClick} />
             <Alohomora isAvailable={isAlohomoraAvailable} onClick={onAlohomoraClick} />
           </div>
         ) : null}
-        {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+        {status === STATUS_IN_PROGRESS || status === STATUS_PAUSED ? (
+          <Button onClick={resetGame}>Начать заново</Button>
+        ) : null}
       </div>
 
       <div className={styles.cards}>
