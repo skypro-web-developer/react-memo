@@ -234,6 +234,25 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   function onAlohomoraClick() {
     setIsAlohomoraAvailable(false);
+    const closedCards = cards.filter(card => !card.open);
+    const firstRandomCard = closedCards[Math.round(Math.random() * (closedCards.length - 1) + 1)];
+    const secondRandomCard = closedCards.filter(
+      closedCard =>
+        closedCard.suit === firstRandomCard.suit &&
+        closedCard.rank === firstRandomCard.rank &&
+        firstRandomCard.id !== closedCard.id,
+    );
+    console.log(firstRandomCard);
+    console.log(secondRandomCard);
+    setCards(
+      cards.map(card => {
+        if (card === firstRandomCard || card === secondRandomCard[0]) {
+          return { ...card, open: true };
+        } else {
+          return card;
+        }
+      }),
+    );
   }
 
   return (
