@@ -1,4 +1,4 @@
-import styles from "./IconStyles.module.css";
+import styles from "./Superpowers.module.css";
 
 export function Epiphany({ isAvailable }) {
   return isAvailable ? (

@@ -70,3 +70,8 @@
 
   margin-bottom: -12px;
 }
+
+.superPowersContainer {
+  display: flex;
+  gap: 15px;
+}

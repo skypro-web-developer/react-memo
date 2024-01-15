@@ -7,7 +7,8 @@ import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { removeErrors, updateErrors } from "../../store/slices";
-import { Superpowers } from "../Superpowers/Superpowers";
+import { Epiphany } from "../Superpowers/EpiphanyIcon";
+import { Alohomora } from "../Superpowers/AlohomoraIcon";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -47,6 +48,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   const dispatch = useDispatch();
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
+  const [isEpiphanyAvailable] = useState(true);
+  const [isAlohomoraAvailable] = useState(true);
   // Текущий статус игры
   const [status, setStatus] = useState(STATUS_PREVIEW);
   // Количество ошибок в режиме игры до трех ошибок
@@ -231,7 +234,12 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
-        {status === STATUS_IN_PROGRESS ? <Superpowers /> : null}
+        {status === STATUS_IN_PROGRESS ? (
+          <div className={styles.superPowersContainer}>
+            <Epiphany isAvailable={isEpiphanyAvailable} />
+            <Alohomora isAvailable={isAlohomoraAvailable} />
+          </div>
+        ) : null}
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
 
