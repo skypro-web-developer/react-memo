@@ -1,6 +1,6 @@
 import styles from "./Superpowers.module.css";
 
-export function Epiphany({ isAvailable }) {
+export function Epiphany({ isAvailable, onClick }) {
   return isAvailable ? (
     <svg
       className={styles.icon}
@@ -9,6 +9,7 @@ export function Epiphany({ isAvailable }) {
       viewBox="0 0 68 68"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      onClick={onClick}
     >
       <rect width="68" height="68" rx="34" fill="#C2F5FF" />
       <path

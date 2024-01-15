@@ -48,8 +48,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   const dispatch = useDispatch();
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
-  const [isEpiphanyAvailable] = useState(true);
-  const [isAlohomoraAvailable] = useState(true);
+  // Доступно ли использование прозрения
+  const [isEpiphanyAvailable, setIsEpiphanyAvailable] = useState(true);
+  // Доступно ли использование алохоморы
+  const [isAlohomoraAvailable, setIsAlohomoraAvailable] = useState(true);
   // Текущий статус игры
   const [status, setStatus] = useState(STATUS_PREVIEW);
   // Количество ошибок в режиме игры до трех ошибок
@@ -211,6 +213,29 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     };
   }, [gameStartDate, gameEndDate]);
 
+  function onEpiphanyClick() {
+    setIsEpiphanyAvailable(false);
+    const closedCards = cards.filter(card => !card.open);
+
+    cards.map(card => (card.open = true));
+
+    setTimeout(() => {
+      setCards(
+        cards.map(card => {
+          if (closedCards.includes(card)) {
+            return { ...card, open: false };
+          } else {
+            return card;
+          }
+        }),
+      );
+    }, 5000);
+  }
+
+  function onAlohomoraClick() {
+    setIsAlohomoraAvailable(false);
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -236,8 +261,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         </div>
         {status === STATUS_IN_PROGRESS ? (
           <div className={styles.superPowersContainer}>
-            <Epiphany isAvailable={isEpiphanyAvailable} />
-            <Alohomora isAvailable={isAlohomoraAvailable} />
+            <Epiphany isAvailable={isEpiphanyAvailable} onClick={onEpiphanyClick} />
+            <Alohomora isAvailable={isAlohomoraAvailable} onClick={onAlohomoraClick} />
           </div>
         ) : null}
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
