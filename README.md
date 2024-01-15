@@ -1,5 +1,9 @@
 # MVP Карточная игра "Мемо"
 
+## Coursework
+
+Plan: 6,5 hours, Fact: ? hours.
+
 ## Homework#2
 
 Plan: 10 hours, Fact: 6 hours
