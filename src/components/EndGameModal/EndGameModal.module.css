@@ -9,6 +9,10 @@
   align-items: center;
 }
 
+.height634 {
+  height: 634px;
+}
+
 .image {
   width: 96px;
   height: 96px;
@@ -16,6 +20,9 @@
 }
 
 .title {
+  max-width: 270px;
+
+  text-align: center;
   color: #004980;
   font-variant-numeric: lining-nums proportional-nums;
   font-family: StratosSkyeng;
@@ -48,4 +55,20 @@
   line-height: 72px;
 
   margin-bottom: 40px;
+}
+
+.input {
+  width: 276px;
+  height: 45px;
+  margin-bottom: 24px;
+
+  border-radius: 10px;
+  text-align: center;
+  font-family: StratosSkyeng;
+  font-size: 24px;
+}
+
+.link {
+  margin-top: 24px;
+  font-size: 18px;
 }

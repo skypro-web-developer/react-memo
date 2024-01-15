@@ -28,7 +28,7 @@ ol {
 }
 
 @font-face {
-  font-family: "StratosSkyeng";
+  font-family: StratosSkyeng;
   src:
     url("../public/assets/fonts/StratosSkyeng.woff2") format("woff2"),
     local("Arial");
