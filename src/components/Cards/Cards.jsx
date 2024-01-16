@@ -236,6 +236,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           }
         }),
       );
+      console.log(currentTime);
       setTimer(currentTime);
       setStatus(STATUS_IN_PROGRESS);
     }, 5000);
@@ -251,8 +252,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         closedCard.rank === firstRandomCard.rank &&
         firstRandomCard.id !== closedCard.id,
     );
-    console.log(firstRandomCard);
-    console.log(secondRandomCard);
     setCards(
       cards.map(card => {
         if (card === firstRandomCard || card === secondRandomCard[0]) {
