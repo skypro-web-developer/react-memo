@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeErrors, updateErrors } from "../../store/slices";
 import { Epiphany } from "../Superpowers/EpiphanyIcon";
 import { Alohomora } from "../Superpowers/AlohomoraIcon";
+import { ToolTips } from "../ToolTips/ToolTips";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -318,10 +319,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             />
             {isEpiphanyMouseEnter && isEpiphanyAvailable && (
               <div className={styles.toolTipEpiphany}>
-                <p className={styles.toolTipTitle}>Прозрение</p>
-                <p className={styles.toolTipText}>
-                  На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается.
-                </p>
+                <ToolTips
+                  title={"Прозрение"}
+                  text={"На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается."}
+                />
               </div>
             )}
             <Alohomora
@@ -333,8 +334,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             />
             {isAlohomoraMouseEnter && isAlohomoraAvailable && (
               <div className={styles.toolTipAlohomora}>
-                <p className={styles.toolTipTitle}>Алохомора</p>
-                <p className={styles.toolTipText}>Открывается случайная пара карт.</p>
+                <ToolTips title={"Алохомора"} text={"Открывается случайная пара карт."} />
               </div>
             )}
           </div>
