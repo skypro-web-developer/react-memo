@@ -317,14 +317,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
               onMouseLeave={onEpiphanyMouseLeave}
               setIsEpiphanyMouseEnter={setIsEpiphanyMouseEnter}
             />
-            {isEpiphanyMouseEnter && isEpiphanyAvailable && (
-              <div className={styles.toolTipEpiphany}>
-                <ToolTips
-                  title={"Прозрение"}
-                  text={"На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается."}
-                />
-              </div>
-            )}
             <Alohomora
               isAvailable={isAlohomoraAvailable}
               onClick={onAlohomoraClick}
@@ -364,6 +356,15 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}
             withoutSuperpowers={withoutSuperpowers}
+          />
+        </div>
+      ) : null}
+
+      {isEpiphanyMouseEnter && isEpiphanyAvailable ? (
+        <div className={styles.toolTipEpiphany}>
+          <ToolTips
+            title={"Прозрение"}
+            text={"На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается."}
           />
         </div>
       ) : null}
