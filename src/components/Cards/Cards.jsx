@@ -6,6 +6,10 @@ import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
 import { useSelector } from "react-redux";
+import eye from "./images/a.svg";
+import pair from "./images/b.svg";
+import imgw from "./images/Group 1077240073.svg";
+// import imgr from "./images/Group+1077240073.svg";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -216,6 +220,12 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
               </div>
             </>
           )}
+        </div>
+        <div>
+          <img src={eye} alt="" />
+          <img src={pair} alt="" />
+          <img src={imgw} alt="" />
+          {/* <img src={imgr} alt="" /> */}
         </div>
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
