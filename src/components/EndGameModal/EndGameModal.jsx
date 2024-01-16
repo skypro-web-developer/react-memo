@@ -9,7 +9,7 @@ import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { addLeader } from "../../api";
 
-export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
+export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick, withoutSuperpowers }) {
   const [username, setUsername] = useState("Пользователь");
   const [isFinishedAddingToLeaderboard, setIsFinishedAddingToLeaderboard] = useState(false);
   const buttonRef = useRef();
@@ -24,17 +24,29 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   });
 
   function isAddToLeaders() {
-    if (isWon === true && isLeader.length > 0 && currentLevel === 9 && isActiveEasyMode === false) {
+    if (isWon === true && isLeader.length > 0 && currentLevel === 9) {
       return true;
     } else {
       return false;
     }
   }
 
-  function addToLeaderboard({ username, time }) {
+  function achievements() {
+    if (isActiveEasyMode === false && withoutSuperpowers === true) {
+      return [1, 2];
+    } else if (isActiveEasyMode === false && withoutSuperpowers === false) {
+      return [1];
+    } else if (isActiveEasyMode === true && withoutSuperpowers === true) {
+      return [2];
+    } else {
+      return [];
+    }
+  }
+
+  function addToLeaderboard({ username, time, achievements }) {
     buttonRef.disabled = true;
 
-    addLeader({ username, time }).then(() => {
+    addLeader({ username, time, achievements }).then(() => {
       buttonRef.disabled = false;
       setIsFinishedAddingToLeaderboard(true);
       setUsername("");
@@ -60,7 +72,11 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
             value={username}
             onChange={event => setUsername(event.target.value)}
           />
-          <button className={styles.addButton} ref={buttonRef} onClick={() => addToLeaderboard({ username, time })}>
+          <button
+            className={styles.addButton}
+            ref={buttonRef}
+            onClick={() => addToLeaderboard({ username, time, achievements })}
+          >
             Отправить
           </button>
         </>
