@@ -1,6 +1,6 @@
 import styles from "./Superpowers.module.css";
 
-export function Epiphany({ isAvailable, onClick }) {
+export function Epiphany({ isAvailable, onClick, onMouseEnter, onMouseLeave, setIsEpiphanyMouseEnter }) {
   return isAvailable ? (
     <svg
       className={styles.icon}
@@ -10,6 +10,8 @@ export function Epiphany({ isAvailable, onClick }) {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
       onClick={onClick}
+      onMouseEnter={() => onMouseEnter({ setIsEpiphanyMouseEnter })}
+      onMouseLeave={() => onMouseLeave({ setIsEpiphanyMouseEnter })}
     >
       <rect width="68" height="68" rx="34" fill="#C2F5FF" />
       <path

@@ -1,8 +1,13 @@
 import styles from "./Superpowers.module.css";
 
-export function Alohomora({ isAvailable, onClick }) {
+export function Alohomora({ isAvailable, onClick, onMouseEnter, onMouseLeave, setIsAlohomoraMouseEnter }) {
   return isAvailable ? (
-    <div className={styles.icon} onClick={onClick}>
+    <div
+      className={styles.icon}
+      onClick={onClick}
+      onMouseEnter={() => onMouseEnter({ setIsAlohomoraMouseEnter })}
+      onMouseLeave={() => onMouseLeave({ setIsAlohomoraMouseEnter })}
+    >
       <svg
         className={styles.circle}
         width="68"

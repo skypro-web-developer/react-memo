@@ -60,6 +60,25 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   // Статус режима игры до трех ошибок
   const isActiveEasyMode = useSelector(state => state.game.isActiveEasyMode);
 
+  const [isEpiphanyMouseEnter, setIsEpiphanyMouseEnter] = useState(false);
+  const [isAlohomoraMouseEnter, setIsAlohomoraMouseEnter] = useState(false);
+
+  const onEpiphanyMouseEnter = ({ setIsEpiphanyMouseEnter }) => {
+    setIsEpiphanyMouseEnter(true);
+  };
+
+  const onEpiphanyMouseLeave = ({ setIsEpiphanyMouseEnter }) => {
+    setIsEpiphanyMouseEnter(false);
+  };
+
+  const onAlohomoraMouseEnter = ({ setIsAlohomoraMouseEnter }) => {
+    setIsAlohomoraMouseEnter(true);
+  };
+
+  const onAlohomoraMouseLeave = ({ setIsAlohomoraMouseEnter }) => {
+    setIsAlohomoraMouseEnter(false);
+  };
+
   // Если допущено 3 ошибки, игра заканчивается
   useEffect(() => {
     if (errors === 3) {
@@ -290,8 +309,34 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         </div>
         {status === STATUS_IN_PROGRESS || status === STATUS_PAUSED ? (
           <div className={styles.superPowersContainer}>
-            <Epiphany isAvailable={isEpiphanyAvailable} onClick={onEpiphanyClick} />
-            <Alohomora isAvailable={isAlohomoraAvailable} onClick={onAlohomoraClick} />
+            <Epiphany
+              isAvailable={isEpiphanyAvailable}
+              onClick={onEpiphanyClick}
+              onMouseEnter={onEpiphanyMouseEnter}
+              onMouseLeave={onEpiphanyMouseLeave}
+              setIsEpiphanyMouseEnter={setIsEpiphanyMouseEnter}
+            />
+            {isEpiphanyMouseEnter && isEpiphanyAvailable && (
+              <div className={styles.toolTipEpiphany}>
+                <p className={styles.toolTipTitle}>Прозрение</p>
+                <p className={styles.toolTipText}>
+                  На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается.
+                </p>
+              </div>
+            )}
+            <Alohomora
+              isAvailable={isAlohomoraAvailable}
+              onClick={onAlohomoraClick}
+              onMouseEnter={onAlohomoraMouseEnter}
+              onMouseLeave={onAlohomoraMouseLeave}
+              setIsAlohomoraMouseEnter={setIsAlohomoraMouseEnter}
+            />
+            {isAlohomoraMouseEnter && isAlohomoraAvailable && (
+              <div className={styles.toolTipAlohomora}>
+                <p className={styles.toolTipTitle}>Алохомора</p>
+                <p className={styles.toolTipText}>Открывается случайная пара карт.</p>
+              </div>
+            )}
           </div>
         ) : null}
         {status === STATUS_IN_PROGRESS || status === STATUS_PAUSED ? (
