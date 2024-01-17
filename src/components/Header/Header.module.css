@@ -69,8 +69,62 @@
 }
 
 .superPower {
+  position: relative;
   width: 68px;
   height: 68px;
   border-radius: 50%;
   cursor: pointer;
+}
+
+.superPower:hover::before {
+  content: "";
+  position: absolute;
+  box-sizing: border-box;
+  z-index: 1;
+  width: 222px;
+  height: 222px;
+  padding: 60px 20px 20px;
+
+  border-radius: 12px;
+  top: 83px;
+  background-color: #c2f5ff;
+  color: #004980;
+  font-size: 18px;
+  text-align: center;
+}
+
+.superEye:hover::before {
+  content: "На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается.";
+}
+
+.superEye:hover::after {
+  content: "Прозрение";
+  position: absolute;
+  z-index: 2;
+  top: 103px;
+  left: 68px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #004980;
+}
+
+.superCards:hover::before {
+  content: " Открывается случайная пара карт.";
+  height: 130px;
+}
+
+.superCards:hover::after {
+  content: "Алохомора";
+  position: absolute;
+  z-index: 2;
+  top: 103px;
+  left: 68px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #004980;
+}
+
+.disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }

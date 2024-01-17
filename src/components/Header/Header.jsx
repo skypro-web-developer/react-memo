@@ -29,10 +29,13 @@ export function Header({ status, timer, isEasyMode, previewSeconds, resetGame, t
 
       {status === "STATUS_IN_PROGRESS" && (
         <div className={styles.superPowers}>
-          <div style={{ background: `url(${superEye}) center no-repeat, #c2f5ff` }} className={styles.superPower}></div>
+          <div
+            style={{ background: `url(${superEye}) center no-repeat, #c2f5ff` }}
+            className={`${styles.superPower} ${styles.superEye}`}
+          ></div>
           <div
             style={{ background: `url(${superCards}) center no-repeat, #c2f5ff` }}
-            className={styles.superPower}
+            className={`${styles.superPower} ${styles.superCards}`}
           ></div>
         </div>
       )}
