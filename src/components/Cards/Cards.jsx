@@ -228,10 +228,17 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   useEffect(() => {
     if (status !== STATUS_PAUSED) {
       const intervalId = setInterval(() => {
-        setTimer(t => ({
-          ...t,
-          seconds: t.seconds + 1,
-        }));
+        setTimer(
+          timer.seconds === 59
+            ? t => ({
+                seconds: t.seconds - 59,
+                minutes: t.minutes + 1,
+              })
+            : t => ({
+                ...t,
+                seconds: t.seconds + 1,
+              }),
+        );
       }, 1000);
       return () => {
         clearInterval(intervalId);
