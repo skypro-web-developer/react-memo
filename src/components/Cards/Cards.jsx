@@ -75,6 +75,18 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
     setIsOnLeaderboard(false);
   }
 
+  function aloha() {
+    const closedCards = cards.filter(card => card.open === false);
+    const randomCard = closedCards[Math.floor(Math.random() * closedCards.length)];
+    const newCards = cards.map(card =>
+      card.rank === randomCard.rank && card.suit === randomCard.suit ? { ...card, open: true } : card,
+    );
+
+    setCards(newCards);
+
+    if (newCards.every(card => card.open)) finishGame(STATUS_WON);
+  }
+
   const openCard = async clickedCard => {
     // Если карта уже открыта, то ничего не делаем
     if (clickedCard.open) {
@@ -199,35 +211,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
         previewSeconds={previewSeconds}
         resetGame={resetGame}
         tryes={tryes}
+        aloha={aloha}
       />
-      {/* <div className={styles.header}>
-        <div className={styles.timer}>
-          {status === STATUS_PREVIEW ? (
-            <div>
-              <p className={styles.previewText}>Запоминайте пары!</p>
-              <p className={styles.previewDescription}>Игра начнется через {previewSeconds} секунд</p>
-            </div>
-          ) : (
-            <>
-              <div className={styles.timerValue}>
-                <div className={styles.timerDescription}>min</div>
-                <div>{timer.minutes.toString().padStart("2", "0")}</div>
-              </div>
-              .
-              <div className={styles.timerValue}>
-                <div className={styles.timerDescription}>sec</div>
-                <div>{timer.seconds.toString().padStart("2", "0")}</div>
-              </div>
-            </>
-          )}
-        </div>
-        {status === STATUS_IN_PROGRESS && isEasyMode && (
-          <div className={styles.tryes_container}>
-            <p className={styles.tryes_description}>Осталось попыток</p> <p className={styles.tryes_count}>{tryes}</p>
-          </div>
-        )}
-        {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
-      </div> */}
 
       <div className={styles.cards}>
         {cards.map(card => (

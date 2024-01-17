@@ -2,8 +2,13 @@ import { Button } from "../Button/Button";
 import styles from "./Header.module.css";
 import superEye from "./img/super-eye.png";
 import superCards from "./img/super-cards.png";
+import { useEffect, useState } from "react";
 
-export function Header({ status, timer, isEasyMode, previewSeconds, resetGame, tryes }) {
+export function Header({ status, timer, isEasyMode, previewSeconds, resetGame, tryes, aloha }) {
+  const [isAlohaActive, setIsAlohaActive] = useState(true);
+
+  useEffect(() => setIsAlohaActive(true), [status]);
+
   return (
     <div className={styles.header}>
       <div className={styles.timer}>
@@ -35,7 +40,13 @@ export function Header({ status, timer, isEasyMode, previewSeconds, resetGame, t
           ></div>
           <div
             style={{ background: `url(${superCards}) center no-repeat, #c2f5ff` }}
-            className={`${styles.superPower} ${styles.superCards}`}
+            className={`${styles.superPower} ${styles.superCards} ${!isAlohaActive && styles.disabled}`}
+            onClick={() => {
+              if (isAlohaActive) {
+                aloha();
+                setIsAlohaActive(false);
+              }
+            }}
           ></div>
         </div>
       )}
