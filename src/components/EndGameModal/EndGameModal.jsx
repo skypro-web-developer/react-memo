@@ -9,11 +9,12 @@ import { useEffect, useState } from "react";
 import { addLeader, getLeaders } from "../../api";
 import { Link } from "react-router-dom";
 
-export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
+export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick, achievements }) {
   const [leader, setLeader] = useState("Пользователь");
   const [playerIsALiader, setPlayerIsALiader] = useState(false);
   const fullGameTime = gameDurationSeconds + gameDurationMinutes * 60;
   const level = useSelector(state => state.game.level);
+  console.log(achievements);
   useEffect(() => {
     if (level === 3 && isWon) {
       getLeaders().then(({ leaders }) => {
@@ -33,6 +34,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
     addLeader({
       name: leader,
       time: fullGameTime,
+      achievements: achievements,
     })
       .then(newLeaders => {
         console.log(newLeaders);

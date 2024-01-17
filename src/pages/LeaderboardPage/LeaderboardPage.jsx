@@ -49,33 +49,37 @@ export function LeaderboardPage() {
               <div className={styles.leaderBlock}>
                 <div className={styles.leaderBlock_name}>{leader.name}</div>
                 <div className={styles.leaderBlock_achievements}>
-                  {console.log(leader)}
-                  <div className={styles.leaderBlock_pazl}>
-                    {leader.achievements.includes(1) ? (
-                      <img src={pazl} alt="" className={styles.leaderBlock_img} />
-                    ) : (
-                      <img src={pazlSer} alt="" className={styles.leaderBlock_img} />
-                    )}
-                    {leader.achievements.includes(1) && (
-                      <div className={styles.bubble_pazl}>
-                        <img src={hoverPazl} alt="" className={styles.leaderBlock_hoverPazl} />
-                        <p className={styles.leaderBlock_pazl_text}>Игра пройдена в сложном режиме</p>
-                      </div>
-                    )}
-                  </div>
-                  <div className={styles.leaderBlock_superpowers}>
-                    {leader.achievements.includes(2) ? (
-                      <img src={superpowers} alt="" className={styles.leaderBlock_img} />
-                    ) : (
-                      <img src={superpowersSer} alt="" className={styles.leaderBlock_img} />
-                    )}
-                    {leader.achievements.includes(2) && (
-                      <div className={styles.bubble_superpowers}>
-                        <img src={hoverSuperpowers} alt="" className={styles.leaderBlock_hoverSuperpowers} />
-                        <p className={styles.leaderBlock_superpowers_text}>Игра пройдена без супер-сил</p>
-                      </div>
-                    )}
-                  </div>
+                  {/* {console.log(leader)} */}
+                  {leader.achievements && (
+                    <div className={styles.leaderBlock_pazl}>
+                      {leader.achievements.includes(1) ? (
+                        <img src={pazl} alt="" className={styles.leaderBlock_img} />
+                      ) : (
+                        <img src={pazlSer} alt="" className={styles.leaderBlock_img} />
+                      )}
+                      {leader.achievements.includes(1) && (
+                        <div className={styles.bubble_pazl}>
+                          <img src={hoverPazl} alt="" className={styles.leaderBlock_hoverPazl} />
+                          <p className={styles.leaderBlock_pazl_text}>Игра пройдена в сложном режиме</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                  {leader.achievements && (
+                    <div className={styles.leaderBlock_superpowers}>
+                      {leader.achievements.includes(2) ? (
+                        <img src={superpowers} alt="" className={styles.leaderBlock_img} />
+                      ) : (
+                        <img src={superpowersSer} alt="" className={styles.leaderBlock_img} />
+                      )}
+                      {leader.achievements.includes(2) && (
+                        <div className={styles.bubble_superpowers}>
+                          <img src={hoverSuperpowers} alt="" className={styles.leaderBlock_hoverSuperpowers} />
+                          <p className={styles.leaderBlock_superpowers_text}>Игра пройдена без супер-сил</p>
+                        </div>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <div>{leader.time}</div>
               </div>
