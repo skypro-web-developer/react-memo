@@ -228,18 +228,19 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   useEffect(() => {
     if (status !== STATUS_PAUSED) {
       const intervalId = setInterval(() => {
-        setTimer(getTimerValue(gameStartDate, gameEndDate));
-      }, 300);
+        setTimer(t => ({
+          ...t,
+          seconds: t.seconds + 1,
+        }));
+      }, 1000);
       return () => {
         clearInterval(intervalId);
       };
     }
-  }, [gameStartDate, gameEndDate, status]);
+  }, [gameStartDate, gameEndDate, status, timer]);
 
   function onEpiphanyClick() {
-    const currentTime = getTimerValue(gameStartDate, gameEndDate);
-    console.log(currentTime);
-    console.log(getTimerValue(gameStartDate, gameEndDate));
+    const currentTime = timer;
     setStatus(STATUS_PAUSED);
     setIsEpiphanyAvailable(false);
     const closedCards = cards.filter(card => !card.open);
@@ -256,7 +257,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           }
         }),
       );
-      console.log(currentTime);
       setTimer(currentTime);
       setStatus(STATUS_IN_PROGRESS);
     }, 5000);
