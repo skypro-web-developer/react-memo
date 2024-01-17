@@ -3,15 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import { generateDeck } from "../../utils/cards";
 import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
-import { Button } from "../../components/Button/Button";
+// import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
 import { getLeaders } from "../../services/API";
 import { getTimeInSeconds, sortLeadersByTime } from "../../utils/helpers";
+import { Header } from "../Header/Header";
 
-// Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
 const STATUS_WON = "STATUS_WON";
-// Идет игра: карты закрыты, игрок может их открыть
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 // Начало игры: игрок видит все карты в течении нескольких секунд
 const STATUS_PREVIEW = "STATUS_PREVIEW";
@@ -37,11 +36,6 @@ function getTimerValue(startDate, endDate) {
   };
 }
 
-/**
- * Основной компонент игры, внутри него находится вся игровая механика и логика.
- * pairsCount - сколько пар будет в игре
- * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
- */
 export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
@@ -81,13 +75,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
     setIsOnLeaderboard(false);
   }
 
-  /**
-   * Обработка основного действия в игре - открытие карты.
-   * После открытия карты игра может пепереходит в следующие состояния
-   * - "Игрок выиграл", если на поле открыты все карты
-   * - "Игрок проиграл", если на поле есть две открытые карты без пары
-   * - "Игра продолжается", если не случилось первых двух условий
-   */
   const openCard = async clickedCard => {
     // Если карта уже открыта, то ничего не делаем
     if (clickedCard.open) {
@@ -205,7 +192,15 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
+      <Header
+        status={status}
+        timer={timer}
+        isEasyMode={isEasyMode}
+        previewSeconds={previewSeconds}
+        resetGame={resetGame}
+        tryes={tryes}
+      />
+      {/* <div className={styles.header}>
         <div className={styles.timer}>
           {status === STATUS_PREVIEW ? (
             <div>
@@ -232,7 +227,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
           </div>
         )}
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
-      </div>
+      </div> */}
 
       <div className={styles.cards}>
         {cards.map(card => (
