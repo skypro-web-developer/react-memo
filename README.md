@@ -2,7 +2,7 @@
 
 ## Coursework
 
-Plan: 6,5 hours, Fact: ? hours.
+Plan: 6,5 hours, Fact: 4,5 hours.
 
 ## Homework#2
 

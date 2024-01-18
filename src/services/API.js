@@ -1,4 +1,4 @@
-const baseUrl = "https://wedev-api.sky.pro/api/leaderboard";
+const baseUrl = "https://wedev-api.sky.pro/api/v2/leaderboard";
 
 export const getLeaders = async () => {
   try {

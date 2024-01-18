@@ -18,12 +18,19 @@ export function LeaderboardPage() {
   };
 
   const leadersElements = leaders.map((el, index) => (
-    <LeaderboardItem key={el.id} position={`#${index + 1}`} user={el.name} time={formatTime(el.time)} />
+    <LeaderboardItem
+      key={el.id}
+      position={`#${index + 1}`}
+      user={el.name}
+      achievements={el.achievements}
+      time={formatTime(el.time)}
+    />
   ));
 
   useEffect(() => {
     getLeaders()
       .then(leaders => {
+        console.log(leaders);
         const sortedLeaders = sortLeadersByTime(leaders.leaders);
         setLeaders(sortedLeaders);
       })
@@ -37,7 +44,13 @@ export function LeaderboardPage() {
         <Button onClick={() => navigate("/")}>Начать игру</Button>
       </div>
       <ul className={styles.table}>
-        <LeaderboardItem position={"Позиция"} user={"Пользователь"} time={"Время"} color={"#999999"} />
+        <LeaderboardItem
+          position={"Позиция"}
+          user={"Пользователь"}
+          time={"Время"}
+          achievements={"Достижения"}
+          color={"#999999"}
+        />
         {leadersElements}
       </ul>
     </div>
