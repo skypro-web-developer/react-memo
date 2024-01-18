@@ -87,6 +87,17 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
     if (newCards.every(card => card.open)) finishGame(STATUS_WON);
   }
 
+  function insight() {
+    const currentCards = [...cards];
+    const openedCards = currentCards.map(card => ({ ...card, open: true }));
+    setCards(openedCards);
+    clearInterval(intervalID.current);
+    setTimeout(() => {
+      setGameStartDate(new Date(gameStartDate.getTime() + 5000));
+      setCards(currentCards);
+    }, 5000);
+  }
+
   const openCard = async clickedCard => {
     // Если карта уже открыта, то ничего не делаем
     if (clickedCard.open) {
@@ -196,7 +207,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
   useEffect(() => {
     intervalID.current = setInterval(() => {
       setTimer(getTimerValue(gameStartDate, gameEndDate));
-    }, 300);
+    }, 250);
     return () => {
       clearInterval(intervalID.current);
     };
@@ -212,6 +223,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
         resetGame={resetGame}
         tryes={tryes}
         aloha={aloha}
+        insight={insight}
       />
 
       <div className={styles.cards}>
