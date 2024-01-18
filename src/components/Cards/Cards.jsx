@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeErrors, updateErrors } from "../../store/slices";
 import { Epiphany } from "../Superpowers/EpiphanyIcon";
 import { Alohomora } from "../Superpowers/AlohomoraIcon";
+import { Timer } from "../Timer/Timer";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -89,11 +90,6 @@ export function Cards({
     }
   });
 
-  // Дата начала игры
-  const [gameStartDate, setGameStartDate] = useState(null);
-  // Дата конца игры
-  const [gameEndDate, setGameEndDate] = useState(null);
-
   // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
   const [timer, setTimer] = useState({
     seconds: 0,
@@ -101,19 +97,14 @@ export function Cards({
   });
 
   function finishGame(status = STATUS_LOST) {
-    setGameEndDate(new Date());
     setStatus(status);
   }
   function startGame() {
     const startDate = new Date();
-    setGameEndDate(null);
-    setGameStartDate(startDate);
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
-    setGameStartDate(null);
-    setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
   }
@@ -225,29 +216,6 @@ export function Cards({
     };
   }, [status, pairsCount, previewSeconds]);
 
-  // Обновляем значение таймера в интервале
-  useEffect(() => {
-    if (status !== STATUS_PAUSED) {
-      if (status === STATUS_LOST || status === STATUS_WON) return;
-      const intervalId = setInterval(() => {
-        setTimer(
-          timer.seconds === 59
-            ? t => ({
-                seconds: t.seconds - 59,
-                minutes: t.minutes + 1,
-              })
-            : t => ({
-                ...t,
-                seconds: t.seconds + 1,
-              }),
-        );
-      }, 1000);
-      return () => {
-        clearInterval(intervalId);
-      };
-    }
-  }, [gameStartDate, gameEndDate, status, timer]);
-
   function onEpiphanyClick() {
     const currentTime = timer;
     setStatus(STATUS_PAUSED);
@@ -297,26 +265,16 @@ export function Cards({
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <div className={styles.timer}>
-          {status === STATUS_PREVIEW ? (
-            <div>
-              <p className={styles.previewText}>Запоминайте пары!</p>
-              <p className={styles.previewDescription}>Игра начнется через {previewSeconds} секунд</p>
-            </div>
-          ) : (
-            <>
-              <div className={styles.timerValue}>
-                <div className={styles.timerDescription}>min</div>
-                <div>{timer.minutes.toString().padStart("2", "0")}</div>
-              </div>
-              .
-              <div className={styles.timerValue}>
-                <div className={styles.timerDescription}>sec</div>
-                <div>{timer.seconds.toString().padStart("2", "0")}</div>
-              </div>
-            </>
-          )}
-        </div>
+        <Timer
+          status={status}
+          STATUS_PREVIEW={STATUS_PREVIEW}
+          previewSeconds={previewSeconds}
+          timer={timer}
+          STATUS_PAUSED={STATUS_PAUSED}
+          STATUS_LOST={STATUS_LOST}
+          STATUS_WON={STATUS_WON}
+          setTimer={setTimer}
+        />
         {status === STATUS_IN_PROGRESS || status === STATUS_PAUSED ? (
           <div className={styles.superPowersContainer}>
             <Epiphany
