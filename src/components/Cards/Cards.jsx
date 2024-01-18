@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeErrors, updateErrors } from "../../store/slices";
 import { Epiphany } from "../Superpowers/EpiphanyIcon";
 import { Alohomora } from "../Superpowers/AlohomoraIcon";
-import { ToolTips } from "../ToolTips/ToolTips";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -46,23 +45,25 @@ function getTimerValue(startDate, endDate) {
  * pairsCount - сколько пар будет в игре
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
-export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+export function Cards({
+  pairsCount = 3,
+  previewSeconds = 5,
+  setIsEpiphanyAvailable,
+  setIsAlohomoraAvailable,
+  isEpiphanyAvailable,
+  isAlohomoraAvailable,
+  setIsEpiphanyMouseEnter,
+  setIsAlohomoraMouseEnter,
+}) {
   const dispatch = useDispatch();
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
-  // Доступно ли использование прозрения
-  const [isEpiphanyAvailable, setIsEpiphanyAvailable] = useState(true);
-  // Доступно ли использование алохоморы
-  const [isAlohomoraAvailable, setIsAlohomoraAvailable] = useState(true);
   // Текущий статус игры
   const [status, setStatus] = useState(STATUS_PREVIEW);
   // Количество ошибок в режиме игры до трех ошибок
   const errors = useSelector(state => state.game.errors);
   // Статус режима игры до трех ошибок
   const isActiveEasyMode = useSelector(state => state.game.isActiveEasyMode);
-
-  const [isEpiphanyMouseEnter, setIsEpiphanyMouseEnter] = useState(false);
-  const [isAlohomoraMouseEnter, setIsAlohomoraMouseEnter] = useState(false);
 
   const onEpiphanyMouseEnter = ({ setIsEpiphanyMouseEnter }) => {
     setIsEpiphanyMouseEnter(true);
@@ -332,11 +333,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
               onMouseLeave={onAlohomoraMouseLeave}
               setIsAlohomoraMouseEnter={setIsAlohomoraMouseEnter}
             />
-            {isAlohomoraMouseEnter && isAlohomoraAvailable && (
-              <div className={styles.toolTipAlohomora}>
-                <ToolTips title={"Алохомора"} text={"Открывается случайная пара карт."} />
-              </div>
-            )}
           </div>
         ) : null}
         {status === STATUS_IN_PROGRESS || status === STATUS_PAUSED ? (
@@ -364,15 +360,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}
             withoutSuperpowers={withoutSuperpowers}
-          />
-        </div>
-      ) : null}
-
-      {isEpiphanyMouseEnter && isEpiphanyAvailable ? (
-        <div className={styles.toolTipEpiphany}>
-          <ToolTips
-            title={"Прозрение"}
-            text={"На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается."}
           />
         </div>
       ) : null}
