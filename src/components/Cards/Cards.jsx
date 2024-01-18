@@ -227,6 +227,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   // Обновляем значение таймера в интервале
   useEffect(() => {
     if (status !== STATUS_PAUSED) {
+      if (status === STATUS_LOST || status === STATUS_WON) return;
       const intervalId = setInterval(() => {
         setTimer(
           timer.seconds === 59
