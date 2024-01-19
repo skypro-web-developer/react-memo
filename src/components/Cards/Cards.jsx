@@ -10,6 +10,7 @@ import { removeErrors, updateErrors } from "../../store/slices";
 import { Epiphany } from "../Superpowers/EpiphanyIcon";
 import { Alohomora } from "../Superpowers/AlohomoraIcon";
 import { Timer } from "../Timer/Timer";
+import { ToolTips } from "../ToolTips/ToolTips";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -46,16 +47,7 @@ function getTimerValue(startDate, endDate) {
  * pairsCount - сколько пар будет в игре
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
-export function Cards({
-  pairsCount = 3,
-  previewSeconds = 5,
-  setIsEpiphanyAvailable,
-  setIsAlohomoraAvailable,
-  isEpiphanyAvailable,
-  isAlohomoraAvailable,
-  setIsEpiphanyMouseEnter,
-  setIsAlohomoraMouseEnter,
-}) {
+export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   const dispatch = useDispatch();
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
@@ -65,6 +57,14 @@ export function Cards({
   const errors = useSelector(state => state.game.errors);
   // Статус режима игры до трех ошибок
   const isActiveEasyMode = useSelector(state => state.game.isActiveEasyMode);
+
+  // Доступно ли использование прозрения
+  const [isEpiphanyAvailable, setIsEpiphanyAvailable] = useState(true);
+  // Доступно ли использование алохоморы
+  const [isAlohomoraAvailable, setIsAlohomoraAvailable] = useState(true);
+
+  const [isEpiphanyMouseEnter, setIsEpiphanyMouseEnter] = useState(false);
+  const [isAlohomoraMouseEnter, setIsAlohomoraMouseEnter] = useState(false);
 
   const onEpiphanyMouseEnter = ({ setIsEpiphanyMouseEnter }) => {
     setIsEpiphanyMouseEnter(true);
@@ -276,22 +276,45 @@ export function Cards({
           setTimer={setTimer}
         />
         {status === STATUS_IN_PROGRESS || status === STATUS_PAUSED ? (
-          <div className={styles.superPowersContainer}>
-            <Epiphany
-              isAvailable={isEpiphanyAvailable}
-              onClick={onEpiphanyClick}
-              onMouseEnter={onEpiphanyMouseEnter}
-              onMouseLeave={onEpiphanyMouseLeave}
-              setIsEpiphanyMouseEnter={setIsEpiphanyMouseEnter}
-            />
-            <Alohomora
-              isAvailable={isAlohomoraAvailable}
-              onClick={onAlohomoraClick}
-              onMouseEnter={onAlohomoraMouseEnter}
-              onMouseLeave={onAlohomoraMouseLeave}
-              setIsAlohomoraMouseEnter={setIsAlohomoraMouseEnter}
-            />
-          </div>
+          <>
+            <div className={styles.superPowersContainer}>
+              <Epiphany
+                isAvailable={isEpiphanyAvailable}
+                onClick={onEpiphanyClick}
+                onMouseEnter={onEpiphanyMouseEnter}
+                onMouseLeave={onEpiphanyMouseLeave}
+                setIsEpiphanyMouseEnter={setIsEpiphanyMouseEnter}
+              />
+              <Alohomora
+                isAvailable={isAlohomoraAvailable}
+                onClick={onAlohomoraClick}
+                onMouseEnter={onAlohomoraMouseEnter}
+                onMouseLeave={onAlohomoraMouseLeave}
+                setIsAlohomoraMouseEnter={setIsAlohomoraMouseEnter}
+              />
+            </div>
+            {(isEpiphanyMouseEnter && isEpiphanyAvailable) || (isAlohomoraMouseEnter && isAlohomoraAvailable) ? (
+              <div className={styles.modalBackground}>
+                <div className={styles.modalWindow}>
+                  {isEpiphanyMouseEnter && isEpiphanyAvailable && (
+                    <div className={styles.toolTipEpiphany}>
+                      <ToolTips
+                        title={"Прозрение"}
+                        text={
+                          "На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается."
+                        }
+                      />
+                    </div>
+                  )}
+                  {isAlohomoraMouseEnter && isAlohomoraAvailable && (
+                    <div className={styles.toolTipAlohomora}>
+                      <ToolTips title={"Алохомора"} text={"Открывается случайная пара карт."} />
+                    </div>
+                  )}
+                </div>
+              </div>
+            ) : null}
+          </>
         ) : null}
         {status === STATUS_IN_PROGRESS || status === STATUS_PAUSED ? (
           <Button onClick={resetGame}>Начать заново</Button>

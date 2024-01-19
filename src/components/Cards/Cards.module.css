@@ -36,4 +36,40 @@
   display: flex;
   gap: 15px;
   position: relative;
+  z-index: 2;
+}
+
+.toolTipEpiphany {
+  position: absolute;
+  left: -120px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toolTipAlohomora {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modalBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #004980c0;
+  z-index: 1;
+  height: 100vh;
+  width: 100vw;
+}
+
+.modalWindow {
+  position: absolute;
+  top: 115px;
+  width: 150px;
 }
