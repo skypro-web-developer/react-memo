@@ -39,20 +39,6 @@
   z-index: 2;
 }
 
-.toolTipEpiphany {
-  position: absolute;
-  left: -120px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.toolTipAlohomora {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .modalBackground {
   position: absolute;
   top: 0;
@@ -71,5 +57,28 @@
 .modalWindow {
   position: absolute;
   top: 115px;
-  width: 150px;
+  margin-right: 90px;
+  display: flex;
+}
+
+.toolTip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toolTipEpiphany {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: -150px;
+}
+
+.toolTipAlohomora {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: -150px;
 }

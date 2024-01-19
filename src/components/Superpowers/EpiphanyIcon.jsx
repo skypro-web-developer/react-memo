@@ -1,9 +1,17 @@
 import styles from "./Superpowers.module.css";
 
-export function Epiphany({ isAvailable, onClick, onMouseEnter, onMouseLeave, setIsEpiphanyMouseEnter }) {
+export function Epiphany({
+  isAvailable,
+  onClick,
+  onMouseEnter,
+  onMouseLeave,
+  setIsEpiphanyMouseEnter,
+  isAlohomoraMouseEnter,
+  isAlohomoraAvailable,
+}) {
   return isAvailable ? (
     <svg
-      className={styles.icon}
+      className={isAlohomoraMouseEnter && isAlohomoraAvailable ? styles.hidden : styles.icon}
       width="68"
       height="68"
       viewBox="0 0 68 68"

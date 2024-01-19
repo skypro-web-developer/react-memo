@@ -103,6 +103,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     const startDate = new Date();
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
+    setIsEpiphanyAvailable(true);
+    setIsEpiphanyMouseEnter(false);
+    setIsAlohomoraAvailable(true);
+    setIsAlohomoraMouseEnter(false);
   }
   function resetGame() {
     setTimer(getTimerValue(null, null));
@@ -284,6 +288,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
                 onMouseEnter={onEpiphanyMouseEnter}
                 onMouseLeave={onEpiphanyMouseLeave}
                 setIsEpiphanyMouseEnter={setIsEpiphanyMouseEnter}
+                isAlohomoraMouseEnter={isAlohomoraMouseEnter}
+                isAlohomoraAvailable={isAlohomoraAvailable}
               />
               <Alohomora
                 isAvailable={isAlohomoraAvailable}
@@ -291,13 +297,15 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
                 onMouseEnter={onAlohomoraMouseEnter}
                 onMouseLeave={onAlohomoraMouseLeave}
                 setIsAlohomoraMouseEnter={setIsAlohomoraMouseEnter}
+                isEpiphanyMouseEnter={isEpiphanyMouseEnter}
+                isEpiphanyAvailable={isEpiphanyAvailable}
               />
             </div>
             {(isEpiphanyMouseEnter && isEpiphanyAvailable) || (isAlohomoraMouseEnter && isAlohomoraAvailable) ? (
               <div className={styles.modalBackground}>
                 <div className={styles.modalWindow}>
                   {isEpiphanyMouseEnter && isEpiphanyAvailable && (
-                    <div className={styles.toolTipEpiphany}>
+                    <div className={isAlohomoraAvailable ? styles.toolTipEpiphany : styles.toolTip}>
                       <ToolTips
                         title={"Прозрение"}
                         text={
@@ -307,7 +315,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
                     </div>
                   )}
                   {isAlohomoraMouseEnter && isAlohomoraAvailable && (
-                    <div className={styles.toolTipAlohomora}>
+                    <div className={isEpiphanyAvailable ? styles.toolTipAlohomora : styles.toolTip}>
                       <ToolTips title={"Алохомора"} text={"Открывается случайная пара карт."} />
                     </div>
                   )}
