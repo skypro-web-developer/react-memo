@@ -8,7 +8,7 @@ const getGameSlice = createSlice({
   },
   reducers: {
     gameModeReducer(state) {
-      state.gameRegime ? (state.gameRegime = false) : (state.gameRegime = true);
+      state.gameRegime = !state.gameRegime;
     },
     currentLevel(state, action) {
       console.log(action.payload);

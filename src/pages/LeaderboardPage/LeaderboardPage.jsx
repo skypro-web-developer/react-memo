@@ -12,15 +12,19 @@ import hoverPazl from "./images/hoverPazl.svg";
 
 export function LeaderboardPage() {
   const [leaders, setLeaders] = useState(null);
-
+  const [loading, setLoading] = useState("Данные загружаются");
   useEffect(() => {
-    getLeaders().then(data => {
-      let leader = data.leaders;
-      leader = leader.sort(function (a, b) {
-        return a.time - b.time;
+    getLeaders()
+      .then(data => {
+        let leader = data.leaders;
+        leader = leader.sort(function (a, b) {
+          return a.time - b.time;
+        });
+        setLeaders(leader);
+      })
+      .catch(() => {
+        setLoading("Упс... Не получилась найти лидеров, попробуйте позже -_-");
       });
-      setLeaders(leader);
-    });
   }, []);
 
   return (
@@ -41,7 +45,7 @@ export function LeaderboardPage() {
           </div>
         </li>
         {!leaders ? (
-          <div className={styles.loader}>Данные загружаются...</div>
+          <div className={styles.loader}>{loading}</div>
         ) : (
           leaders.map((leader, index) => (
             <li className={styles.leaders} key={leader.id}>

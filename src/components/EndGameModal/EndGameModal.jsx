@@ -17,16 +17,20 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   console.log(achievements);
   useEffect(() => {
     if (level === 3 && isWon) {
-      getLeaders().then(({ leaders }) => {
-        console.log(leaders);
-        // let leader = data.leaders;
-        leaders = leaders.sort(function (a, b) {
-          return a.time - b.time;
+      getLeaders()
+        .then(({ leaders }) => {
+          console.log(leaders);
+          // let leader = data.leaders;
+          leaders = leaders.sort(function (a, b) {
+            return a.time - b.time;
+          });
+          if (leaders[leaders.length - 1].time > fullGameTime) {
+            setPlayerIsALiader(true);
+          }
+        })
+        .catch(() => {
+          alert("Не получилось получит список лидеров");
         });
-        if (leaders[leaders.length - 1].time > fullGameTime) {
-          setPlayerIsALiader(true);
-        }
-      });
     }
   }, []);
 
