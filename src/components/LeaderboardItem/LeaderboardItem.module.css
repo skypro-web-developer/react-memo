@@ -13,13 +13,59 @@
 }
 
 .position {
-  width: 25%;
+  width: 20%;
 }
 
 .user {
-  width: 65%;
+  width: 35%;
+}
+
+.achievements {
+  width: 35%;
+  display: flex;
+  gap: 10px;
+  /* position: relative; */
 }
 
 .time {
   width: 10%;
+}
+
+.achieve {
+  position: relative;
+}
+.achieve:hover::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: -85px;
+  min-width: 175px;
+  max-width: 215px;
+  box-sizing: border-box;
+
+  padding: 15px 20px;
+  border-radius: 12px;
+  background-color: #c2f5ff;
+  color: #004980;
+  font-size: 18px;
+  text-align: center;
+}
+
+.achieve:hover::after {
+  content: "";
+  position: absolute;
+  display: block;
+  top: -21px;
+  left: 16px;
+  border-left: 30px solid #c2f5ff;
+  border-bottom: 26px solid transparent;
+}
+
+.achieveHard:hover::before {
+  content: "Игра пройдена в сложном режиме";
+  width: 215px;
+}
+
+.achieveNoSup:hover::before {
+  content: "Игра пройдена без супер-сил";
 }
