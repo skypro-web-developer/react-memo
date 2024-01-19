@@ -47,6 +47,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
   const [previousCards, setPreviousCards] = useState(cards);
   // Количество попыток
   const [tryes, setTryes] = useState(3);
+  // Использовались ли суперспособности
+  const [wasPowUsed, setWasPowUsed] = useState(false);
   // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
   const [timer, setTimer] = useState({
     seconds: 0,
@@ -73,6 +75,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
     setStatus(STATUS_PREVIEW);
     setTryes(3);
     setIsOnLeaderboard(false);
+    setWasPowUsed(false);
   }
 
   function aloha() {
@@ -82,9 +85,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
       card.rank === randomCard.rank && card.suit === randomCard.suit ? { ...card, open: true } : card,
     );
 
+    setWasPowUsed(true);
     setCards(newCards);
 
-    if (newCards.every(card => card.open)) finishGame(STATUS_WON);
+    if (newCards.every(card => card.open)) {
+      defineIsOnLeaderBoard();
+      finishGame(STATUS_WON);
+    }
   }
 
   function insight() {
@@ -92,10 +99,21 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
     const openedCards = currentCards.map(card => ({ ...card, open: true }));
     setCards(openedCards);
     clearInterval(intervalID.current);
+    setWasPowUsed(true);
+
     setTimeout(() => {
       setGameStartDate(new Date(gameStartDate.getTime() + 5000));
       setCards(currentCards);
     }, 5000);
+  }
+
+  async function defineIsOnLeaderBoard() {
+    const leaders = await getLeaders();
+    const sortedLeaders = sortLeadersByTime(leaders.leaders);
+    const leadersLength = sortedLeaders.length;
+    const isLeadResult = sortedLeaders[leadersLength - 1].time > getTimeInSeconds(timer) && pairsCount === 9;
+
+    setIsOnLeaderboard(isLeadResult);
   }
 
   const openCard = async clickedCard => {
@@ -123,13 +141,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
 
     // Победа - все карты на поле открыты
     if (isPlayerWon) {
-      const leaders = await getLeaders();
-      const sortedLeaders = sortLeadersByTime(leaders.leaders);
-      const leadersLength = sortedLeaders.length;
-      const isLeadResult = sortedLeaders[leadersLength - 1].time > getTimeInSeconds(timer) && pairsCount === 9;
-
-      setIsOnLeaderboard(isLeadResult);
-
+      defineIsOnLeaderBoard();
       finishGame(STATUS_WON);
       return;
     }
@@ -243,6 +255,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5, isEasyMode }) {
           <EndGameModal
             isWon={status === STATUS_WON}
             isOnLeaderboard={isOnLeaderboard}
+            wasPowUsed={wasPowUsed}
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}

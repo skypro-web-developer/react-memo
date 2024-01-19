@@ -13,11 +13,11 @@ export const getLeaders = async () => {
   }
 };
 
-export const sendLeader = async ({ name, time }) => {
+export const sendLeader = async ({ name, time, achievements }) => {
   try {
     const response = await fetch(baseUrl, {
       method: "POST",
-      body: JSON.stringify({ name, time }),
+      body: JSON.stringify({ name, time, achievements }),
     });
     console.log(response);
   } catch (error) {

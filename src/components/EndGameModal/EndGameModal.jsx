@@ -9,13 +9,22 @@ import { Link } from "react-router-dom";
 import { sendLeader } from "../../services/API";
 import { getTimeInSeconds } from "../../utils/helpers";
 
-export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick, isOnLeaderboard }) {
+export function EndGameModal({
+  isWon,
+  gameDurationSeconds,
+  gameDurationMinutes,
+  onClick,
+  isOnLeaderboard,
+  wasPowUsed,
+}) {
   const [inputValue, setInputValue] = useState("");
   const title = isOnLeaderboard ? "Вы попали на Лидерборд" : isWon ? "Вы победили!" : "Вы проиграли!";
   const timeInSeconds = getTimeInSeconds({ minutes: gameDurationMinutes, seconds: gameDurationSeconds });
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
 
   const imgAlt = isWon ? "celebration emodji" : "dead emodji";
+
+  const achievements = wasPowUsed ? [1] : [1, 2];
 
   return (
     <div className={`${styles.modal} ${isOnLeaderboard && styles.height634}`}>
@@ -26,7 +35,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
           onSubmit={e => {
             e.preventDefault();
             console.log("Форма отправилась");
-            sendLeader({ name: inputValue, time: timeInSeconds });
+            sendLeader({ name: inputValue, time: timeInSeconds, achievements });
           }}
         >
           <input
