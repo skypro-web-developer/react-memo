@@ -41,7 +41,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
     });
   }
 
-  const title = isWon ? "Вы победили!" : "Вы проиграли!";
+  const title = isWon ? (isAddToLeaders() === true ? "Вы попали на Лидерборд!" : "Вы победили!") : "Вы проиграли!";
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
 
