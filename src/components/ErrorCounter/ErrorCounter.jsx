@@ -3,7 +3,6 @@ import styles from "./ErrorCounter.module.css";
 
 export function ErrorCounter() {
   const errors = useSelector(state => state.game.errors);
-
   return (
     <div className={styles.container}>
       <svg
