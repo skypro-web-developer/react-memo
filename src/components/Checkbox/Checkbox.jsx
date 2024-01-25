@@ -14,9 +14,14 @@ export function Checkbox() {
   return (
     <div className={styles.rules}>
       <label htmlFor="activateMode">
-        <input className={styles.input} type="checkbox" checked={isActiveEasyMode} onChange={handleCheckboxChange} />
+        <input
+          className={styles.custom__box}
+          type="checkbox"
+          checked={isActiveEasyMode}
+          onChange={handleCheckboxChange}
+        />
       </label>
-      <h2 className={styles.heading}>3 жизни</h2>
+      <h2 className={styles.heading}>Легкий режим (3 жизни)</h2>
     </div>
   );
 }
