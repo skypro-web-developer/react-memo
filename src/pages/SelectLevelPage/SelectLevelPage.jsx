@@ -1,10 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
-import { setCurrentLevel } from "../../store/slices";
+import { useEffect, useState } from "react";
+import { setCurrentLevel, setLeaders } from "../../store/slices";
 import { Checkbox } from "../../components/Checkbox/Checkbox";
 import { Button } from "../../components/Button/Button";
+import { getLeaders } from "../../api";
 
 export function SelectLevelPage() {
   const navigate = useNavigate();
@@ -18,6 +19,10 @@ export function SelectLevelPage() {
       navigate(`/game/${choosenLevel}`);
     }
   };
+
+  useEffect(() => {
+    getLeaders().then(leaders => dispatch(setLeaders(leaders)));
+  }, [dispatch]);
 
   return (
     <div className={styles.container}>
