@@ -5,6 +5,8 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { useDispatch, useSelector } from "react-redux";
+import { removeErrors, updateErrors } from "../../store/slices";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -41,10 +43,24 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+  const dispatch = useDispatch();
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
   const [status, setStatus] = useState(STATUS_PREVIEW);
+
+  // Количество ошибок в режиме игры до трех ошибок
+  const errors = useSelector(state => state.game.errors);
+  // Статус режима игры до трех ошибок
+  const isActiveEasyMode = useSelector(state => state.game.isActiveEasyMode);
+
+  // Если допущено 3 ошибки, игра заканчивается
+  useEffect(() => {
+    if (errors === 3) {
+      finishGame(STATUS_LOST);
+      dispatch(removeErrors());
+    }
+  });
 
   // Дата начала игры
   const [gameStartDate, setGameStartDate] = useState(null);
@@ -58,21 +74,21 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   });
 
   function finishGame(status = STATUS_LOST) {
-    setGameEndDate(new Date());
+    // setGameEndDate(new Date());
     setStatus(status);
   }
   function startGame() {
     const startDate = new Date();
-    setGameEndDate(null);
-    setGameStartDate(startDate);
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
+    setGameEndDate(null);
+    setGameStartDate(startDate);
   }
   function resetGame() {
-    setGameStartDate(null);
-    setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
+    setGameStartDate(null);
+    setGameEndDate(null);
   }
 
   /**
@@ -127,7 +143,28 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
-      finishGame(STATUS_LOST);
+      dispatch(updateErrors());
+
+      if (!isActiveEasyMode) {
+        finishGame(STATUS_LOST);
+        dispatch(removeErrors());
+      } else {
+        const updatedCards = nextCards.map(card => {
+          if (openCardsWithoutPair.some(openCard => openCard.id === card.id)) {
+            if (card.open) {
+              setTimeout(() => {
+                setCards(prevCards => {
+                  const updated = prevCards.map(c => (c.id === card.id ? { ...c, open: false } : c));
+                  return updated;
+                });
+              }, 1000);
+            }
+          }
+          return card;
+        });
+        setCards(updatedCards);
+      }
+
       return;
     }
 
