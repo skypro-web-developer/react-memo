@@ -33,7 +33,7 @@
   flex-direction: row;
   gap: 26px;
   margin-top: 48px;
-  margin-bottom: 28px;
+  margin-bottom: 48px;
 }
 
 .level {
@@ -61,4 +61,32 @@
 
 .levelLink:visited {
   color: #0080c1;
+}
+
+input[type="checkbox"] {
+  display: none;
+}
+
+.checkboxContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: StratosSkyeng;
+  color: #004980;
+  font-size: 20px;
+}
+
+.checkboxCustom {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #004980;
+  border-radius: 5px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:checked + .checkboxCustom {
+  background-color: #0080c1;
+  border-color: #004980;
 }
