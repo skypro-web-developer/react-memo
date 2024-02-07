@@ -41,6 +41,8 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+  const [attempt, setAttempt] = useState(3);
+
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -125,6 +127,17 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     const playerLost = openCardsWithoutPair.length >= 2;
 
+    // "Игрок проиграл", но у него есть 3 попытки
+    if (playerLost && pairsCount === 12) {
+      setAttempt(prev => prev - 1);
+
+      if (attempt <= 1) {
+        finishGame(STATUS_LOST);
+        setAttempt(3);
+      }
+      return;
+    }
+
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
       finishGame(STATUS_LOST);
@@ -169,6 +182,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     }, 300);
     return () => {
       clearInterval(intervalId);
+      setAttempt(3);
     };
   }, [gameStartDate, gameEndDate]);
 
@@ -197,6 +211,11 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         </div>
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
+      {pairsCount === 12 ? (
+        <div>
+          <p className={styles.previewText}>Количество попыток: {attempt}</p>
+        </div>
+      ) : null}
 
       <div className={styles.cards}>
         {cards.map(card => (

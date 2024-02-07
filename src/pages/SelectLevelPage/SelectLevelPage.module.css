@@ -57,6 +57,11 @@
   font-weight: 400;
   line-height: 72px;
   text-decoration: none;
+
+  p {
+    font-size: 17px;
+    line-height: 32px;
+  }
 }
 
 .levelLink:visited {

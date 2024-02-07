@@ -22,6 +22,11 @@ export function SelectLevelPage() {
               3
             </Link>
           </li>
+          <li className={styles.level}>
+            <Link className={styles.levelLink} to="/game/12">
+              <p>Игра с тремя попытками</p>
+            </Link>
+          </li>
         </ul>
       </div>
     </div>
