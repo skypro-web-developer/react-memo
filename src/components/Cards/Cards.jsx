@@ -8,6 +8,7 @@ import { Card } from "../../components/Card/Card";
 import { useDispatch, useSelector } from "react-redux";
 import { removeAttempts, updateAttempts } from "../../store/slices";
 import { attemptForms, wordEndingChanger } from "../../helpers";
+import { getAllScore } from "../../api";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -177,6 +178,35 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
 
+  //при победе на уровне игры 3 и если результат по времени лучше чем у последнего игрока в лидерборде, устанавливаем isLeader в true для внесение игрока в лидерборд
+  const [isLeader, setIsLeader] = useState(false);
+  const currentLevel = useSelector(store => store.game.currentLevel);
+
+  useEffect(() => {
+    if (status === STATUS_WON && currentLevel === 3) {
+      getAllScore()
+        .then(data => {
+          const leaders = data.leaders; // Получаем список лидеров из API
+          console.log("Все лидеры:", leaders);
+          const timeLastLeaders = leaders.reduce((maxTime, leader) => {
+            return Math.max(maxTime, leader.time);
+          }, 0);
+          console.log("Время последнего лидера:", timeLastLeaders);
+
+          const { minutes, seconds } = timer;
+          const userTime = minutes * 60 + seconds;
+          console.log("Таймер пользователя:", userTime);
+          if (timeLastLeaders > userTime || leaders.length < 10) {
+            setIsLeader(true);
+            console.log("Пользователь - лидер!");
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+  }, [status, currentLevel]);
+
   // Игровой цикл
   useEffect(() => {
     // В статусах кроме превью доп логики не требуется
@@ -271,6 +301,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}
+            isLeader={isLeader}
           />
         </div>
       ) : null}

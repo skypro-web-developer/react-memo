@@ -1,0 +1,34 @@
+.leaderboardContainer {
+  font-family: "Poppins", sans-serif;
+  font-size: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.leaderboard {
+  height: 64px;
+  background-color: #fff;
+  border-radius: 12px;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+  text-align: center;
+  align-items: center;
+}
+
+.leaderboardTitle {
+  position: sticky;
+  top: 0;
+  color: #999;
+}
+
+.item {
+  width: 102px;
+  text-align: left;
+}
+
+.itemCenter {
+  width: 324px;
+  text-align: left;
+}
