@@ -42,6 +42,7 @@ function getTimerValue(startDate, endDate) {
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   const [attempt, setAttempt] = useState(3);
+  const [addMode, setAddMode] = useState(false);
 
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
@@ -128,7 +129,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     const playerLost = openCardsWithoutPair.length >= 2;
 
     // "Игрок проиграл", но у него есть 3 попытки
-    if (playerLost && pairsCount === 12) {
+    if (playerLost && addMode) {
       setAttempt(prev => prev - 1);
 
       if (attempt <= 1) {
@@ -146,6 +147,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     // ... игра продолжается
   };
+
+  function setMode() {
+    setAddMode(prev => !prev);
+  }
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
 
@@ -211,11 +216,18 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         </div>
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
-      {pairsCount === 12 ? (
+      {addMode ? (
         <div>
-          <p className={styles.previewText}>Количество попыток: {attempt}</p>
+          <p className={styles.bigText}>Количество попыток: {attempt}</p>
         </div>
       ) : null}
+
+      <input type="checkbox" onChange={setMode} checked={addMode} />
+      {addMode ? (
+        <p className={styles.text}>Вернуть стандартный режим </p>
+      ) : (
+        <p className={styles.text}>Попробуй режим с тремя попытками </p>
+      )}
 
       <div className={styles.cards}>
         {cards.map(card => (

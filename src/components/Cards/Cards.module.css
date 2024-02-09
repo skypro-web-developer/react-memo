@@ -50,6 +50,22 @@
   margin-bottom: 10px;
 }
 
+.bigText {
+  color: #fff;
+  font-size: 21px;
+  line-height: 30px;
+  margin-top: 34px;
+  margin-bottom: 10px;
+}
+
+.text {
+  display: inline-block;
+  color: #fff;
+  font-size: 21px;
+  line-height: 30px;
+  margin-bottom: 10px;
+}
+
 .previewDescription {
   font-size: 18px;
   line-height: 18px;
