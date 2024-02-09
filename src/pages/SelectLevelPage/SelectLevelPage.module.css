@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 .container {
   width: 100%;
   min-height: 100%;
@@ -66,4 +67,17 @@
 
 .levelLink:visited {
   color: #0080c1;
+}
+
+.input {
+  width: 30px;
+}
+
+.text {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 133%;
+  text-align: center;
+  color: #000;
 }

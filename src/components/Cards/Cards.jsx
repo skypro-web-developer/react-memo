@@ -1,10 +1,11 @@
 import { shuffle } from "lodash";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { generateDeck } from "../../utils/cards";
 import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { ModeContext } from "../../ModeProvider/ModeProvider";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -41,9 +42,7 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
-  const [attempt, setAttempt] = useState(3);
-  const [addMode, setAddMode] = useState(false);
-
+  const { addMode, attempt, setAttempt } = useContext(ModeContext);
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -148,10 +147,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     // ... игра продолжается
   };
 
-  function setMode() {
-    setAddMode(prev => !prev);
-  }
-
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
 
   // Игровой цикл
@@ -221,13 +216,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           <p className={styles.bigText}>Количество попыток: {attempt}</p>
         </div>
       ) : null}
-
-      <input type="checkbox" onChange={setMode} checked={addMode} />
-      {addMode ? (
-        <p className={styles.text}>Вернуть стандартный режим </p>
-      ) : (
-        <p className={styles.text}>Попробуй режим с тремя попытками </p>
-      )}
 
       <div className={styles.cards}>
         {cards.map(card => (

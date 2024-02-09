@@ -1,7 +1,15 @@
 import { Link } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
+import { useContext } from "react";
+import { ModeContext } from "../../ModeProvider/ModeProvider";
 
 export function SelectLevelPage() {
+  const { addMode, setAddMode } = useContext(ModeContext);
+
+  function setMode() {
+    setAddMode(prev => !prev);
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
@@ -23,6 +31,10 @@ export function SelectLevelPage() {
             </Link>
           </li>
         </ul>
+        <div className={styles.levels}>
+          <input className={styles.input} type="checkbox" onChange={setMode} checked={addMode} />
+          <p className={styles.text}>Легкий режим (3 жизни) </p>
+        </div>
       </div>
     </div>
   );
