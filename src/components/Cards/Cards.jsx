@@ -184,7 +184,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       clearInterval(intervalId);
       setAttempt(3);
     };
-  }, [gameStartDate, gameEndDate]);
+  }, [gameStartDate, gameEndDate, setAttempt]);
 
   return (
     <div className={styles.container}>
