@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
 .container {
   width: 100%;
   min-height: 100%;
@@ -80,4 +81,14 @@
   line-height: 133%;
   text-align: center;
   color: #000;
+}
+
+.leaderBoardLink {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 178%;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  color: #004980;
 }

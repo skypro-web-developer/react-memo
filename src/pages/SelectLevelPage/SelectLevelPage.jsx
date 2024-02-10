@@ -35,6 +35,9 @@ export function SelectLevelPage() {
           <input className={styles.input} type="checkbox" onChange={setMode} checked={addMode} />
           <p className={styles.text}>Легкий режим (3 жизни) </p>
         </div>
+        <Link className={styles.leaderBoardLink} to="/leader-board">
+          Перейти к лидерборду
+        </Link>
       </div>
     </div>
   );
