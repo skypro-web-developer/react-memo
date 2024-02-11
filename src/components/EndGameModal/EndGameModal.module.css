@@ -1,6 +1,6 @@
 .modal {
   width: 480px;
-  height: 459px;
+  min-height: 459px;
   border-radius: 12px;
   background: #c2f5ff;
   display: flex;
@@ -23,8 +23,22 @@
   font-style: normal;
   font-weight: 400;
   line-height: 48px;
-
+  text-align: center;
   margin-bottom: 28px;
+}
+
+.input {
+  border-radius: 10px;
+  width: 276px;
+  height: 45px;
+  border-style: none;
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 133%;
+  text-align: center;
+  color: #999;
+  margin-bottom: 10px;
 }
 
 .description {
@@ -48,4 +62,16 @@
   line-height: 72px;
 
   margin-bottom: 40px;
+}
+
+.leaderBoardLink {
+  font-family: "Roboto", sans-serif;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 178%;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  color: #004980;
+  margin-top: 10px;
+  margin-bottom: 20px; 
 }

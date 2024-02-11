@@ -46,7 +46,7 @@
     text-decoration: none;
 }
 
-.rowHeader {
+.row {
     width: 944px;
     height: 64px;
     border-radius: 12px;
@@ -63,5 +63,14 @@
     font-size: 24px;
     line-height: 133%;
     color: #999;
+    padding: 0 20px;
+}
+
+.textRowLeader {
+    font-family: "Poppins", sans-serif;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 133%;
+    color: #000000;
     padding: 0 20px;
 }

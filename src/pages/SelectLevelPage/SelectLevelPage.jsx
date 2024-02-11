@@ -1,14 +1,23 @@
 import { Link } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ModeContext } from "../../ModeProvider/ModeProvider";
+import { getLeaders } from "../../api";
+import { LeaderBoardContext } from "../../components/LeaderBoardProvider/LeaderBoardProvider";
 
 export function SelectLevelPage() {
   const { addMode, setAddMode } = useContext(ModeContext);
+  const { setLeadersList } = useContext(LeaderBoardContext);
 
   function setMode() {
     setAddMode(prev => !prev);
   }
+
+  useEffect(() => {
+    getLeaders({ setLeadersList }).catch(() => {
+      alert("Данных нет");
+    });
+  }, [setLeadersList]);
 
   return (
     <div className={styles.container}>
