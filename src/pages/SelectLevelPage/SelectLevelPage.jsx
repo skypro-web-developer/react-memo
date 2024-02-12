@@ -3,18 +3,29 @@ import styles from "./SelectLevelPage.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { setEasyMode, setCurrentLevel } from "../../store/slices";
 import { Button } from "../../components/Button/Button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export function SelectLevelPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // Статус режима игры до трех ошибок
-  const isEasyMode = useSelector(store => store.game.setEasyMode);
+  const isEasyMode = useSelector(store => store.game.isEasyMode);
+
+  // Загрузка значения isEasyMode из localStorage при монтировании компонента
+  useEffect(() => {
+    const savedIsEasyMode = localStorage.getItem("isEasyMode");
+    if (savedIsEasyMode !== null && JSON.parse(savedIsEasyMode)) {
+      dispatch(setEasyMode(true));
+    }
+  }, [dispatch]);
 
   // Обработчик изменения состояния чекбокса для установки режима игры до трех ошибок
   const handleCheckboxChange = event => {
-    dispatch(setEasyMode(event.target.checked));
+    const newValue = event.target.checked;
+    dispatch(setEasyMode(newValue));
+    // Сохраняем значение isEasyMode в localStorage
+    localStorage.setItem("isEasyMode", JSON.stringify(newValue));
     console.log("облегчил");
   };
 

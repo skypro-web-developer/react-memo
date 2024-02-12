@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const gameSlices = createSlice({
   name: "game",
   initialState: {
-    isEasyMode: false,
+    isEasyMode: JSON.parse(localStorage.getItem("isEasyMode")) || false,
     attempts: 3,
     currentLevel: null,
   },
