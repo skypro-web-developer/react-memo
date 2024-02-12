@@ -18,9 +18,9 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
 
   const timeOfGame = gameDurationMinutes * 60 + gameDurationSeconds;
 
-  const [dataNewLeader, setDataNewLeader] = useState({ name: null, time: timeOfGame });
+  const [dataNewLeader, setDataNewLeader] = useState({ name: "Пользователь", time: timeOfGame });
   const { leadersList, setLeadersList } = useContext(LeaderBoardContext);
-  const [isNewLeader, setIsNewLeader] = useState(timeOfGame < leadersList[9].time && hardLevel);
+  const [isNewLeader, setIsNewLeader] = useState(timeOfGame < leadersList[leadersList.length - 1].time && hardLevel);
   const navigate = useNavigate(null);
 
   const addNewLeader = async () => {
