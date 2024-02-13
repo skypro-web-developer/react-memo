@@ -5,6 +5,10 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { useDispatch, useSelector } from "react-redux";
+import { removeAttempts, updateAttempts } from "../../store/slices";
+import { attemptForms, wordEndingChanger } from "../../helpers";
+import { getAllScore } from "../../api";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -39,8 +43,12 @@ function getTimerValue(startDate, endDate) {
  * Основной компонент игры, внутри него находится вся игровая механика и логика.
  * pairsCount - сколько пар будет в игре
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
+ * Обычный режим: 1 ошибка = поражение
+ * Облегченный режим: 3 ошибки = поражение
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+  const dispatch = useDispatch();
+
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -57,7 +65,21 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     minutes: 0,
   });
 
+  // количество оставшихся попыток
+  const attempts = useSelector(store => store.game.attempts);
+
+  // Статус режима игры до трех ошибок
+  const isEasyMode = useSelector(store => store.game.isEasyMode);
+
+  // Если допущено 3 ошибки, игра заканчивается
+  useEffect(() => {
+    if (attempts === 0) {
+      finishGame(STATUS_LOST);
+    }
+  });
+
   function finishGame(status = STATUS_LOST) {
+    dispatch(removeAttempts());
     setGameEndDate(new Date());
     setStatus(status);
   }
@@ -69,6 +91,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
+    dispatch(removeAttempts());
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
@@ -77,7 +100,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   /**
    * Обработка основного действия в игре - открытие карты.
-   * После открытия карты игра может пепереходит в следующие состояния
+   * После открытия карты игра может переходить в следующие состояния
    * - "Игрок выиграл", если на поле открыты все карты
    * - "Игрок проиграл", если на поле есть две открытые карты без пары
    * - "Игра продолжается", если не случилось первых двух условий
@@ -125,16 +148,64 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     const playerLost = openCardsWithoutPair.length >= 2;
 
-    // "Игрок проиграл", т.к на поле есть две открытые карты без пары
+    // Если на поле 2 открытые карты без пары - Обычный режим: "Игрок проиграл". Облегченный режим: "Игра продолжается"
     if (playerLost) {
-      finishGame(STATUS_LOST);
+      dispatch(updateAttempts());
+
+      if (!isEasyMode) {
+        finishGame(STATUS_LOST);
+      } else {
+        const updatedCards = nextCards.map(card => {
+          if (openCardsWithoutPair.some(openCard => openCard.id === card.id)) {
+            if (card.open) {
+              setTimeout(() => {
+                setCards(prevCards => {
+                  const updated = prevCards.map(cardId =>
+                    cardId.id === card.id ? { ...cardId, open: false } : cardId,
+                  );
+                  return updated;
+                });
+              }, 1000);
+            }
+          }
+          return card;
+        });
+        setCards(updatedCards);
+      }
       return;
     }
-
-    // ... игра продолжается
   };
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
+
+  //при победе на уровне игры 3 и если результат по времени лучше чем у последнего игрока в лидерборде, устанавливаем isLeader в true для внесение игрока в лидерборд
+  const [isLeader, setIsLeader] = useState(false);
+  const currentLevel = useSelector(store => store.game.currentLevel);
+
+  useEffect(() => {
+    if (status === STATUS_WON && currentLevel === 3) {
+      getAllScore()
+        .then(data => {
+          const leaders = data.leaders; // Получаем список лидеров из API
+          console.log("Все лидеры:", leaders);
+          const timeLastLeaders = leaders.reduce((maxTime, leader) => {
+            return Math.max(maxTime, leader.time);
+          }, 0);
+          console.log("Время последнего лидера:", timeLastLeaders);
+
+          const { minutes, seconds } = timer;
+          const userTime = minutes * 60 + seconds;
+          console.log("Таймер пользователя:", userTime);
+          if (timeLastLeaders > userTime || leaders.length < 10) {
+            setIsLeader(true);
+            console.log("Пользователь - лидер!");
+          }
+        })
+        .catch(error => {
+          console.error(error);
+        });
+    }
+  }, [status, currentLevel]);
 
   // Игровой цикл
   useEffect(() => {
@@ -172,10 +243,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     };
   }, [gameStartDate, gameEndDate]);
 
+  //устанавливаем корректное окончание слова "попытка" в зависимости от оставшегося числа попыток
+  const attemptsText = wordEndingChanger.changeEnding(attempts, attemptForms);
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <div className={styles.timer}>
+        <div className={styles.timerContainer}>
           {status === STATUS_PREVIEW ? (
             <div>
               <p className={styles.previewText}>Запоминайте пары!</p>
@@ -183,15 +257,25 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </div>
           ) : (
             <>
-              <div className={styles.timerValue}>
-                <div className={styles.timerDescription}>min</div>
-                <div>{timer.minutes.toString().padStart("2", "0")}</div>
+              <div className={styles.timer}>
+                <div className={styles.timerValue}>
+                  <div className={styles.timerDescription}>min</div>
+                  <div>{timer.minutes.toString().padStart("2", "0")}</div>
+                </div>
+                .
+                <div className={styles.timerValue}>
+                  <div className={styles.timerDescription}>sec</div>
+                  <div>{timer.seconds.toString().padStart("2", "0")}</div>
+                </div>
               </div>
-              .
-              <div className={styles.timerValue}>
-                <div className={styles.timerDescription}>sec</div>
-                <div>{timer.seconds.toString().padStart("2", "0")}</div>
-              </div>
+              {isEasyMode && status === STATUS_IN_PROGRESS ? (
+                <div className={styles.attempts}>
+                  <p>
+                    Осталось <span>{attempts}</span>
+                    {attemptsText}
+                  </p>
+                </div>
+              ) : null}
             </>
           )}
         </div>
@@ -217,6 +301,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}
+            isLeader={isLeader}
           />
         </div>
       ) : null}
