@@ -65,7 +65,7 @@ export function SelectLevelPage() {
           <span className={styles.checkboxCustom}></span>
           Легкий режим (3 жизни)
         </label>
-        <Button children={"Играть"} onClick={handleStartButton} />
+        <Button disabled={!choosenLevel} children={"Играть"} onClick={handleStartButton} />
         <Link className={styles.leaderboardLink} to="/leaderboard">
           Перейти к лидерборду
         </Link>

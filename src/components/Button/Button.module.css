@@ -25,6 +25,6 @@
   background: #7ac100cc;
 }
 
-.disabled {
-  background-color: gray;
+.button:disabled {
+  background-color: #808080;
 }
