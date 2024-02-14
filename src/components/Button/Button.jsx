@@ -7,3 +7,4 @@ export function Button({ children, onClick }) {
     </button>
   );
 }
+// разбираюсь с форком репозитория
