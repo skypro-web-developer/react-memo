@@ -17,6 +17,7 @@ export function LeaderBoard() {
       <div className={styles.row}>
         <p className={styles.textRowHeader}>Позиция</p>
         <p className={styles.textRowHeader}>Пользователь</p>
+        <p className={styles.textRowHeader}>Достижения</p>
         <p className={styles.textRowHeader}>Время</p>
       </div>
       {leadersList.map((leader, index) => {
@@ -28,6 +29,7 @@ export function LeaderBoard() {
           <div key={leader.id} className={styles.row}>
             <p className={styles.textRowLeader}>{`#${index + 1}`}</p>
             <p className={styles.textRowLeader}>{leader.name}</p>
+            <p className={styles.textRowLeader}>{`${minutes}:${seconds}`}</p>
             <p className={styles.textRowLeader}>{`${minutes}:${seconds}`}</p>
           </div>
         );

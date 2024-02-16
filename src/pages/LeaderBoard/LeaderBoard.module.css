@@ -47,12 +47,12 @@
 }
 
 .row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
     width: 944px;
     height: 64px;
     border-radius: 12px;
     background: #fff;
-    display: flex;
-    justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
 }

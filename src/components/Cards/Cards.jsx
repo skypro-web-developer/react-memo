@@ -6,6 +6,8 @@ import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
 import { ModeContext } from "../../ModeProvider/ModeProvider";
+import eyeImageUrl from "./images/eye.svg";
+import cardsImageUrl from "./images/cards.svg";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -209,6 +211,24 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
+        {status === STATUS_IN_PROGRESS && (
+          <div className={styles.headerImages}>
+            <div className={styles.headerImgEye}>
+              <img src={eyeImageUrl} alt="ничего нет" />
+              <div className={styles.descriptionEyeImage}>
+                <h2>Прозрение</h2>
+                <p>На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается.</p>
+              </div>
+            </div>
+            <div className={styles.headerImgCards}>
+              <img src={cardsImageUrl} alt="ничего нет" />
+              <div className={styles.descriptionCardsImage}>
+                <h2>Алохомора</h2>
+                <p>Открывается случайная пара карт.</p>
+              </div>
+            </div>
+          </div>
+        )}
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
       {addMode ? (
