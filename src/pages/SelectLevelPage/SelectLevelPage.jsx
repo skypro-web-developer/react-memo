@@ -2,11 +2,12 @@ import { useContext, useState } from "react";
 import styles from "./SelectLevelPage.module.css";
 import { useNavigate } from "react-router-dom";
 import { GameContext } from "../../Context/Context";
+import classNames from "classnames";
 
 export function SelectLevelPage() {
   const [level, setLevel] = useState("3");
   const navigate = useNavigate();
-  const [easyMode, setEasyMode] = useContext(GameContext);
+  const { easyMode, setEasyMode } = useContext(GameContext);
   const startGame = () => {
     navigate(`/game/${level}`);
   };
@@ -15,7 +16,7 @@ export function SelectLevelPage() {
       <div className={styles.modal}>
         <h1 className={styles.title}>Выбери сложность</h1>
         <ul className={styles.levels}>
-          <li className={styles.level}>
+          <li className={classNames(styles.level, { [styles.active]: level === "3" })}>
             <label className={styles.label}>
               <input
                 className={styles.inputLevel}
