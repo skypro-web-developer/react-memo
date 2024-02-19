@@ -25,7 +25,7 @@ export function SelectLevelPage() {
                 onChange={e => setLevel(e.target.value)}
                 type="radio"
               />
-              <p>1</p>
+              <p className={styles.numberGame}>1</p>
             </label>
           </li>
           <li className={styles.level}>
@@ -37,7 +37,7 @@ export function SelectLevelPage() {
                 onChange={e => setLevel(e.target.value)}
                 type="radio"
               />
-              <p>2</p>
+              <p className={styles.numberGame}>2</p>
             </label>
           </li>
           <li className={styles.level}>
@@ -49,15 +49,15 @@ export function SelectLevelPage() {
                 onChange={e => setLevel(e.target.value)}
                 type="radio"
               />
-              <p>3</p>
+              <p className={styles.numberGame}>3</p>
             </label>
           </li>
         </ul>
         <div>
           <label className={styles.label}>
             <input
-              defaultChecked={easyMode}
-              onChange={() => setEasyMode(!easyMode)}
+              // defaultChecked={easyMode}
+              // onChange={() => setEasyMode(!easyMode)}
               className={styles.inputMode}
               type="checkbox"
             />

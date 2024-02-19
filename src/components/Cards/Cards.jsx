@@ -127,16 +127,22 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     });
 
     //вычитание жизни
-    
+
     const playerLost = openCardsWithoutPair.length >= 2;
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
-    if (playerLost) {
-      finishGame(STATUS_LOST);
-      return;
+    if (easyMode) {
+      if (playerLost) {
+        setLives(lives => lives - 1);
+        if (lives === 1) {
+          finishGame(STATUS_LOST);
+        }
+      }
+    } else {
+      if (playerLost) {
+        finishGame(STATUS_LOST);
+      }
     }
-
-    // ... игра продолжается
   };
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
@@ -215,7 +221,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         ))}
       </div>
 
-      {easyMode ? <p>Остлось 3 жизни</p> : null}
+      {easyMode ? <p className={styles.lives}>Осталось {lives} попытки</p> : null}
 
       {isGameEnded ? (
         <div className={styles.modalContainer}>
