@@ -73,7 +73,21 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
+    setAttempts(3);
   }
+
+  //  Attempts
+  const maxAttempts = 3;
+  const [attempts, setAttempts] = useState(maxAttempts);
+  const handleAttempts = e => {
+    console.log("attempt lost");
+    e--;
+    setAttempts(e);
+    if (e <= 0) {
+      console.log("no attempts left");
+      finishGame(STATUS_LOST);
+    }
+  };
 
   /**
    * Обработка основного действия в игре - открытие карты.
@@ -92,10 +106,20 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       if (card.id !== clickedCard.id) {
         return card;
       }
-
       return {
         ...card,
         open: true,
+      };
+    });
+
+    // TURN OVER CARD
+    const turnOverCards = cards.map(card => {
+      // if (card.id !== clickedCard.id) {
+      //   return card;
+      // }
+      return {
+        ...card,
+        open: false,
       };
     });
 
@@ -123,13 +147,20 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       return false;
     });
 
-    const playerLost = openCardsWithoutPair.length >= 2;
-
-    // "Игрок проиграл", т.к на поле есть две открытые карты без пары
-    if (playerLost) {
-      finishGame(STATUS_LOST);
+    // LOSE ATTEMPT IF PICKED WITHOUT PAIR
+    const pickedWrong = openCardsWithoutPair.length >= 2;
+    if (pickedWrong) {
+      handleAttempts(attempts);
+      // AND TURN OVER THE CARDS
+      // turnOverCards.every( => .open);
       return;
     }
+
+    // "Игрок проиграл", т.к на поле есть две открытые карты без пары
+    // if (playerLost) {
+    //   finishGame(STATUS_LOST);
+    //   return;
+    // }
 
     // ... игра продолжается
   };
@@ -145,7 +176,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     // В статусе превью мы
     if (pairsCount > 36) {
-      alert("Столько пар сделать невозможно");
+      alert("Impossible to make this amount of pairs");
       return;
     }
 
@@ -178,8 +209,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         <div className={styles.timer}>
           {status === STATUS_PREVIEW ? (
             <div>
-              <p className={styles.previewText}>Запоминайте пары!</p>
-              <p className={styles.previewDescription}>Игра начнется через {previewSeconds} секунд</p>
+              <p className={styles.previewText}>Memorize the pairs!</p>
+              <p className={styles.previewDescription}>Game will start in {previewSeconds} seconds</p>
             </div>
           ) : (
             <>
@@ -195,7 +226,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
-        {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+        {status === STATUS_IN_PROGRESS ? (
+          <div className={styles.bar}>
+            {/* ATTEMPTS */}
+            <p className={styles.attempts}>{attempts} / 3</p>
+            <Button onClick={resetGame}>Start again</Button>
+          </div>
+        ) : null}
       </div>
 
       <div className={styles.cards}>
