@@ -113,15 +113,15 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     });
 
     // TURN OVER CARD
-    const turnOverCards = cards.map(card => {
-      // if (card.id !== clickedCard.id) {
-      //   return card;
-      // }
-      return {
-        ...card,
-        open: false,
-      };
-    });
+    // const turnOverCards = cards.map(card => {
+    //   // if (card.id !== clickedCard.id) {
+    //   //   return card;
+    //   // }
+    //   return {
+    //     ...card,
+    //     open: false,
+    //   };
+    // });
 
     setCards(nextCards);
 
