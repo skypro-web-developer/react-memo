@@ -1,7 +1,9 @@
 import { Link } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
+import { useGameContext } from "../../Context";
 
 export function SelectLevelPage() {
+  const {isEasyMode,setIsEasyMode}=useGameContext()
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
@@ -24,7 +26,7 @@ export function SelectLevelPage() {
             </Link>
           </li>
         </ul>
-        <label><input className={styles.checkboxLevel} type="checkbox"/>Новый режим!</label>
+        <label><input onChange={(e)=>setIsEasyMode(e.target.value)} className={styles.checkboxLevel} type="checkbox"/>Новый режим!</label>
       </div>
     </div>
   );

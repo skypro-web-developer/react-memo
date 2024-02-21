@@ -5,6 +5,7 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { useGameContext } from "../../Context";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -44,6 +45,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
+
+  const { isEasyMode, lives, setLives } = useGameContext();
+
   const [status, setStatus] = useState(STATUS_PREVIEW);
 
   // Дата начала игры
@@ -127,8 +131,26 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
-      finishGame(STATUS_LOST);
-      return;
+      if (isEasyMode) {
+        setLives(lives - 1);
+
+        const updataCards = nextCards.map(elem => {
+          if (openCardsWithoutPair.some(openCard => openCard.id === elem.id)) {
+            if (elem.open) {
+              setTimeout(() => {
+                setCards(prev => {
+                  return prev.map(el => (el.id === elem.id ? { ...el, open: false } : el));
+                });
+              }, 1000);
+            }
+          }
+        });
+        if (lives === 1) {
+          finishGame(STATUS_LOST);
+        }
+
+        return;
+      }
     }
 
     // ... игра продолжается
@@ -174,7 +196,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   return (
     <div className={styles.container}>
-      
       <div className={styles.header}>
         <div className={styles.timer}>
           {status === STATUS_PREVIEW ? (
@@ -196,7 +217,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
-        <p className={styles.attempts} >Осталось попытки : 3</p>
+        {isEasyMode && <p className={styles.attempts}>Осталось попытки : {lives}</p>}
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
 
