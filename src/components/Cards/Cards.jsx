@@ -174,6 +174,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   return (
     <div className={styles.container}>
+      
       <div className={styles.header}>
         <div className={styles.timer}>
           {status === STATUS_PREVIEW ? (
@@ -195,6 +196,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
+        <p className={styles.attempts} >Осталось попытки : 3</p>
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
 

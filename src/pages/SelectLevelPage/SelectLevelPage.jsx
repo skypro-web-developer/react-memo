@@ -5,7 +5,8 @@ export function SelectLevelPage() {
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
-        <h1 className={styles.title}>Выбери сложность</h1>
+        <h1 className={styles.title}>Выбери сложность </h1>
+
         <ul className={styles.levels}>
           <li className={styles.level}>
             <Link className={styles.levelLink} to="/game/3">
@@ -23,6 +24,7 @@ export function SelectLevelPage() {
             </Link>
           </li>
         </ul>
+        <label><input className={styles.checkboxLevel} type="checkbox"/>Новый режим!</label>
       </div>
     </div>
   );
