@@ -1,6 +1,6 @@
-import { useContext } from "react";
-import { ModeContext } from "../context/modes";
+// import { useContext } from "react";
+// import { ModeContext } from "../context/modes";
 
-export default function useModes() {
-  return useContext(ModeContext);
-}
+// export default function useModes() {
+//   return useContext(ModeContext);
+// }

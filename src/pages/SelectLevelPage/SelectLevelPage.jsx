@@ -1,41 +1,37 @@
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
 import { Button } from "../../components/Button/Button";
-import useModes from "../../hooks/useModes";
-import { Checkbox } from "../../Checkbox/Checkbox";
+import { useContext } from "react";
+import { ModeContext } from "../../context/ModeContext";
 
 export function SelectLevelPage() {
-  const { mode, changeMode, level, setLevel } = useModes();
-  const navigate = useNavigate();
-
-  const handlePlayClick = () => {
-    navigate(`/game/${level}`, { state: { mode } });
-    console.log(mode);
-  };
+  const { isEnabled, setIsEnabled } = useContext(ModeContext);
 
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
-        <form className={styles.levels}>
-          <label className={styles.level}>
-            <input type="radio" value="3" checked={level === 3} onChange={e => setLevel(e.target.value)} />
-            <div className={styles.levelText}>1</div>
-          </label>
-          <br />
-          <label className={styles.level}>
-            <input type="radio" value="6" checked={level === 6} onChange={e => setLevel(e.target.value)} />
-            <div className={styles.levelText}>2</div>
-          </label>
-          <br />
-          <label className={styles.level}>
-            <input type="radio" value="9" checked={level === 9} onChange={e => setLevel(e.target.value)} />
-            <div className={styles.levelText}>3</div>
-          </label>
-        </form>
-        <Checkbox className={styles.mode} onClick={changeMode}>
-          Включить легкий режим
-        </Checkbox>
-        {level === null ? <button disabled>Играть</button> : <Button onClick={handlePlayClick}>Играть</Button>}
+        <h1 className={styles.title}>Выберите сложность</h1>
+        <ul className={styles.levels}>
+          <li className={styles.level}>
+            <Link className={styles.levelLink} to="/game/3">
+              1
+            </Link>
+          </li>
+          <li className={styles.level}>
+            <Link className={styles.levelLink} to="/game/6">
+              2
+            </Link>
+          </li>
+          <li className={styles.level}>
+            <Link className={styles.levelLink} to="/game/9">
+              3
+            </Link>
+          </li>
+        </ul>
+
+        <Button onClick={() => setIsEnabled(!isEnabled)}>Переключить режим</Button>
+        {isEnabled === true && <div className={styles.active}>Выбран легкий режим</div>}
+        {isEnabled === false && <div className={styles.inactive}>Выбран сложный режим</div>}
       </div>
     </div>
   );
