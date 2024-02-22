@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
+import { useContext } from "react";
+import { DifficultyContext } from "../../contexts/DifficultyContext";
 
 export function SelectLevelPage() {
+  const { isEasy, setIsEasy } = useContext(DifficultyContext);
+
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
@@ -23,6 +27,7 @@ export function SelectLevelPage() {
             </Link>
           </li>
         </ul>
+        Легкий режим (3 жизни) <input type="checkbox" checked={isEasy} onChange={() => setIsEasy(!isEasy)} />
       </div>
     </div>
   );
