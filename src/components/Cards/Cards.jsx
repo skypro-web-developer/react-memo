@@ -225,6 +225,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           />
         ))}
       </div>
+      {isEasy === true ? (
+        <div>
+          <div className={styles.mistakes}> Количество ошибок: {mistakes}</div>
+        </div>
+      ) : (
+        <div></div>
+      )}
 
       {isGameEnded ? (
         <div className={styles.modalContainer}>
