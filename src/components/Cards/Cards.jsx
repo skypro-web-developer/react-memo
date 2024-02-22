@@ -147,6 +147,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         });
         if (lives === 1) {
           finishGame(STATUS_LOST);
+          setLives(lives + 2);
         }
 
         return;
