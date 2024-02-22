@@ -26,7 +26,12 @@
 
   margin-bottom: 28px;
 }
-
+.linkLidebord {
+  font-size: 18px;
+  line-height: 32px;
+  color: #004980;
+  padding-top: 20px;
+}
 .description {
   color: #000;
   font-variant-numeric: lining-nums proportional-nums;
