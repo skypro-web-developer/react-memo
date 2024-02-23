@@ -23,7 +23,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       </div>
 
       <Button onClick={onClick}>Начать сначала</Button>
-      <Link className={styles.linkLidebord}>Перейти к лидерборду</Link>
+      <Link  className={styles.linkLidebord}>Перейти к лидерборду</Link>
     </div>
   );
 }

@@ -138,6 +138,12 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
+      if (!isEasyMode) {
+        finishGame(STATUS_LOST);
+        return;
+      }
+    }
+    if (playerLost) {
       if (isEasyMode) {
         setLives(lives - 1);
 
@@ -226,6 +232,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           )}
         </div>
         {isEasyMode && <p className={styles.attempts}>Осталось попытки : {lives}</p>}
+
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
 
