@@ -65,9 +65,9 @@
   z-index: 1;
 }
 
-.level.checked {
-  background: #0080c1;
-  color: #fff;
+.checked {
+  /* color: #004980; */
+  color: #7ac100;
 }
 
 input[type="radio"] {
