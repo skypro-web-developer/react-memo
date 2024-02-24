@@ -27,7 +27,12 @@ export function SelectLevelPage() {
           </li>
         </ul>
         <div className={styles.checkBox}>
-          <input onChange={e => setIsEasyMode(e.target.value)} className={styles.checkboxLevel} type="checkbox" />
+          <input
+            value={isEasyMode}
+            onChange={e => setIsEasyMode(e.target.value)}
+            className={styles.checkboxLevel}
+            type="checkbox"
+          />
           <div className={styles.checkBoxText}>Легкий режим (3 жизни)</div>
         </div>
         <button className={styles.btnGame}>Играть</button>
