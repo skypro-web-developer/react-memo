@@ -36,7 +36,7 @@ export function SelectLevelPage() {
           <div className={styles.checkBoxText}>Легкий режим (3 жизни)</div>
         </div>
         <button className={styles.btnGame}>Играть</button>
-        <Link className={styles.linkLidebord}>Перейти к лидерборду</Link>
+        <Link className={styles.linkLidebord}>Перейти к лидерборду!</Link>
       </div>
     </div>
   );
