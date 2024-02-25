@@ -1,9 +1,17 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
 import { useGameContext } from "../../Context";
 
 export function SelectLevelPage() {
-  const { isEasyMode, setIsEasyMode } = useGameContext();
+  const { isEasyMode, setIsEasyMode, level, setLevel } = useGameContext();
+  const navigate = useNavigate();
+  const handleLevelClick = value => {
+    setLevel(value);
+  };
+  console.log(isEasyMode);
+  const handlePlayClick = () => {
+    navigate(`/game/${level}`);
+  };
   return (
     <div className={styles.container}>
       <div className={styles.modal}>
@@ -11,31 +19,45 @@ export function SelectLevelPage() {
 
         <ul className={styles.levels}>
           <li className={styles.level}>
-            <Link className={styles.levelLink} to="/game/3">
+            <input type="radio" name="level" value="3" checked={level === "3"} onChange={() => {}} />
+            <div
+              className={level === "3" ? `{styles.levelLink} ${styles.checked}` : styles.levelLink}
+              onClick={() => handleLevelClick("3")}
+            >
               1
-            </Link>
+            </div>
           </li>
           <li className={styles.level}>
-            <Link className={styles.levelLink} to="/game/6">
+            <input type="radio" name="level" value="6" checked={level === "6"} onChange={() => {}} />
+            <div
+              className={level === "6" ? `{styles.levelLink} ${styles.checked}` : styles.levelLink}
+              onClick={() => handleLevelClick("6")}
+            >
               2
-            </Link>
+            </div>
           </li>
           <li className={styles.level}>
-            <Link className={styles.levelLink} to="/game/9">
+            <input type="radio" name="level" value="9" checked={level === "9"} onChange={() => {}} />
+            <div
+              className={level === "9" ? `{styles.levelLink} ${styles.checked}` : styles.levelLink}
+              onClick={() => handleLevelClick("9")}
+            >
               3
-            </Link>
+            </div>
           </li>
         </ul>
         <div className={styles.checkBox}>
           <input
-            value={isEasyMode}
-            onChange={e => setIsEasyMode(e.target.value)}
+            checked={isEasyMode}
+            onChange={() => setIsEasyMode(!isEasyMode)}
             className={styles.checkboxLevel}
             type="checkbox"
           />
           <div className={styles.checkBoxText}>Легкий режим (3 жизни)</div>
         </div>
-        <button className={styles.btnGame}>Играть</button>
+        <button onClick={handlePlayClick} className={styles.btnGame}>
+          Играть
+        </button>
         <Link className={styles.linkLidebord}>Перейти к лидерборду!</Link>
       </div>
     </div>
