@@ -8,7 +8,6 @@ export function SelectLevelPage() {
   const handleLevelClick = value => {
     setLevel(value);
   };
-  console.log(isEasyMode);
   const handlePlayClick = () => {
     navigate(`/game/${level}`);
   };
@@ -58,7 +57,9 @@ export function SelectLevelPage() {
         <button onClick={handlePlayClick} className={styles.btnGame}>
           Играть
         </button>
-        <Link className={styles.linkLidebord}>Перейти к лидерборду!</Link>
+        <Link to={"/leaderboard"} className={styles.linkLidebord}>
+          Перейти к лидерборду!
+        </Link>
       </div>
     </div>
   );

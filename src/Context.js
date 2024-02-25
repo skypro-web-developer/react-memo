@@ -15,8 +15,11 @@ export const GameProvider = ({ children }) => {
   const [lives, setLives] = useState(3);
   const [isEasyMode, setIsEasyMode] = useState(false);
   const [level, setLevel] = useState(null);
+  const [leaderboardPlayers, setLeaderboardPlayers] = useState([]);
   return (
-    <GameContext.Provider value={{ isEasyMode, setIsEasyMode, lives, setLives, level, setLevel }}>
+    <GameContext.Provider
+      value={{ isEasyMode, setIsEasyMode, lives, setLives, level, setLevel, leaderboardPlayers, setLeaderboardPlayers }}
+    >
       {children}
     </GameContext.Provider>
   );

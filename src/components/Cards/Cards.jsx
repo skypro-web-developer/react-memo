@@ -6,6 +6,7 @@ import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
 import { useGameContext } from "../../Context";
+import { getLeaderBoard } from "../../api";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -42,6 +43,13 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+  const { leaderboardPlayers, setLeaderboardPlayers } = useGameContext();
+  // console.log(leaderboardPlayers?.leaders[leaderboardPlayers?.leaders?.length - 1]);
+  useEffect(() => {
+    getLeaderBoard().then(res => {
+      setLeaderboardPlayers(res);
+    });
+  }, []);
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -147,7 +155,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       if (isEasyMode) {
         setLives(lives - 1);
 
-        const updataCards = nextCards.map(elem => {
+        nextCards.map(elem => {
           if (openCardsWithoutPair.some(openCard => openCard.id === elem.id)) {
             if (elem.open) {
               setTimeout(() => {
@@ -255,6 +263,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}
+            isLeaderboard={
+              leaderboardPlayers.leaders[leaderboardPlayers.leaders.length - 1].time >
+              timer.minutes * 60 + timer.seconds
+            }
           />
         </div>
       ) : null}

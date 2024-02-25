@@ -6,12 +6,13 @@ import deadImageUrl from "./images/dead.png";
 import celebrationImageUrl from "./images/celebration.png";
 import { Link } from "react-router-dom";
 
-export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
+export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick, isLeaderboard }) {
   const title = isWon ? "Вы победили!" : "Вы проиграли!";
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
 
   const imgAlt = isWon ? "celebration emodji" : "dead emodji";
+  // const isSendLb = isLeaderboard && isWon;
 
   return (
     <div className={styles.modal}>
@@ -23,7 +24,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       </div>
 
       <Button onClick={onClick}>Начать сначала</Button>
-      <Link  className={styles.linkLidebord}>Перейти к лидерборду</Link>
+      <Link className={styles.linkLidebord}>Перейти к лидерборду</Link>
     </div>
   );
 }
