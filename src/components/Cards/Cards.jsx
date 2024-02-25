@@ -71,13 +71,12 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
-
     setAttempts(isEnabled ? 3 : 1);
   }
 
-  // Состояние для количества попыток в начале игры
   const maxAttempts = isEnabled ? 3 : 1;
   const [attempts, setAttempts] = useState(maxAttempts);
+
   const handleAttempts = e => {
     e--;
     setAttempts(e);
@@ -161,7 +160,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       return;
     }
 
-    // В статусе превью мы
     if (pairsCount > 36) {
       alert("Столько пар сделать невозможно");
       return;
