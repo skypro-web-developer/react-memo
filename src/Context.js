@@ -1,12 +1,5 @@
 import { createContext, useContext, useState } from "react";
 
-// const initialState = {
-//   isEasyMode: false,
-//   level: null,
-//   setLevel: () => {},
-//   setIsEasyMode: () => {},
-// };
-
 export const GameContext = createContext();
 export const useGameContext = () => {
   return useContext(GameContext);
@@ -14,7 +7,7 @@ export const useGameContext = () => {
 export const GameProvider = ({ children }) => {
   const [lives, setLives] = useState(3);
   const [isEasyMode, setIsEasyMode] = useState(false);
-  const [level, setLevel] = useState(null);
+  const [level, setLevel] = useState("3");
   const [leaderboardPlayers, setLeaderboardPlayers] = useState([]);
   return (
     <GameContext.Provider
