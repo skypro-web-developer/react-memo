@@ -20,7 +20,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
     console.log("Значение level:", level);
     console.log("Значение isWon:", isWon);
     console.log("Значение gameTime:", gameTime);
-    if (level === "9" && isWon) {
+    if (level === "3" && isWon) {
       // если игрок выиграл 3 уровень сложности, получаем список лидеров
       getLeaders().then(({ leaders }) => {
         leaders = leaders.sort(function (a, b) {
@@ -36,13 +36,15 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   }, []);
 
   function addPlayerToLeaders() {
+    console.log("Функция addPlayerToLeaders() вызвана");
     addLeaders({
       name: leader,
       time: gameTime,
       achievements: achievements,
     })
       .then(({ leaders }) => {
-        console.log(leaders);
+        console.log("Игрок успешно добавлен в список лидеров:", leaders);
+        setNewLeader(true);
       })
       .catch(error => {
         alert(error.message);
@@ -50,7 +52,9 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   }
 
   // const title = isWon ? "Вы попали на лидерборд!" : "Вы проиграли!";
-  const title = isWon ? (level === "9" ? "Вы попали на лидерборд!" : "Вы победили!") : "Вы проиграли!";
+
+  // const title = isWon ? (level === "9" ? "Вы попали на лидерборд!" : "Вы победили!") : "Вы проиграли!";
+  const title = isWon ? (level === "3" ? "Вы попали на лидерборд!" : "Вы победили!") : "Вы проиграли!";
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
 
