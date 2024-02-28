@@ -17,12 +17,17 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   const gameTime = gameDurationMinutes * 60 + gameDurationSeconds;
 
   useEffect(() => {
+    console.log("Значение level:", level);
+    console.log("Значение isWon:", isWon);
+    console.log("Значение gameTime:", gameTime);
     if (level === "9" && isWon) {
       // если игрок выиграл 3 уровень сложности, получаем список лидеров
       getLeaders().then(({ leaders }) => {
         leaders = leaders.sort(function (a, b) {
           return a.time - b.time;
         });
+        console.log("Отсортированный список лидеров:", leaders);
+
         if (leaders.length > 0 && leaders[0].time < gameTime) {
           setNewLeader(true);
         }

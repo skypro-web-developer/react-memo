@@ -5,7 +5,6 @@ import { Button } from "../../components/Button/Button";
 import styles from "./Leaderboard.module.css";
 
 export function LeaderboardPage() {
-  // const [isLoaded, setIsLoaded] = useState(false);
   const [leaders, setLeaders] = useState([]);
 
   useEffect(() => {
