@@ -13,6 +13,7 @@ export function LeaderboardPage() {
       .then(data => {
         if (data.leaders) {
           let leader = data.leaders;
+          console.log(leader);
           leader = leader.sort(function (a, b) {
             return a.time - b.time;
           });
@@ -40,7 +41,7 @@ export function LeaderboardPage() {
             <tr className={styles.leaderboard}>
               <th className={styles.position}>Позиция</th>
               <th className={styles.user}>Пользователь</th>
-              {/* <th className={styles.achievements}>Достижения</th> */}
+              <th className={styles.achievements}>Достижения</th>
               <th className={styles.time}>Время</th>
             </tr>
           </thead>
@@ -49,7 +50,26 @@ export function LeaderboardPage() {
               <tr className={styles.leader} key={leader.id}>
                 <td className={styles.position}>#{index + 1}</td>
                 <td className={styles.user}>{leader.name}</td>
-                {/* <td className={styles.time}>{leader.time}</td> */}
+                <td className={styles.achievements}>
+                  {leader.achievements && (
+                    <div className={styles.block_achievements}>
+                      {leader.achievements.includes(1) ? (
+                        <button className={styles.puzzle} hint1="Игра пройдена в сложном режиме"></button>
+                      ) : (
+                        <button className={styles.puzzleGray} hint1="Игра пройдена в сложном режиме"></button>
+                      )}
+                    </div>
+                  )}
+                  {leader.achievements && (
+                    <div className={styles.block_achievements}>
+                      {leader.achievements.includes(2) ? (
+                        <button className={styles.vision} hint2="Игра пройдена без супер-сил"></button>
+                      ) : (
+                        <button className={styles.visionGray} hint2="Игра пройдена без супер-сил"></button>
+                      )}
+                    </div>
+                  )}
+                </td>
                 <td className={styles.time}>
                   {Math.floor(leader.time / 60)
                     .toString()

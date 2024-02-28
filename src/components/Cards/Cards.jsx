@@ -15,6 +15,9 @@ const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 // Начало игры: игрок видит все карты в течении нескольких секунд
 const STATUS_PREVIEW = "STATUS_PREVIEW";
 
+const STATUS_PAUSE = "STATUS_PAUSE";
+let pauseTimer = false;
+
 function getTimerValue(startDate, endDate) {
   if (!startDate && !endDate) {
     return {
@@ -25,6 +28,15 @@ function getTimerValue(startDate, endDate) {
 
   if (endDate === null) {
     endDate = new Date();
+  }
+  if (pauseTimer === true) {
+    const diffInSecconds = Math.floor((endDate.getTime() - 5000 - startDate.getTime()) / 1000);
+    const minutes = Math.floor(diffInSecconds / 60);
+    const seconds = diffInSecconds % 60;
+    return {
+      minutes,
+      seconds,
+    };
   }
 
   const diffInSecconds = Math.floor((endDate.getTime() - startDate.getTime()) / 1000);
@@ -60,6 +72,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(status);
   }
   function startGame() {
+    pauseTimer = false;
     const startDate = new Date();
     setGameEndDate(null);
     setGameStartDate(startDate);
@@ -67,6 +80,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
+    pauseTimer = false;
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
@@ -84,6 +98,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       finishGame(STATUS_LOST);
     }
   };
+
+  const [achievement, setAchievement] = useState(isEnabled ? [1] : []);
+
+  const [superPowers, setSuperPowers] = useState({
+    vision: true,
+    alohomora: true,
+  });
 
   /**
    * Обработка основного действия в игре - открытие карты.
@@ -151,6 +172,53 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     // ... игра продолжается
   };
 
+  function vision() {
+    setSuperPowers({ ...superPowers, vision: false });
+
+    const openedCards = cards;
+    const viewCards = cards.map(card => ({
+      ...card,
+      open: true,
+    }));
+
+    setCards(viewCards);
+    pauseTimer = true;
+    setStatus(STATUS_PAUSE);
+
+    setTimeout(() => {
+      setCards(openedCards);
+      setStatus(STATUS_IN_PROGRESS);
+    }, 5000);
+
+    if (!achievement.includes(2)) {
+      setAchievement([...achievement, 2]);
+    }
+  }
+
+  function alohomora() {
+    setSuperPowers({ ...superPowers, alohomora: false });
+
+    const closedCards = cards.filter(card => !card.open);
+    const randomCard = closedCards[Math.floor(Math.random() * closedCards.length)];
+    const pairsCard = closedCards.filter(
+      closedCard =>
+        closedCard.suit === randomCard.suit && closedCard.rank === randomCard.rank && randomCard.id !== closedCard.id,
+    );
+    setCards(
+      cards.map(card => {
+        if (card === randomCard || card === pairsCard[0]) {
+          return { ...card, open: true };
+        } else {
+          return card;
+        }
+      }),
+    );
+
+    if (!achievement.includes(2)) {
+      setAchievement([...achievement, 2]);
+    }
+  }
+
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
 
   // Игровой цикл
@@ -180,13 +248,15 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   // Обновляем значение таймера в интервале
   useEffect(() => {
-    const intervalId = setInterval(() => {
-      setTimer(getTimerValue(gameStartDate, gameEndDate));
-    }, 300);
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [gameStartDate, gameEndDate]);
+    if (status !== STATUS_PAUSE) {
+      const intervalId = setInterval(() => {
+        setTimer(getTimerValue(gameStartDate, gameEndDate));
+      }, 300);
+      return () => {
+        clearInterval(intervalId);
+      };
+    }
+  }, [gameStartDate, gameEndDate, status]);
 
   return (
     <div className={styles.container}>
@@ -212,11 +282,33 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           )}
         </div>
         {status === STATUS_IN_PROGRESS ? (
+          <>
+            <div className={styles.containerImg}>
+              <button
+                className={styles.vision}
+                title="Прозрение"
+                hint="На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается."
+                onClick={vision}
+                disabled={!superPowers.vision}
+              />
+              <button
+                className={styles.alohomora}
+                title="Алохомора"
+                hint="Открывается случайная пара карт."
+                onClick={alohomora}
+                disabled={!superPowers.alohomora}
+              />
+            </div>
+            <Button onClick={resetGame}>Начать заново</Button>
+          </>
+        ) : null}
+      </div>
+      {/* {status === STATUS_IN_PROGRESS ? (
           <div className={styles.div}>
             <Button onClick={resetGame}>Начать заново</Button>
           </div>
         ) : null}
-      </div>
+      </div> */}
 
       <div className={styles.cards}>
         {cards.map(card => (

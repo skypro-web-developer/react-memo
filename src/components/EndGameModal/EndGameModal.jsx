@@ -7,9 +7,11 @@ import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ModeContext } from "../../context/ModeContext";
 import { addLeaders, getLeaders } from "../../utils/api";
+import { AchievementsContext } from "../../context/AchievementContext";
 
 export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
   const { level } = useContext(ModeContext);
+  const { achievements } = useContext(AchievementsContext);
   const [leader, setLeader] = useState("Пользователь");
   const [newLeader, setNewLeader] = useState(false);
   const gameTime = gameDurationMinutes * 60 + gameDurationSeconds;
@@ -32,6 +34,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
     addLeaders({
       name: leader,
       time: gameTime,
+      achievements: achievements,
     })
       .then(({ leaders }) => {
         console.log(leaders);
@@ -41,7 +44,8 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       });
   }
 
-  const title = isWon ? "Вы попали на лидерборд!" : "Вы проиграли!";
+  // const title = isWon ? "Вы попали на лидерборд!" : "Вы проиграли!";
+  const title = isWon ? (level === "9" ? "Вы попали на лидерборд!" : "Вы победили!") : "Вы проиграли!";
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
 
