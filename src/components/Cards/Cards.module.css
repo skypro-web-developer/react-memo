@@ -43,7 +43,10 @@
   font-weight: 400;
   line-height: 72px;
 }
-
+.attempts{
+  font-size: 20px;
+  color: rgb(205, 15, 238);
+}
 .previewText {
   font-size: 30px;
   line-height: 30px;

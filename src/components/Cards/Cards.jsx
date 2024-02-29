@@ -5,6 +5,8 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { useGameContext } from "../../Context";
+import { getLeaderBoard } from "../../api";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -41,9 +43,19 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+  const { leaderboardPlayers, setLeaderboardPlayers } = useGameContext();
+  // console.log(leaderboardPlayers?.leaders[leaderboardPlayers?.leaders?.length - 1]);
+  useEffect(() => {
+    getLeaderBoard().then(res => {
+      setLeaderboardPlayers(res);
+    });
+  }, []);
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
+
+  const { isEasyMode, lives, setLives } = useGameContext();
+
   const [status, setStatus] = useState(STATUS_PREVIEW);
 
   // Дата начала игры
@@ -106,6 +118,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     // Победа - все карты на поле открыты
     if (isPlayerWon) {
       finishGame(STATUS_WON);
+      if (lives === 2) {
+        setLives(lives + 1);
+      }
+      if (lives === 1) {
+        setLives(lives + 2);
+      }
+
       return;
     }
 
@@ -127,8 +146,33 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
-      finishGame(STATUS_LOST);
-      return;
+      if (!isEasyMode) {
+        finishGame(STATUS_LOST);
+        return;
+      }
+    }
+    if (playerLost) {
+      if (isEasyMode) {
+        setLives(lives - 1);
+
+        nextCards.map(elem => {
+          if (openCardsWithoutPair.some(openCard => openCard.id === elem.id)) {
+            if (elem.open) {
+              setTimeout(() => {
+                setCards(prev => {
+                  return prev.map(el => (el.id === elem.id ? { ...el, open: false } : el));
+                });
+              }, 1000);
+            }
+          }
+        });
+        if (lives === 1) {
+          finishGame(STATUS_LOST);
+          setLives(lives + 2);
+        }
+
+        return;
+      }
     }
 
     // ... игра продолжается
@@ -195,6 +239,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
+        {isEasyMode && <p className={styles.attempts}>Осталось попытки : {lives}</p>}
+
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
 
@@ -217,6 +263,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}
+            isLeaderboard={
+              leaderboardPlayers.leaders[leaderboardPlayers.leaders.length - 1].time >
+              timer.minutes * 60 + timer.seconds
+            }
           />
         </div>
       ) : null}

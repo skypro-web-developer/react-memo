@@ -7,8 +7,8 @@
 }
 
 .modal {
-  width: 480px;
-  height: 459px;
+  width: 489px;
+  height: 529px;
   border-radius: 12px;
   background: #c2f5ff;
   display: flex;
@@ -26,14 +26,64 @@
   font-style: normal;
   font-weight: 400;
   line-height: 48px;
+  width: 205px;
+  height: 96px;
 }
-
+.checkBox {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+.checkboxLevel {
+  transform: scale(3);
+  opacity: 0.9;
+  cursor: pointer;
+}
+.checkBoxText {
+  font-size: 24px;
+  line-height: 32px;
+}
+.btnGame {
+  top: 508px;
+  left: 375px;
+  width: 276px;
+  height: 45px;
+  border-radius: 12px;
+  margin-top: 20px;
+  background: #7ac100;
+  font-size: 24px;
+  color: white;
+  line-height: 32px;
+  cursor: pointer;
+}
+.linkLidebord {
+  font-size: 18px;
+  line-height: 32px;
+  color: #004980;
+  padding-top: 20px;
+}
 .levels {
   display: flex;
   flex-direction: row;
   gap: 26px;
   margin-top: 48px;
   margin-bottom: 28px;
+}
+
+.checked {
+  color: #7ac100;
+  text-align: center;
+  font-family: StratosSkyeng;
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 72px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+input[type="radio"] {
+  display: none;
 }
 
 .level {
@@ -57,6 +107,7 @@
   font-weight: 400;
   line-height: 72px;
   text-decoration: none;
+  cursor: pointer;
 }
 
 .levelLink:visited {
