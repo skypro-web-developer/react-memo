@@ -10,41 +10,37 @@ import { useContext, useEffect, useState } from "react";
 import { GameContext } from "../../Context";
 
 export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
-  const title = isWon ? "Вы попали на лидерборд!" : "Вы проиграли!";
-
-  const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
-
-  const imgAlt = isWon ? "celebration emodji" : "dead emodji";
   const { level } = useContext(GameContext);
   const [leader, setLeader] = useState("Пользователь");
   const [newLeader, setNewLeader] = useState(false);
   const gameTime = gameDurationMinutes * 60 + gameDurationSeconds;
-  useEffect(() => {
-    if (level === "3" && isWon) {
-      getLeaderBoard().then(({ leaders }) => {
-        leaders = leaders.sort(function (a, b) {
-          return a.time - b.time;
-        });
-        if (leaders.length > 0 && leaders[0].time < gameTime) {
-          setNewLeader(true);
-        }
-      });
-    }
-  }, []);
 
+  const title = isWon ? (level === "9" ? "Вы попали на лидерборд!" : "Вы победили!") : "Вы проиграли!";
+  const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
+  const imgAlt = isWon ? "celebration emodji" : "dead emodji";
+  useEffect(() => {
+    getLeaderBoard().then(({ leaders }) => {
+      leaders = leaders.sort(function (a, b) {
+        return a.time - b.time;
+      });
+      if (leaders.length > 0 && leaders[0].time < gameTime) {
+        setNewLeader(true);
+      }
+    });
+  }, []);
   function addPlayerToLeaders() {
     postLeaderBoard({
       name: leader,
       time: gameTime,
     })
       .then(({ leaders }) => {
-        console.log(leaders);
+        console.log("Игрок успешно добавлен в список лидеров:", leaders);
+        setNewLeader(true);
       })
       .catch(error => {
         alert(error.message);
       });
   }
-
   return (
     <div className={styles.modal}>
       <img className={styles.image} src={imgSrc} alt={imgAlt} />
@@ -61,7 +57,6 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       ) : (
         <div></div>
       )}
-
       <p className={styles.description}>Затраченное время:</p>
       <div className={styles.time}>
         {gameDurationMinutes.toString().padStart("2", "0")}.{gameDurationSeconds.toString().padStart("2", "0")}
