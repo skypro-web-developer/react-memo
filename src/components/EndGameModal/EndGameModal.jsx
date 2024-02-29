@@ -20,19 +20,19 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
     console.log("Значение level:", level);
     console.log("Значение isWon:", isWon);
     console.log("Значение gameTime:", gameTime);
-    if (level === "3" && isWon) {
-      // если игрок выиграл 3 уровень сложности, получаем список лидеров
-      getLeaders().then(({ leaders }) => {
-        leaders = leaders.sort(function (a, b) {
-          return a.time - b.time;
-        });
-        console.log("Отсортированный список лидеров:", leaders);
-
-        if (leaders.length > 0 && leaders[0].time < gameTime) {
-          setNewLeader(true);
-        }
+    // if (level === "3" && isWon) {
+    // если игрок выиграл 3 уровень сложности, получаем список лидеров
+    getLeaders().then(({ leaders }) => {
+      leaders = leaders.sort(function (a, b) {
+        return a.time - b.time;
       });
-    }
+      console.log("Отсортированный список лидеров:", leaders);
+
+      if (leaders.length > 0 && leaders[0].time < gameTime) {
+        setNewLeader(true);
+      }
+    });
+    // }
   }, []);
 
   function addPlayerToLeaders() {
