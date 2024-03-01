@@ -8,8 +8,10 @@ import { Link } from "react-router-dom";
 import { getLeaderBoard, postLeaderBoard } from "../../api";
 import { useContext, useEffect, useState } from "react";
 import { GameContext } from "../../Context";
+import { AchievementsContext } from "../../AchievementContext";
 
 export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
+  const { achievements } = useContext(AchievementsContext);
   const { level } = useContext(GameContext);
   const [leader, setLeader] = useState("Пользователь");
   const [newLeader, setNewLeader] = useState(false);
@@ -32,9 +34,10 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
     postLeaderBoard({
       name: leader,
       time: gameTime,
+      achievements: achievements,
     })
       .then(({ leaders }) => {
-        console.log("Игрок успешно добавлен в список лидеров:", leaders);
+        alert("Игрок успешно добавлен в список лидеров:", leaders);
         setNewLeader(true);
       })
       .catch(error => {

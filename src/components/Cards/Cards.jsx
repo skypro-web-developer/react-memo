@@ -80,6 +80,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     seconds: 0,
     minutes: 0,
   });
+  const [achievement, setAchievement] = useState(isEasyMode ? [1] : []);
+
   const [superPowers, setSuperPowers] = useState({
     vision: true,
     alohomora: true,
@@ -211,6 +213,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       setCards(openedCards);
       setStatus(STATUS_IN_PROGRESS);
     }, 5000);
+    if (!achievement.includes(2)) {
+      setAchievement([...achievement, 2]);
+    }
   }
   function alohomora() {
     setSuperPowers({ ...superPowers, alohomora: false });
@@ -230,6 +235,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         }
       }),
     );
+    if (!achievement.includes(2)) {
+      setAchievement([...achievement, 2]);
+    }
   }
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
 
