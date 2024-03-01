@@ -30,6 +30,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       }
     });
   }, []);
+  
   function addPlayerToLeaders() {
     postLeaderBoard({
       name: leader,
