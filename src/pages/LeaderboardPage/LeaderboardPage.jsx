@@ -46,24 +46,20 @@ export function LeaderboardPage() {
             <div key={leader.id} className={styles.leaderboard_unit}>
               <div className={styles.leaderboard_text}>#{index + 1}</div>
               <div className={styles.leaderboard_text}>{leader.name}</div>
-              <div className={styles.leaderboard_achievements_item}>
-                {leader.achievements && (
-                  <div className={styles.block_achievements}>
-                    {leader.achievements.includes(1) ? (
-                      <button className={styles.puzzle} hint1="Игра пройдена в сложном режиме"></button>
-                    ) : (
-                      <button className={styles.puzzleGray} hint1="Игра пройдена в сложном режиме"></button>
-                    )}
+              <div className={styles.leaderboard_achievements}>
+                {leader.achievements && leader.achievements.includes(1) ? (
+                  <div className={styles.leaderboard_achievements_item} title="Игра пройдена в сложном режимe">
+                    <button className={styles.puzzle}></button>
                   </div>
+                ) : (
+                  <button className={styles.puzzleGray}></button>
                 )}
-                {leader.achievements && (
-                  <div className={styles.block_achievements}>
-                    {leader.achievements.includes(2) ? (
-                      <button className={styles.vision} hint2="Игра пройдена без супер-сил"></button>
-                    ) : (
-                      <button className={styles.visionGray} hint2="Игра пройдена без супер-сил"></button>
-                    )}
+                {leader.achievements && leader.achievements.includes(2) ? (
+                  <div className={styles.leaderboard_achievements_item} title="Игра пройдена без супер-сил">
+                    <button className={styles.vision}></button>
                   </div>
+                ) : (
+                  <button className={styles.visionGray}></button>
                 )}
               </div>
               <div className={styles.time}>

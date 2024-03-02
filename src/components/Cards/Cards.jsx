@@ -61,31 +61,17 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   const maxAttempts = isEnabled ? 3 : 1;
   const [attempts, setAttempts] = useState(maxAttempts);
-  // const [guessedPairs, setGuessedPairs] = useState(0);
-
-  // defies the guessed pairs amount
-  // useEffect(() => {
-  //   if (cards && status === STATUS_IN_PROGRESS) {
-  //     const pairs = cards.filter(e => e.guessed).length;
-  //     if (pairs % 2 === 0) {
-  //       setGuessedPairs(pairs / 2);
-  //     }
-  //   }
-  // }, [cards, status]);
-
-  // "superpower" logics start
   const [isVision, setIsVision] = useState(false);
   const [isVisionActive, seIisVisionActive] = useState(false);
   const [isTimerStop, setIsTimerStop] = useState(false);
   const [isAlohomora, setIsAlohomora] = useState(false);
 
-  // X-Ray: makes cards visible for 5 secs
   const vision = () => {
     setIsTimerStop(true);
     if (isVision) {
       return;
     }
-    // disables alohomora function while xray is active
+
     seIisVisionActive(true);
     setCards(prevCards => {
       return prevCards.map(card => {
@@ -119,28 +105,27 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     }, 5000);
   };
 
-  // Alohomora: opens one correct pair of cards or a pair for one opened card
   const alohomora = () => {
     if (isVisionActive) {
       return;
     }
-    const cardsNotGuessed = cards.filter(cards => !cards.guessed);
-    let firstCard = cardsNotGuessed.find(card => card.open);
-    let secondCard;
 
-    if (firstCard) {
-      secondCard = cards.find(
-        card => card.rank === firstCard.rank && card.suit === firstCard.suit && card.id !== firstCard.id,
-      );
-    } else {
-      let randomIndex = Math.floor(cardsNotGuessed.length * Math.random());
-      firstCard = cardsNotGuessed[randomIndex];
-      secondCard = cardsNotGuessed.find(card => card.rank === firstCard.rank && card.suit === firstCard.suit);
+    const closedCards = cards.filter(card => !card.open && !card.guessed);
+
+    if (closedCards.length < 2) {
+      return;
     }
 
-    if (firstCard && secondCard) {
+    const randomIndex = Math.floor(Math.random() * closedCards.length);
+    const firstCard = closedCards[randomIndex];
+
+    const secondCard = closedCards.find(
+      card => card.id !== firstCard.id && card.rank === firstCard.rank && card.suit === firstCard.suit,
+    );
+
+    if (secondCard) {
       const nextCards = cards.map(card => {
-        if (secondCard.id === card.id || firstCard.id === card.id) {
+        if (card.id === firstCard.id || card.id === secondCard.id) {
           return {
             ...card,
             open: true,
@@ -158,7 +143,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
     setStatus(status);
-    // setGuessedPairs(0);
 
     if (status === STATUS_WON) {
       if (!isAlohomora && !isVision) {
@@ -176,7 +160,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setGameStartDate(startDate);
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
-    // setGuessedPairs(0);
     resetAchievements();
     setIsVision(false);
     setIsAlohomora(false);
@@ -188,7 +171,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
     setAttempts(isEnabled ? 3 : 1);
-    // setGuessedPairs(0);
     resetAchievements();
     setIsVision(false);
     setIsAlohomora(false);
@@ -326,23 +308,25 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           )}
         </div>
         {status === STATUS_IN_PROGRESS ? (
-          <div className={styles.bar}>
-            <div className={styles.bar_element}>
+          <>
+            <div className={styles.bar}>
               <button
-                title="Открывается случайная пара карт."
-                disabled={isAlohomora || isVisionActive}
-                onClick={alohomora}
-                className={styles.alohomora}
+                className={styles.vision}
+                title="Прозрение"
+                hint="На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается."
+                onClick={vision}
+                disabled={isVision}
               />
               <button
-                disabled={isVision}
-                title="На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается."
-                className={styles.vision}
-                onClick={vision}
+                className={styles.alohomora}
+                title="Алохомора"
+                hint="Открывается случайная пара карт."
+                onClick={alohomora}
+                disabled={isAlohomora || isVisionActive}
               />
             </div>
             <Button onClick={resetGame}>Начать заново</Button>
-          </div>
+          </>
         ) : null}
       </div>
 
@@ -354,7 +338,6 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             open={status !== STATUS_IN_PROGRESS ? true : card.open}
             suit={card.suit}
             rank={card.rank}
-            disabled={card.disabled}
           />
         ))}
       </div>

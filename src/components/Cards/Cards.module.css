@@ -38,19 +38,10 @@
 
   color: #fff;
   font-family: StratosSkyeng;
-  font-size: 64px;
+  font-size: 54px;
   font-style: normal;
   font-weight: 400;
-  line-height: 72px;
-}
-.bar {
-  display: flex;
-  gap: 32px;
-  align-items: center;
-}
-.bar_element {
-  display: flex;
-  gap: 8px;
+  /* line-height: 72px; */
 }
 .attempts_txt {
   color: #fff;
@@ -58,15 +49,16 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
-  line-height: 72px;
+  line-height: 40px;
 }
+
 .attempts_counter {
   color: #fff;
   font-family: StratosSkyeng;
   font-size: 36px;
   font-style: normal;
   font-weight: 400;
-  line-height: 72px;
+  line-height: 40px;
 }
 
 .previewText {
@@ -96,81 +88,87 @@
   margin-bottom: -12px;
 }
 
-.alohomora {
-  cursor: pointer;
-  background: url(./images/alohomora.svg);
-  width: 68px;
+.bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.vision {
   height: 68px;
-  border-radius: 50px;
-  border: 1px;
-}
-.alohomora {
-  position: relative;
-  display: inline-block;
+  width: 68px;
+  background-image: url(./images/visionGame.svg);
+  border-radius: 34px;
   cursor: pointer;
+  opacity: 0.5;
 }
-.alohomora:hover::after {
-  content: attr(title);
-  background-color: #c2f5ff;
-  color: #004980;
-  border-radius: 4px;
-  padding: 8px;
-  position: absolute;
-  z-index: 1;
-  bottom: -150%;
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.2s;
-  width: 154px;
-  height: auto;
-  font-family: "StratosSkyeng", sans-serif;
-  font-size: 20px;
-  text-align: center;
-}
-.alohomora:hover::after {
+
+.vision:hover {
   opacity: 1;
 }
 
-.vision {
-  cursor: pointer;
-  background: url(./images/visionGame.svg);
-  width: 68px;
+.alohomora {
   height: 68px;
-  border-radius: 50px;
-  border: 1px;
-}
-.vision {
-  position: relative;
-  display: inline-block;
+  width: 68px;
+  background-image: url(./images/alohomora.svg);
+  border-radius: 34px;
   cursor: pointer;
+  opacity: 0.5;
 }
-.vision:hover::after {
-  content: attr(title);
-  background-color: #c2f5ff;
-  color: #004980;
-  border-radius: 4px;
-  padding: 8px;
-  position: absolute;
-  z-index: 1;
-  bottom: -150px; /* Position the tooltip above the element */
-  left: 50%;
-  transform: translateX(-50%);
-  opacity: 0;
-  transition: opacity 0.2s;
-  width: 154px;
-  height: auto;
-  font-family: "StratosSkyeng", sans-serif;
-  font-size: 20px;
-  text-align: center;
-}
-.vision:hover::after {
+
+.alohomora:hover {
   opacity: 1;
 }
 
-button:hover {
-  border: 1px solid transparent;
+[title]::before {
+  opacity: 0;
+  content: attr(title);
+  padding-top: 25px;
+  position: absolute;
+  color: #004980;
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 24px;
+  z-index: 2;
+  left: -7px;
+  bottom: -50px;
+  pointer-events: none;
+  transition: opacity 0.2s;
 }
+
+[title]:hover::before {
+  opacity: 1;
+}
+
+[hint] {
+  position: relative;
+}
+
+[hint]::after {
+  opacity: 0;
+  content: attr(hint);
+  position: absolute;
+  width: 180px;
+  padding: 60px 20px 20px;
+  color: #004980;
+  background: #C2F5FF;
+  font-family: Inter;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 24px;
+  text-align: center;
+  z-index: 1;
+  bottom: -5px;
+  transform: translate(-50%, 100%);
+  border-radius: 12px;
+  pointer-events: none;
+  transition: opacity 0.2s;
+}
+
+[hint]:hover::after {
+  opacity: 1;
+}
+
 .footer_box {
   display: flex;
   justify-content: space-between;

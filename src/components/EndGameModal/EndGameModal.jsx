@@ -35,7 +35,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       });
   };
 
-  const title = isWon ? (level === "3" ? "Вы попали на лидерборд!" : "Вы победили!") : "Вы проиграли!";
+  const title = isWon ? (level === "9" ? "Вы попали на лидерборд!" : "Вы победили!") : "Вы проиграли!";
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
 
@@ -45,7 +45,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
     <div className={styles.modal}>
       <img className={styles.image} src={imgSrc} alt={imgAlt} />
       <div className={styles.title}>{title}</div>
-      {isWon && level === "3" && (
+      {isWon && level === "9" && (
         <input
           className={styles.input_user}
           type="text"
@@ -54,7 +54,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
           placeholder="Пользователь"
         />
       )}
-      {isWon && level === "3" && (
+      {isWon && level === "9" && (
         <button className={styles.buttonmode_addscore} onClick={() => handleScore()}>
           Добавить пользователя
         </button>
@@ -68,7 +68,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       <Link to="/">
         <Button>Вернуться к выбору сложности</Button>
       </Link>
-      {isWon && level === "3" && (
+      {isWon && level === "9" && (
         <Link className={styles.title_leaderboard} to="/leaderboard">
           Перейти к лидерборду
         </Link>
