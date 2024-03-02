@@ -66,4 +66,4 @@ export function Card({ onClick, suit, rank, open }) {
       </div>
     </div>
   );
- }
+}
