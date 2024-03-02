@@ -1,0 +1,18 @@
+.container{
+    padding: 54px;
+}
+
+.text{
+    font-family: "Roboto", sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 32px;
+    color: white;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+}

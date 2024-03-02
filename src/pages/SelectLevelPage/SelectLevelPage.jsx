@@ -30,6 +30,7 @@ export function SelectLevelPage() {
           <span>Легкий режим (3 жизни) </span>
           <input type="checkbox" checked={isEasy} onChange={() => setIsEasy(!isEasy)} />
         </div>
+        <Link to="/leaderboard">Перейти к лидерборду</Link>
       </div>
     </div>
   );
