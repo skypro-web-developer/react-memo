@@ -12,7 +12,7 @@ import { AchievementsContext } from "../../AchievementContext";
 
 export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
   const { achievements } = useContext(AchievementsContext);
-  const { level } = useContext(GameContext);
+  const { level, isEasyMode } = useContext(GameContext);
   const [leader, setLeader] = useState("Пользователь");
   const [newLeader, setNewLeader] = useState(false);
   const gameTime = gameDurationMinutes * 60 + gameDurationSeconds;
@@ -23,15 +23,18 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   useEffect(() => {
     getLeaderBoard().then(({ leaders }) => {
       leaders = leaders.sort(function (a, b) {
-        return a.time - b.time;
+        return b.time - a.time;
       });
-      if (leaders.length > 0 && leaders[0].time < gameTime) {
+      console.log(leaders);
+      if (!isEasyMode && leaders.length > 0 && leaders[0].time > gameTime && level === "9") {
         setNewLeader(true);
       }
     });
   }, []);
-  
+
   function addPlayerToLeaders() {
+    onClick();
+
     postLeaderBoard({
       name: leader,
       time: gameTime,
@@ -70,7 +73,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
           <Button
             onClick={() => {
               addPlayerToLeaders(newLeader);
-              onClick();
+              // onClick();
             }}
           >
             Начать сначала
@@ -78,8 +81,8 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
           <Link to="/">
             <Button
               onClick={() => {
-                addPlayerToLeaders();
-                onClick();
+                addPlayerToLeaders(newLeader);
+                // onClick();
               }}
             >
               На главную

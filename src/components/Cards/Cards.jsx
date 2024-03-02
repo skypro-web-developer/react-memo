@@ -55,6 +55,7 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+  const [isPause, setIsPause] = useState(false);
   const { leaderboardPlayers, setLeaderboardPlayers } = useGameContext();
   // console.log(leaderboardPlayers?.leaders[leaderboardPlayers?.leaders?.length - 1]);
   useEffect(() => {
@@ -91,7 +92,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(status);
   }
   function startGame() {
-    pauseTimer = false;
+    setIsPause(isPause);
+    console.log(isPause);
     const startDate = new Date();
     setGameEndDate(null);
     setGameStartDate(startDate);
@@ -99,7 +101,11 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
-    pauseTimer = false;
+    setSuperPowers({
+      vision: true,
+      alohomora: true,
+    });
+    setIsPause(false);
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
@@ -206,7 +212,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     }));
 
     setCards(viewCards);
-    pauseTimer = true;
+    setIsPause(true);
+    // pauseTimer = true;
     setStatus(STATUS_PAUSE);
 
     setTimeout(() => {
@@ -270,12 +277,17 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   // Обновляем значение таймера в интервале
   useEffect(() => {
     const intervalId = setInterval(() => {
+      if (status === STATUS_PAUSE) {
+        pauseTimer = true;
+        // setGameStartDate(new Date(new Date().getTime() - 5000));
+        return;
+      }
       setTimer(getTimerValue(gameStartDate, gameEndDate));
     }, 300);
     return () => {
       clearInterval(intervalId);
     };
-  }, [gameStartDate, gameEndDate]);
+  }, [gameStartDate, gameEndDate, status]);
 
   return (
     <div className={styles.container}>
