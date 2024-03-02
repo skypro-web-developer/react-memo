@@ -1,10 +1,11 @@
 import { shuffle } from "lodash";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { generateDeck } from "../../utils/cards";
 import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { DifficultyContext } from "../../contexts/DiffcultyContext";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -35,16 +36,13 @@ function getTimerValue(startDate, endDate) {
   };
 }
 
-/**
- * Основной компонент игры, внутри него находится вся игровая механика и логика.
- * pairsCount - сколько пар будет в игре
- * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
- */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+  const { isEasy } = useContext(DifficultyContext);
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
   const [status, setStatus] = useState(STATUS_PREVIEW);
+  const [mistakes, setMistakes] = useState(0);
 
   // Дата начала игры
   const [gameStartDate, setGameStartDate] = useState(null);
@@ -60,6 +58,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
     setStatus(status);
+    setMistakes(0);
   }
   function startGame() {
     const startDate = new Date();
@@ -67,12 +66,14 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setGameStartDate(startDate);
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
+    setMistakes(0);
   }
   function resetGame() {
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
+    setMistakes(0);
   }
 
   /**
@@ -125,8 +126,25 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     const playerLost = openCardsWithoutPair.length >= 2;
 
-    // "Игрок проиграл", т.к на поле есть две открытые карты без пары
-    if (playerLost) {
+    if (!playerLost) return;
+
+    if (isEasy && mistakes < 2) {
+      setMistakes(mistakes + 1);
+      setTimeout(() => {
+        const openCardsWithoutPairIds = openCardsWithoutPair.map(el => el.id);
+        console.log(openCardsWithoutPairIds);
+        setCards(
+          cards.map(el =>
+            openCardsWithoutPairIds.includes(el.id)
+              ? {
+                  ...el,
+                  open: false,
+                }
+              : el,
+          ),
+        );
+      }, 500);
+    } else {
       finishGame(STATUS_LOST);
       return;
     }
@@ -209,6 +227,13 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           />
         ))}
       </div>
+      {isEasy === true ? (
+        <div>
+          <div className={styles.mistakes}> Количество ошибок: {mistakes}</div>
+        </div>
+      ) : (
+        <div></div>
+      )}
 
       {isGameEnded ? (
         <div className={styles.modalContainer}>
