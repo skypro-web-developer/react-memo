@@ -5,7 +5,7 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
-import { DifficultyContext } from "../../contexts/DifficultyContext";
+import { DifficultyContext } from "../../contexts/DiffcultyContext";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -35,7 +35,6 @@ function getTimerValue(startDate, endDate) {
     seconds,
   };
 }
-
 
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   const { isEasy } = useContext(DifficultyContext);
@@ -73,8 +72,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
-    setStatus(STATUS_PREVIEW)
-    setMistakes(0);;
+    setStatus(STATUS_PREVIEW);
+    setMistakes(0);
   }
 
   /**

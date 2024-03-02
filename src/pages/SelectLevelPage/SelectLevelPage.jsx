@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styles from "./SelectLevelPage.module.css";
 import { useContext } from "react";
-import { DifficultyContext } from "../../contexts/DifficultyContext";
+import { DifficultyContext } from "../../contexts/DiffcultyContext";
 
 export function SelectLevelPage() {
   const { isEasy, setIsEasy } = useContext(DifficultyContext);

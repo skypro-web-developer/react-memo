@@ -6,6 +6,7 @@
 https://skypro-web-developer.github.io/react-memo/
 
 ## Разработка
+Ожидаемое время: 12 часов // Затраченное время: 10 часов
 
 Проект реализован на основе шаблона [Create React App](https://github.com/facebook/create-react-app).
 
