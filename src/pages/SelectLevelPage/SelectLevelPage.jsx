@@ -26,7 +26,10 @@ export function SelectLevelPage() {
             </Link>
           </li>
         </ul>
-        Легкий режим (3 жизни) <input type="checkbox" checked={isEasy} onChange={() => setIsEasy(!isEasy)} />
+        <div className={styles.checkbox}>
+          <span>Легкий режим (3 жизни) </span>
+          <input type="checkbox" checked={isEasy} onChange={() => setIsEasy(!isEasy)} />
+        </div>
       </div>
     </div>
   );
