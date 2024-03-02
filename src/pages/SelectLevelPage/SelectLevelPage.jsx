@@ -19,17 +19,17 @@ export function SelectLevelPage() {
         <form className={styles.levels}>
           <label className={styles.level}>
             <input type="radio" value="3" checked={level === 3} onChange={e => setLevel(e.target.value)} />
-            <div>1</div>
+            <div className={styles.levelText}>1</div>
           </label>
           <br />
           <label className={styles.level}>
             <input type="radio" value="6" checked={level === 6} onChange={e => setLevel(e.target.value)} />
-            <div>2</div>
+            <div className={styles.levelText}>2</div>
           </label>
           <br />
           <label className={styles.level}>
             <input type="radio" value="9" checked={level === 9} onChange={e => setLevel(e.target.value)} />
-            <div>3</div>
+            <div className={styles.levelText}>3</div>
           </label>
         </form>
         <div className={styles.checkbox}>
@@ -46,7 +46,9 @@ export function SelectLevelPage() {
           </button>
         )}
 
-        <Link to="/leaderboard">Перейти к лидерборду</Link>
+        <Link to="/leaderboard" className={styles.linkBoard}>
+          Перейти к лидерборду
+        </Link>
       </div>
     </div>
   );

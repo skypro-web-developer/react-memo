@@ -28,7 +28,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
 
   function addPlayerToLeaders() {
     addLeader({
-      name: nameLeader,
+      name: nameLeader || "Пользователь",
       time: gameTime,
     })
       .then(({ leaders }) => {
@@ -66,7 +66,6 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
           <Button
             onClick={() => {
               addPlayerToLeaders();
-              onClick();
             }}
           >
             Начать снова
@@ -76,7 +75,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
             className={styles.linkBoard}
             onClick={() => {
               addPlayerToLeaders();
-              onClick();
+              //But
             }}
           >
             Перейти к лидерборду

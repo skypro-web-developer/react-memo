@@ -36,9 +36,9 @@ export function LeaderboardPage() {
             <th>Время</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className={styles.tbody}>
           {leaders.map((leader, index) => (
-            <tr key={leader.id}>
+            <tr className={styles.sleader} key={leader.id}>
               <td>#{index + 1}</td>
               <td>{leader.name}</td>
               <td>{leader.time}</td>
