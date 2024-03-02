@@ -42,17 +42,28 @@
   font-style: normal;
   font-weight: 400;
   line-height: 72px;
-  opacity: 1;
 }
-
-.pause {
-  opacity: 0.5;
+.bar {
   display: flex;
-  align-items: end;
-
+  gap: 32px;
+  align-items: center;
+}
+.bar_element {
+  display: flex;
+  gap: 8px;
+}
+.attempts_txt {
   color: #fff;
   font-family: StratosSkyeng;
-  font-size: 64px;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 72px;
+}
+.attempts_counter {
+  color: #fff;
+  font-family: StratosSkyeng;
+  font-size: 36px;
   font-style: normal;
   font-weight: 400;
   line-height: 72px;
@@ -64,7 +75,6 @@
   margin-top: 34px;
   margin-bottom: 10px;
 }
-
 .previewDescription {
   font-size: 18px;
   line-height: 18px;
@@ -86,110 +96,82 @@
   margin-bottom: -12px;
 }
 
-.containerImg {
-  display: flex;
-  gap: 20px;
+.alohomora {
+  cursor: pointer;
+  background: url(./images/alohomora.svg);
+  width: 68px;
+  height: 68px;
+  border-radius: 50px;
+  border: 1px;
+}
+.alohomora {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+.alohomora:hover::after {
+  content: attr(title);
+  background-color: #c2f5ff;
+  color: #004980;
+  border-radius: 4px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  bottom: -150%;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.2s;
+  width: 154px;
+  height: auto;
+  font-family: "StratosSkyeng", sans-serif;
+  font-size: 20px;
+  text-align: center;
+}
+.alohomora:hover::after {
+  opacity: 1;
 }
 
 .vision {
-  height: 68px;
-  width: 68px;
-  background-image: url(./images/visionGame.svg);
-  border-radius: 34px;
   cursor: pointer;
-  opacity: 0.5;
-}
-
-.vision:hover {
-  opacity: 1;
-}
-
-.alohomora {
-  height: 68px;
+  background: url(./images/visionGame.svg);
   width: 68px;
-  background-image: url(./images/alohomora.svg);
-  border-radius: 34px;
-  cursor: pointer;
-  opacity: 0.5;
+  height: 68px;
+  border-radius: 50px;
+  border: 1px;
 }
-
-.alohomora:hover {
-  opacity: 1;
-}
-
-[title]::before {
-  opacity: 0;
-  content: attr(title);
-  padding-top: 25px;
-  position: absolute;
-  color: #004980;
-  font-family: Inter;
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 24px;
-  z-index: 2;
-  left: -7px;
-  bottom: -50px;
-  pointer-events: none;
-  transition: opacity 0.2s;
-}
-
-[title]:hover::before {
-  opacity: 1;
-}
-
-[hint] {
+.vision {
   position: relative;
+  display: inline-block;
+  cursor: pointer;
 }
-
-[hint]::after {
-  opacity: 0;
-  content: attr(hint);
-  position: absolute;
-  width: 180px;
-  padding: 60px 20px 20px;
+.vision:hover::after {
+  content: attr(title);
+  background-color: #c2f5ff;
   color: #004980;
-  background: #C2F5FF;
-  font-family: Inter;
-  font-size: 18px;
-  font-weight: 400;
-  line-height: 24px;
-  text-align: center;
+  border-radius: 4px;
+  padding: 8px;
+  position: absolute;
   z-index: 1;
-  bottom: -5px;
-  transform: translate(-50%, 100%);
-  border-radius: 12px;
-  pointer-events: none;
+  bottom: -150px; /* Position the tooltip above the element */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
   transition: opacity 0.2s;
+  width: 154px;
+  height: auto;
+  font-family: "StratosSkyeng", sans-serif;
+  font-size: 20px;
+  text-align: center;
 }
-
-[hint]:hover::after {
+.vision:hover::after {
   opacity: 1;
 }
 
-.div {
+button:hover {
+  border: 1px solid transparent;
+}
+.footer_box {
   display: flex;
-  gap: 16px;
-  align-items: center;
-}
-
-.attempts_txt {
-    margin-top: 8px;
-    color: #fff;
-    font-family: StratosSkyeng;
-    font-size: 30px;
-    font-style: normal;
-    font-weight: 400;
-}
-.attempts_counter {
-  color: #fff;
-  font-family: StratosSkyeng;
-  font-size: 30px;
-  font-style: normal;
-  font-weight: 400;
-}
-.attempts_wrapper {
-  display: flex;
-  align-items: flex-end;
-  gap: 10px;
+  justify-content: space-between;
 }

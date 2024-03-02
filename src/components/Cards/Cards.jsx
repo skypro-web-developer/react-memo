@@ -1,11 +1,12 @@
 import { shuffle } from "lodash";
-import { useContext, useEffect, useState } from "react";
 import { generateDeck } from "../../utils/cards";
-import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { useContext, useEffect, useState } from "react";
 import { ModeContext } from "../../context/ModeContext";
+import styles from "./Cards.module.css";
+import { useAchievements } from "../../context/AchievementContext";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -14,9 +15,6 @@ const STATUS_WON = "STATUS_WON";
 const STATUS_IN_PROGRESS = "STATUS_IN_PROGRESS";
 // Начало игры: игрок видит все карты в течении нескольких секунд
 const STATUS_PREVIEW = "STATUS_PREVIEW";
-
-const STATUS_PAUSE = "STATUS_PAUSE";
-let pauseTimer = false;
 
 function getTimerValue(startDate, endDate) {
   if (!startDate && !endDate) {
@@ -29,19 +27,10 @@ function getTimerValue(startDate, endDate) {
   if (endDate === null) {
     endDate = new Date();
   }
-  if (pauseTimer === true) {
-    const diffInSecconds = Math.floor((endDate.getTime() - 5000 - startDate.getTime()) / 1000);
-    const minutes = Math.floor(diffInSecconds / 60);
-    const seconds = diffInSecconds % 60;
-    return {
-      minutes,
-      seconds,
-    };
-  }
 
-  const diffInSecconds = Math.floor((endDate.getTime() - startDate.getTime()) / 1000);
-  const minutes = Math.floor(diffInSecconds / 60);
-  const seconds = diffInSecconds % 60;
+  const diffInSeconds = Math.floor((endDate.getTime() - startDate.getTime()) / 1000);
+  const minutes = Math.floor(diffInSeconds / 60);
+  const seconds = diffInSeconds % 60;
   return {
     minutes,
     seconds,
@@ -56,7 +45,10 @@ function getTimerValue(startDate, endDate) {
 
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   const { isEnabled } = useContext(ModeContext);
+  const { addAchievement, resetAchievements } = useAchievements();
+  // const { addAchievement, resetAchievements } = useContext(AchievementsContex);
   const [cards, setCards] = useState([]);
+
   const [status, setStatus] = useState(STATUS_PREVIEW);
 
   const [gameStartDate, setGameStartDate] = useState(null);
@@ -67,157 +59,208 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     minutes: 0,
   });
 
+  const maxAttempts = isEnabled ? 3 : 1;
+  const [attempts, setAttempts] = useState(maxAttempts);
+  // const [guessedPairs, setGuessedPairs] = useState(0);
+
+  // defies the guessed pairs amount
+  // useEffect(() => {
+  //   if (cards && status === STATUS_IN_PROGRESS) {
+  //     const pairs = cards.filter(e => e.guessed).length;
+  //     if (pairs % 2 === 0) {
+  //       setGuessedPairs(pairs / 2);
+  //     }
+  //   }
+  // }, [cards, status]);
+
+  // "superpower" logics start
+  const [isVision, setIsVision] = useState(false);
+  const [isVisionActive, seIisVisionActive] = useState(false);
+  const [isTimerStop, setIsTimerStop] = useState(false);
+  const [isAlohomora, setIsAlohomora] = useState(false);
+
+  // X-Ray: makes cards visible for 5 secs
+  const vision = () => {
+    setIsTimerStop(true);
+    if (isVision) {
+      return;
+    }
+    // disables alohomora function while xray is active
+    seIisVisionActive(true);
+    setCards(prevCards => {
+      return prevCards.map(card => {
+        return {
+          ...card,
+          open: true,
+        };
+      });
+    });
+    setTimeout(() => {
+      setCards(prevCards => {
+        return prevCards.map(card => {
+          if (card.guessed) {
+            return {
+              ...card,
+              open: true,
+            };
+          }
+          return {
+            ...card,
+            open: false,
+          };
+        });
+      });
+      seIisVisionActive(false);
+      setIsVision(true);
+      setIsTimerStop(false);
+      let newDate = new Date(gameStartDate);
+      newDate.setSeconds(newDate.getSeconds() + 5);
+      setGameStartDate(newDate);
+    }, 5000);
+  };
+
+  // Alohomora: opens one correct pair of cards or a pair for one opened card
+  const alohomora = () => {
+    if (isVisionActive) {
+      return;
+    }
+    const cardsNotGuessed = cards.filter(cards => !cards.guessed);
+    let firstCard = cardsNotGuessed.find(card => card.open);
+    let secondCard;
+
+    if (firstCard) {
+      secondCard = cards.find(
+        card => card.rank === firstCard.rank && card.suit === firstCard.suit && card.id !== firstCard.id,
+      );
+    } else {
+      let randomIndex = Math.floor(cardsNotGuessed.length * Math.random());
+      firstCard = cardsNotGuessed[randomIndex];
+      secondCard = cardsNotGuessed.find(card => card.rank === firstCard.rank && card.suit === firstCard.suit);
+    }
+
+    if (firstCard && secondCard) {
+      const nextCards = cards.map(card => {
+        if (secondCard.id === card.id || firstCard.id === card.id) {
+          return {
+            ...card,
+            open: true,
+            guessed: true,
+          };
+        }
+        return card;
+      });
+
+      setCards(nextCards);
+      setIsAlohomora(true);
+    }
+  };
+
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
     setStatus(status);
+    // setGuessedPairs(0);
+
+    if (status === STATUS_WON) {
+      if (!isAlohomora && !isVision) {
+        addAchievement(1);
+      }
+      if (!isEnabled) {
+        addAchievement(2);
+      }
+    }
   }
+
   function startGame() {
-    pauseTimer = false;
     const startDate = new Date();
     setGameEndDate(null);
     setGameStartDate(startDate);
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
+    // setGuessedPairs(0);
+    resetAchievements();
+    setIsVision(false);
+    setIsAlohomora(false);
   }
+
   function resetGame() {
-    pauseTimer = false;
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
     setAttempts(isEnabled ? 3 : 1);
+    // setGuessedPairs(0);
+    resetAchievements();
+    setIsVision(false);
+    setIsAlohomora(false);
   }
 
-  const maxAttempts = isEnabled ? 3 : 1;
-  const [attempts, setAttempts] = useState(maxAttempts);
-
-  const handleAttempts = e => {
-    e--;
-    setAttempts(e);
-    if (e <= 0) {
+  const handleAttempts = () => {
+    const updatedAttempts = attempts - 1;
+    setAttempts(updatedAttempts);
+    if (updatedAttempts <= 0) {
       finishGame(STATUS_LOST);
     }
   };
 
-  const [achievement, setAchievement] = useState(isEnabled ? [1] : []);
-
-  const [superPowers, setSuperPowers] = useState({
-    vision: true,
-    alohomora: true,
-  });
-
-  /**
-   * Обработка основного действия в игре - открытие карты.
-   * После открытия карты игра может пепереходит в следующие состояния
-   * - "Игрок выиграл", если на поле открыты все карты
-   * - "Игрок проиграл", если на поле есть две открытые карты без пары
-   * - "Игра продолжается", если не случилось первых двух условий
-   */
-
   const openCard = clickedCard => {
-    // Если карта уже открыта, то ничего не делаем
-    if (clickedCard.open) {
+    if (clickedCard.open || status !== STATUS_IN_PROGRESS) {
       return;
     }
+
+    const openCards = cards.filter(card => card.open && !card.guessed);
+
+    if (openCards.length >= 2) {
+      return;
+    }
+
     // Игровое поле после открытия кликнутой карты
     const nextCards = cards.map(card => {
-      if (card.id !== clickedCard.id) {
-        return card;
+      if (card.id === clickedCard.id || card.guessed) {
+        return {
+          ...card,
+          open: true,
+        };
       }
-      return {
-        ...card,
-        open: true,
-      };
+      return card;
     });
-
     setCards(nextCards);
 
-    const isPlayerWon = nextCards.every(card => card.open);
+    const openPairs = nextCards.filter(card => card.open && !card.guessed);
+    const guessedPairs = openPairs.filter(card =>
+      openPairs.some(openCard => card.id !== openCard.id && card.suit === openCard.suit && card.rank === openCard.rank),
+    );
 
-    // Победа - все карты на поле открыты
-    if (isPlayerWon) {
-      finishGame(STATUS_WON);
-      return;
-    }
-    // Открытые карты на игровом поле
-    const openCards = nextCards.filter(card => card.open);
-
-    // Ищем открытые карты, у которых нет пары среди других открытых
-    const openCardsWithoutPair = openCards.filter(card => {
-      const sameCards = openCards.filter(openCard => card.suit === openCard.suit && card.rank === openCard.rank);
-
-      if (sameCards.length < 2) {
-        return true;
-      }
-
-      return false;
-    });
-
-    // Потеря попыток
-    const pickedWrong = openCardsWithoutPair.length >= 2;
-    if (pickedWrong) {
-      handleAttempts(attempts);
-
-      if (isEnabled) {
-        setTimeout(() => {
-          const resetCards = nextCards.map(card => ({
+    if (guessedPairs.length === 2) {
+      const updatedCards = nextCards.map(card => {
+        if (guessedPairs.some(guessedCard => card.id === guessedCard.id)) {
+          return {
             ...card,
-            open: false,
-          }));
-          setCards(resetCards);
-        }, 1000);
-      }
-      return;
-    }
-    // ... игра продолжается
-  };
-
-  function vision() {
-    setSuperPowers({ ...superPowers, vision: false });
-
-    const openedCards = cards;
-    const viewCards = cards.map(card => ({
-      ...card,
-      open: true,
-    }));
-
-    setCards(viewCards);
-    pauseTimer = true;
-    setStatus(STATUS_PAUSE);
-
-    setTimeout(() => {
-      setCards(openedCards);
-      setStatus(STATUS_IN_PROGRESS);
-    }, 5000);
-
-    if (!achievement.includes(2)) {
-      setAchievement([...achievement, 2]);
-    }
-  }
-
-  function alohomora() {
-    setSuperPowers({ ...superPowers, alohomora: false });
-
-    const closedCards = cards.filter(card => !card.open);
-    const randomCard = closedCards[Math.floor(Math.random() * closedCards.length)];
-    const pairsCard = closedCards.filter(
-      closedCard =>
-        closedCard.suit === randomCard.suit && closedCard.rank === randomCard.rank && randomCard.id !== closedCard.id,
-    );
-    setCards(
-      cards.map(card => {
-        if (card === randomCard || card === pairsCard[0]) {
-          return { ...card, open: true };
-        } else {
-          return card;
+            guessed: true,
+          };
         }
-      }),
-    );
-
-    if (!achievement.includes(2)) {
-      setAchievement([...achievement, 2]);
+        return card;
+      });
+      setCards(updatedCards);
+      const isPlayerWon = updatedCards.every(card => card.guessed);
+      if (isPlayerWon) {
+        finishGame(STATUS_WON);
+      }
+    } else if (openPairs.length === 2) {
+      handleAttempts();
+      setTimeout(() => {
+        const resetCards = nextCards.map(card => {
+          if (!card.guessed) {
+            return {
+              ...card,
+              open: false,
+            };
+          }
+          return card;
+        });
+        setCards(resetCards);
+      }, 1000);
     }
-  }
+  };
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
 
@@ -248,15 +291,16 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   // Обновляем значение таймера в интервале
   useEffect(() => {
-    if (status !== STATUS_PAUSE) {
-      const intervalId = setInterval(() => {
-        setTimer(getTimerValue(gameStartDate, gameEndDate));
-      }, 300);
-      return () => {
-        clearInterval(intervalId);
-      };
-    }
-  }, [gameStartDate, gameEndDate, status]);
+    const intervalId = setInterval(() => {
+      if (isTimerStop) {
+        return;
+      }
+      setTimer(getTimerValue(gameStartDate, gameEndDate));
+    }, 300);
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [gameStartDate, gameEndDate, isTimerStop]);
 
   return (
     <div className={styles.container}>
@@ -282,33 +326,25 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           )}
         </div>
         {status === STATUS_IN_PROGRESS ? (
-          <>
-            <div className={styles.containerImg}>
+          <div className={styles.bar}>
+            <div className={styles.bar_element}>
               <button
-                className={styles.vision}
-                title="Прозрение"
-                hint="На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается."
-                onClick={vision}
-                disabled={!superPowers.vision}
+                title="Открывается случайная пара карт."
+                disabled={isAlohomora || isVisionActive}
+                onClick={alohomora}
+                className={styles.alohomora}
               />
               <button
-                className={styles.alohomora}
-                title="Алохомора"
-                hint="Открывается случайная пара карт."
-                onClick={alohomora}
-                disabled={!superPowers.alohomora}
+                disabled={isVision}
+                title="На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается."
+                className={styles.vision}
+                onClick={vision}
               />
             </div>
             <Button onClick={resetGame}>Начать заново</Button>
-          </>
-        ) : null}
-      </div>
-      {/* {status === STATUS_IN_PROGRESS ? (
-          <div className={styles.div}>
-            <Button onClick={resetGame}>Начать заново</Button>
           </div>
         ) : null}
-      </div> */}
+      </div>
 
       <div className={styles.cards}>
         {cards.map(card => (
@@ -318,18 +354,22 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             open={status !== STATUS_IN_PROGRESS ? true : card.open}
             suit={card.suit}
             rank={card.rank}
+            disabled={card.disabled}
           />
         ))}
       </div>
-      <div className={styles.attempts_wrapper}>
-        {isEnabled ? <p className={styles.attempts_txt}>Попытки: </p> : ""}
-        {isEnabled ? (
-          <p className={styles.attempts_counter}>
-            {attempts} из {maxAttempts}
-          </p>
-        ) : (
-          ""
-        )}
+
+      <div className={styles.footer_box}>
+        <div className={styles.bar_element}>
+          {isEnabled ? <p className={styles.attempts_txt}>Попытки: </p> : ""}
+          {isEnabled ? (
+            <p className={styles.attempts_counter}>
+              {attempts} / {maxAttempts}
+            </p>
+          ) : (
+            ""
+          )}
+        </div>
       </div>
 
       {isGameEnded ? (

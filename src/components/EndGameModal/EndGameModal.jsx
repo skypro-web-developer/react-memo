@@ -1,60 +1,41 @@
-import styles from "./EndGameModal.module.css";
 import { Button } from "../Button/Button";
+import { Link } from "react-router-dom";
+import { useContext, useState } from "react";
 import deadImageUrl from "./images/dead.png";
 import celebrationImageUrl from "./images/celebration.png";
-import { useContext, useEffect, useState } from "react";
-
-import { Link } from "react-router-dom";
+import styles from "./EndGameModal.module.css";
+import { addLeaders } from "../../utils/api";
 import { ModeContext } from "../../context/ModeContext";
-import { addLeaders, getLeaders } from "../../utils/api";
-import { AchievementsContext } from "../../context/AchievementContext";
+import { useAchievements } from "../../context/AchievementContext";
 
 export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
+  const { achievements } = useAchievements();
   const { level } = useContext(ModeContext);
-  const { achievements } = useContext(AchievementsContext);
-  const [leader, setLeader] = useState("Пользователь");
-  const [newLeader, setNewLeader] = useState(false);
-  const gameTime = gameDurationMinutes * 60 + gameDurationSeconds;
+  const [username, setUsername] = useState("");
+  const handleUsername = e => {
+    setUsername(e.target.value);
+  };
 
-  useEffect(() => {
-    console.log("Значение level:", level);
-    console.log("Значение isWon:", isWon);
-    console.log("Значение gameTime:", gameTime);
-    // if (level === "3" && isWon) {
-    // если игрок выиграл 3 уровень сложности, получаем список лидеров
-    getLeaders().then(({ leaders }) => {
-      leaders = leaders.sort(function (a, b) {
-        return a.time - b.time;
-      });
-      console.log("Отсортированный список лидеров:", leaders);
-
-      if (leaders.length > 0 && leaders[0].time < gameTime) {
-        setNewLeader(true);
-      }
-    });
-    // }
-  }, []);
-
-  function addPlayerToLeaders() {
-    console.log("Функция addPlayerToLeaders() вызвана");
-    addLeaders({
-      name: leader,
-      time: gameTime,
-      achievements: achievements,
-    })
-      .then(({ leaders }) => {
-        console.log("Игрок успешно добавлен в список лидеров:", leaders);
-        setNewLeader(true);
+  const handleScore = () => {
+    if (username.trim() === "") {
+      alert("Введите имя");
+      console.log("Пользователь не введён, используется имя 'Пользователь'");
+      setUsername("Пользователь");
+      return;
+    }
+    const totalTimeInSeconds = gameDurationMinutes * 60 + gameDurationSeconds;
+    addLeaders({ name: username, time: totalTimeInSeconds, achievements: achievements })
+      .then(() => {
+        alert("Пользователь добавлен");
+        onClick();
       })
       .catch(error => {
-        alert(error.message);
+        console.warn(error);
+        alert("Не удалось добавить пользователя");
       });
-  }
+  };
 
-  // const title = isWon ? "Вы попали на лидерборд!" : "Вы проиграли!";
-
-  const title = isWon ? (level === "9" ? "Вы попали на лидерборд!" : "Вы победили!") : "Вы проиграли!";
-  // const title = isWon ? (level === "3" ? "Вы попали на лидерборд!" : "Вы победили!") : "Вы проиграли!";
+  const title = isWon ? (level === "3" ? "Вы попали на лидерборд!" : "Вы победили!") : "Вы проиграли!";
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
 
@@ -63,54 +44,32 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   return (
     <div className={styles.modal}>
       <img className={styles.image} src={imgSrc} alt={imgAlt} />
-      <h2 className={styles.title}>{title}</h2>
-      {newLeader ? (
+      <div className={styles.title}>{title}</div>
+      {isWon && level === "3" && (
         <input
           className={styles.input_user}
           type="text"
-          placeholder={"Пользователь "}
-          onChange={e => {
-            setLeader(e.target.value);
-          }}
+          value={username}
+          onChange={handleUsername}
+          placeholder="Пользователь"
         />
-      ) : (
-        <div></div>
+      )}
+      {isWon && level === "3" && (
+        <button className={styles.buttonmode_addscore} onClick={() => handleScore()}>
+          Добавить пользователя
+        </button>
       )}
       <p className={styles.description}>Затраченное время:</p>
       <div className={styles.time}>
         {gameDurationMinutes.toString().padStart("2", "0")}.{gameDurationSeconds.toString().padStart("2", "0")}
       </div>
-      {newLeader ? (
-        <>
-          <Button
-            onClick={() => {
-              addPlayerToLeaders();
-              onClick();
-            }}
-          >
-            Начать сначала
-          </Button>
-          <Link to="/">
-            <Button
-              onClick={() => {
-                addPlayerToLeaders();
-                onClick();
-              }}
-            >
-              Вернуться к выбору сложности
-            </Button>
-          </Link>
-        </>
-      ) : (
-        <>
-          <Button onClick={onClick}>Начать сначала</Button>
-          <Link to="/">
-            <Button>Вернуться к выбору сложности</Button>
-          </Link>
-        </>
-      )}
-      {newLeader && (
-        <Link to="/leaderboard" className={styles.linkBoard}>
+
+      <Button onClick={onClick}>Начать сначала</Button>
+      <Link to="/">
+        <Button>Вернуться к выбору сложности</Button>
+      </Link>
+      {isWon && level === "3" && (
+        <Link className={styles.title_leaderboard} to="/leaderboard">
           Перейти к лидерборду
         </Link>
       )}
