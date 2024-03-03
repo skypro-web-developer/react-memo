@@ -41,7 +41,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       achievements: achievements,
     })
       .then(({ leaders }) => {
-        alert("Игрок успешно добавлен в список лидеров:", leaders);
+        alert("Игрок успешно добавлен в список лидеров");
         setNewLeader(true);
       })
       .catch(error => {

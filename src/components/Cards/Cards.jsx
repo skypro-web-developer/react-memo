@@ -105,6 +105,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       vision: true,
       alohomora: true,
     });
+    pauseTimer = false;
     setIsPause(false);
     setGameStartDate(null);
     setGameEndDate(null);
