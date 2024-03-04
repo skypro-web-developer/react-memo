@@ -62,3 +62,24 @@
 .levelLink:visited {
   color: #0080c1;
 }
+
+.levelInput:checked+span {
+  color: green;
+}
+
+input {
+  appearance: none;
+}
+
+.customCheckBox {
+  width: 30px;
+  height: 30px;
+  border: 1px solid black;
+  background: white;
+  display: block;
+
+}
+
+.inputEasyMode:checked+.customCheckBox::after {
+  content: "";
+}
