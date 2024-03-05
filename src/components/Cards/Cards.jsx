@@ -257,7 +257,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
           />
         ))}
       </div>
-      <Link to="/">вернуться назад</Link>
+      <Link className={styles.backGame} to="/">
+        Вернуться назад
+      </Link>
       {isEasyMode && <p>Осталось жизней:{lives}</p>}
       {isGameEnded ? (
         <div className={styles.modalContainer}>

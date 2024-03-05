@@ -29,7 +29,7 @@ export function SelectLevelPage() {
                 onChange={e => setLevel(e.target.value)}
               />
 
-              <span>1</span>
+              <span className={styles.levelNumber}>1</span>
             </label>
           </li>
           <li className={styles.level}>
@@ -41,7 +41,7 @@ export function SelectLevelPage() {
                 checked={level === "6"}
                 onChange={e => setLevel(e.target.value)}
               />
-              <span>2</span>
+              <span className={styles.levelNumber}>2</span>
             </label>
           </li>
           <li className={styles.level}>
@@ -53,12 +53,12 @@ export function SelectLevelPage() {
                 checked={level === "9"}
                 onChange={e => setLevel(e.target.value)}
               />
-              <span>3</span>
+              <span className={styles.levelNumber}>3</span>
             </label>
           </li>
         </ul>
         <div>
-          <label>
+          <label className={styles.modeGame}>
             <input
               className={styles.inputEasyMode}
               type="checkbox"
@@ -66,10 +66,10 @@ export function SelectLevelPage() {
               onChange={() => setEasyMode(!easyMode)}
             />
             <span className={styles.customCheckBox}></span>
-            <p>Легкий режим</p>
+            <p className={styles.easyLevel}>Легкий режим (3 жизни)</p>
           </label>
         </div>
-        <button type="button" onClick={handleClick}>
+        <button className={styles.startGameButton} type="button" onClick={handleClick}>
           Играть
         </button>
       </div>

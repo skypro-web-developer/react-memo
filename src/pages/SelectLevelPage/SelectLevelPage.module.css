@@ -43,7 +43,7 @@
   flex-direction: column;
   justify-content: center;
   flex-shrink: 0;
-
+  text-align: center;
   border-radius: 12px;
   background: #fff;
 }
@@ -64,7 +64,7 @@
 }
 
 .levelInput:checked+span {
-  color: green;
+  color: #7ac100cc;
 }
 
 input {
@@ -72,14 +72,65 @@ input {
 }
 
 .customCheckBox {
+  position: relative;
   width: 30px;
   height: 30px;
-  border: 1px solid black;
+  border: none;
+  border-radius: 5px;
   background: white;
-  display: block;
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: sub;
 
 }
 
 .inputEasyMode:checked+.customCheckBox::after {
   content: "";
+  display: inline-block;
+  width: 28px;
+  height: 30px;
+  background-image: url("../../../public/check.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  margin-top: 1px;
+}
+
+.easyLevel {
+  font-family: StratosSkyeng;
+  font-weight: 400;
+  font-size: 24px;
+  text-align: center;
+  color: #000;
+
+}
+
+.levelNumber {
+  font-family: StratosSkyeng;
+  font-weight: 400;
+  font-size: 64px;
+  color: #0080c1;
+}
+
+.startGameButton {
+  font-family: StratosSkyeng;
+  font-weight: 400;
+  font-size: 24px;
+  text-align: center;
+  color: #fff;
+  border-radius: 12px;
+  width: 276px;
+  height: 45px;
+  background: #7ac100;
+  margin-top: 40px;
+
+}
+
+.modeGame {
+  display: flex;
+
+
 }
