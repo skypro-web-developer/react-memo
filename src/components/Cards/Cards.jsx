@@ -57,6 +57,7 @@ function getTimerValue(startDate, endDate) {
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   const [isPause, setIsPause] = useState(false);
+  const [isOpenCards, setIsOpenCards] = useState(false);
   const { leaderboardPlayers, setLeaderboardPlayers } = useGameContext();
   // console.log(leaderboardPlayers?.leaders[leaderboardPlayers?.leaders?.length - 1]);
   useEffect(() => {
@@ -123,6 +124,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
    * - "Игра продолжается", если не случилось первых двух условий
    */
   const openCard = clickedCard => {
+    if (isOpenCards) {
+      return;
+    }
     // Если карта уже открыта, то ничего не делаем
     if (clickedCard.open) {
       return;
@@ -186,8 +190,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         nextCards.map(elem => {
           if (openCardsWithoutPair.some(openCard => openCard.id === elem.id)) {
             if (elem.open) {
+              setIsOpenCards(true);
               setTimeout(() => {
                 setCards(prev => {
+                  setIsOpenCards(false);
                   return prev.map(el => (el.id === elem.id ? { ...el, open: false } : el));
                 });
               }, 1000);
