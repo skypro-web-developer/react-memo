@@ -10,12 +10,12 @@ export const router = createBrowserRouter(
       element: <SelectLevelPage />,
     },
     {
-      path: "/leaderboard",
-      element: <LeaderboardPage />,
-    },
-    {
       path: "/game/:pairsCount",
       element: <GamePage />,
+    },
+    {
+      path: "/leaderboard",
+      element: <LeaderboardPage />,
     },
   ],
   /**
