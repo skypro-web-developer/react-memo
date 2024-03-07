@@ -134,3 +134,14 @@ input {
 
 
 }
+
+.backGameLeader {
+  font-family: StratosSkyeng;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 178%;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  color: #004980;
+  margin-top: 20px;
+}

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { checkEasyMode } from "../../components/Cards/Cards";
 import styles from "./SelectLevelPage.module.css";
 
@@ -72,6 +72,9 @@ export function SelectLevelPage() {
         <button className={styles.startGameButton} type="button" onClick={handleClick}>
           Играть
         </button>
+        <Link className={styles.backGameLeader} to="/Leaderboard">
+          Перейти к лидерборду
+        </Link>
       </div>
     </div>
   );
