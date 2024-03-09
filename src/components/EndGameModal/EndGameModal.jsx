@@ -11,7 +11,7 @@ import { addLeader } from "../../api";
 export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick, isLeader }) {
   const [userName, setUserName] = useState("");
   const [isResultSent, setIsResultSent] = useState(false);
-  const title = isLeader ? "Вы попали на лидерборд" : isWon ? "Вы победили!" : "Вы проиграли!";
+  const title = isLeader ? "Вы попали\n на лидерборд" : isWon ? "Вы победили!" : "Вы проиграли!";
 
   const imgSrc = isWon ? celebrationImageUrl : deadImageUrl;
 
@@ -32,8 +32,14 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       <img className={styles.image} src={imgSrc} alt={imgAlt} />
       <h2 className={styles.title}>{title}</h2>
       {isLeader && !isResultSent && (
-        <div>
-          <input type="text" placeholder="Пользователь" value={userName} onChange={e => setUserName(e.target.value)} />
+        <div className={styles.boxLeaderButtonInput}>
+          <input
+            className={styles.inputLeaderBoard}
+            type="text"
+            placeholder="Пользователь"
+            value={userName}
+            onChange={e => setUserName(e.target.value)}
+          />
           <Button onClick={handleClick}>Отправить</Button>
         </div>
       )}
