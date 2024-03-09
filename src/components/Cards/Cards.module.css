@@ -11,6 +11,7 @@
   flex-direction: row;
   gap: 10px;
   flex-wrap: wrap;
+  margin-bottom: 15px;
 }
 
 .modalContainer {
@@ -50,6 +51,7 @@
   margin-top: 34px;
   margin-bottom: 10px;
 }
+
 .previewDescription {
   font-size: 18px;
   line-height: 18px;
@@ -69,4 +71,30 @@
   line-height: 32px;
 
   margin-bottom: -12px;
+}
+
+.backGame {
+  width: 246px;
+  height: 48px;
+  display: inline-block;
+  border-radius: 12px;
+  background: #7ac100;
+  color: #fff;
+  text-align: center;
+  /* Pres → Caption S */
+  font-family: StratosSkyeng;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32px;
+  /* 133.333% */
+  border: none;
+  text-decoration: none;
+  cursor: pointer;
+  padding-top: 6px;
+
+}
+
+.backGame:hover {
+  background: #7ac100cc;
 }

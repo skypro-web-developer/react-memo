@@ -1,6 +1,6 @@
 .modal {
   width: 480px;
-  height: 459px;
+  height: 634px;
   border-radius: 12px;
   background: #c2f5ff;
   display: flex;
@@ -23,8 +23,9 @@
   font-style: normal;
   font-weight: 400;
   line-height: 48px;
-
+  white-space: pre-wrap;
   margin-bottom: 28px;
+  text-align: center;
 }
 
 .description {
@@ -35,7 +36,7 @@
   font-style: normal;
   font-weight: 400;
   line-height: 32px;
-
+  margin-top: 20px;
   margin-bottom: 10px;
 }
 
@@ -47,5 +48,35 @@
   font-weight: 400;
   line-height: 72px;
 
-  margin-bottom: 40px;
+  margin-bottom: 20px;
+}
+
+.backGameLeader {
+  font-family: StratosSkyeng;
+  font-weight: 400;
+  font-size: 18px;
+  line-height: 178%;
+  text-decoration: underline;
+  text-decoration-skip-ink: none;
+  color: #004980;
+  margin-top: 20px;
+}
+
+.inputLeaderBoard {
+  background: #fff;
+  border-radius: 12px;
+  height: 40px;
+  width: 240px;
+  border: 0px solid #7ac100;
+}
+
+.inputLeaderBoard::-webkit-input-placeholder {
+  text-align: center;
+}
+
+.boxLeaderButtonInput {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
 }
