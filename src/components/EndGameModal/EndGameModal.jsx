@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { useContext, useEffect, useState } from "react";
 import { GameContext } from "../../context/Context";
 import { getLeaderBoard, postLeaderBoard } from "../../api";
-
 export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick }) {
   const { level } = useContext(GameContext);
   const [leader, setLeader] = useState("Пользователь");
@@ -14,7 +13,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   const gameTime = gameDurationMinutes * 60 + gameDurationSeconds;
 
   useEffect(() => {
-    if (level === "9" && isWon) {
+    if (level === "3" && isWon) {
       getLeaderBoard().then(({ leaders }) => {
         leaders = leaders.sort(function (a, b) {
           return a.time - b.time;
