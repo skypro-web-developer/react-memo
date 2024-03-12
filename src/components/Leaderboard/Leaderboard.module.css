@@ -1,0 +1,201 @@
+.containerLeader {
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.startButtonLeaderBoard {
+    font-family: StratosSkyeng;
+    font-weight: 400;
+    font-size: 24px;
+    text-align: center;
+    color: #fff;
+    border-radius: 12px;
+    width: 276px;
+    height: 45px;
+    background: #7ac100;
+
+}
+
+.heading {
+    font-family: StratosSkyeng;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 133%;
+    color: #fff;
+    display: flex;
+    align-items: center;
+}
+
+.leaderContainer {
+    width: 944px;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 50px;
+}
+
+.containerInfoPanel {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    flex-direction: column;
+    row-gap: 15px;
+}
+
+.infoPanel {
+    width: 944px;
+    height: 64px;
+    border-radius: 12px;
+    background: #fff;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+}
+
+.infoText {
+    font-family: StratosSkyeng;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 133%;
+    color: #999;
+    display: flex;
+    justify-content: flex-start;
+    width: 280px;
+}
+
+.infoTextTime {
+    font-family: StratosSkyeng;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 133%;
+    color: #999;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.infoPositionName {
+    width: 500px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.infoTextUser {
+    font-family: StratosSkyeng;
+    font-weight: 400;
+    font-size: 24px;
+    line-height: 133%;
+    color: #000;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.backGameLeaderBoard {
+    margin-top: 20px;
+    font-family: StratosSkyeng;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 178%;
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+    color: #c1c1c1;
+}
+
+.puzzleGame {
+    background-image: url(./images/puzzle.svg);
+}
+
+.puzzleGameOff {
+    background-image: url(./images/puzzleGray.svg);
+}
+
+.openGame {
+    background-image: url(./images/vision.svg);
+}
+
+.openGameOff {
+    background-image: url(./images/visionGray.svg);
+}
+
+.puzzleGame, .puzzleGameOff, .openGame, .openGameOff {
+    height: 32px;
+    width: 32px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    cursor: default;
+    z-index: 0;
+    border: 0px;
+}
+
+.numberUser {
+    width: 170px;
+    text-align: center;
+}
+
+.userName {
+    width: 210px;
+    text-align: start;
+}
+
+.achievements {
+    margin-left: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.achievements_elemen {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.achievements_elemen:hover::after {
+    content: attr(title);
+    background-color: #c2f5ff;
+    /* background-image: url(./images/frame.svg); */
+    color: #004980;
+    border-radius: 4px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    margin-left: 74px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.2s;
+    width: 154px;
+    height: auto;
+    font-family: "StratosSkyeng", sans-serif;
+    font-size: 20px;
+    text-align: center;
+}
+
+.achievements_elemen:hover::after {
+    opacity: 1;
+}
+
+[title]::before {
+    opacity: 0;
+    content: attr(title);
+    padding-top: 25px;
+    position: absolute;
+    color: #004980;
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24px;
+    z-index: 2;
+    left: -7px;
+    bottom: -50px;
+    pointer-events: none;
+    transition: opacity 0.2s;
+}
