@@ -107,12 +107,8 @@
   cursor: pointer;
   opacity: 0.5;
   position: relative;
-  font-family: StratosSkyeng;
-  font-weight: 700;
-  font-size: 18px;
-  line-height: 133%;
-  text-align: center;
-  color: #004980;
+
+
 }
 
 
@@ -169,8 +165,8 @@
   opacity: 1;
 }
 
-[title]::before {
-  opacity: 0;
+button[title]::before {
+  opacity: 1;
   content: attr(title);
   padding-top: 25px;
   position: absolute;

@@ -160,14 +160,13 @@
 .achievements_elemen:hover::after {
     content: attr(title);
     background-color: #c2f5ff;
-    background-image: url(./images/frame.svg);
+    /* background-image: url(./images/frame.svg); */
     color: #004980;
     border-radius: 4px;
     padding: 8px;
     position: absolute;
     z-index: 1;
     bottom: 125%;
-    /* Position the tooltip above the element */
     margin-left: 74px;
     left: 50%;
     transform: translateX(-50%);
@@ -186,7 +185,7 @@
 
 [title]::before {
     opacity: 0;
-    content: attr(button);
+    content: attr(title);
     padding-top: 25px;
     position: absolute;
     color: #004980;

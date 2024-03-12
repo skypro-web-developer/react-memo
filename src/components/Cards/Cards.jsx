@@ -282,7 +282,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
                 className={styles.open}
                 onClick={openAllCards}
                 disabled={isOpenAllCards}
-              />
+              ></button>
               {/* <button className={styles.cardsOpen} /> */}
             </div>
             <Button onClick={resetGame}>Начать заново</Button>
