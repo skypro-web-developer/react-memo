@@ -98,3 +98,35 @@
 .backGame:hover {
   background: #7ac100cc;
 }
+
+.open {
+  height: 68px;
+  width: 68px;
+  background-image: url(./images/Group1.svg);
+  border-radius: 34px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.open:hover {
+  opacity: 1;
+}
+
+.cardsOpen {
+  height: 68px;
+  width: 68px;
+  background-image: url(./images/cardsOpen.svg);
+  border-radius: 34px;
+  cursor: pointer;
+  opacity: 0.5;
+}
+
+.cardsOpen:hover {
+  opacity: 1;
+}
+
+.boxForces {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}

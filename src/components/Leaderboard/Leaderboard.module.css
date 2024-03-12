@@ -90,7 +90,7 @@
     font-size: 24px;
     line-height: 133%;
     color: #000;
-
+    
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -105,4 +105,41 @@
     text-decoration: underline;
     text-decoration-skip-ink: none;
     color: #c1c1c1;
+}
+
+.puzzleGame {
+    background-image: url(./images/puzzle.svg);
+}
+
+.puzzleGameOff {
+    background-image: url(./images/puzzleGray.svg);
+}
+
+.openGame {
+    background-image: url(./images/vision.svg);
+}
+
+.openGameOff {
+    background-image: url(./images/visionGray.svg);
+}
+
+.puzzleGame, .puzzleGameOff, .openGame, .openGameOff {
+    height: 32px;
+    width: 32px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-color: transparent;
+    cursor: default;
+    z-index: 0;
+    border: 0px;
+}
+
+.numberUser {
+    width: 170px;
+    text-align: center;
+}
+
+.userName {
+    width: 210px;
+    text-align: start;
 }

@@ -243,9 +243,16 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
-        {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+        {status === STATUS_IN_PROGRESS ? (
+          <>
+            <div className={styles.boxForces}>
+              <button className={styles.open} />
+              <button className={styles.cardsOpen} />
+            </div>
+            <Button onClick={resetGame}>Начать заново</Button>
+          </>
+        ) : null}
       </div>
-
       <div className={styles.cards}>
         {cards.map(card => (
           <Card
@@ -264,7 +271,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       {isGameEnded ? (
         <div className={styles.modalContainer}>
           <EndGameModal
-            isLeader={status === STATUS_WON && pairsCount === 9 && !isEasyMode}
+            isLeader={status === STATUS_WON && pairsCount === 3 && !isEasyMode}
             isWon={status === STATUS_WON}
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
