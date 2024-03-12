@@ -8,7 +8,15 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { addLeader } from "../../api";
 
-export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, onClick, isLeader }) {
+export function EndGameModal({
+  isWon,
+  gameDurationSeconds,
+  gameDurationMinutes,
+  onClick,
+  isLeader,
+  isOpenAllCards,
+  isEasyMode,
+}) {
   const [userName, setUserName] = useState("");
   const [isResultSent, setIsResultSent] = useState(false);
   const title = isLeader ? "Вы попали\n на лидерборд" : isWon ? "Вы победили!" : "Вы проиграли!";
@@ -22,11 +30,22 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       return;
     }
     const time = gameDurationMinutes * 60 + gameDurationSeconds;
-    addLeader({ name: userName, time }).then(() => {
+    const achievements = getAchievements();
+    addLeader({ name: userName, time, achievements }).then(() => {
       setIsResultSent(true);
       alert("Ресультат отправлен");
     });
   };
+  function getAchievements() {
+    const achievements = [1, 2];
+    if (isOpenAllCards) {
+      achievements.shift();
+    }
+    if (isEasyMode) {
+      achievements.pop();
+    }
+    return achievements;
+  }
   return (
     <div className={styles.modal}>
       <img className={styles.image} src={imgSrc} alt={imgAlt} />

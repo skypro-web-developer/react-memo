@@ -90,7 +90,7 @@
     font-size: 24px;
     line-height: 133%;
     color: #000;
-    
+
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -142,4 +142,61 @@
 .userName {
     width: 210px;
     text-align: start;
+}
+
+.achievements {
+    margin-left: 16px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.achievements_elemen {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.achievements_elemen:hover::after {
+    content: attr(title);
+    background-color: #c2f5ff;
+    background-image: url(./images/frame.svg);
+    color: #004980;
+    border-radius: 4px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    /* Position the tooltip above the element */
+    margin-left: 74px;
+    left: 50%;
+    transform: translateX(-50%);
+    opacity: 0;
+    transition: opacity 0.2s;
+    width: 154px;
+    height: auto;
+    font-family: "StratosSkyeng", sans-serif;
+    font-size: 20px;
+    text-align: center;
+}
+
+.achievements_elemen:hover::after {
+    opacity: 1;
+}
+
+[title]::before {
+    opacity: 0;
+    content: attr(button);
+    padding-top: 25px;
+    position: absolute;
+    color: #004980;
+    font-family: Inter;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 24px;
+    z-index: 2;
+    left: -7px;
+    bottom: -50px;
+    pointer-events: none;
+    transition: opacity 0.2s;
 }

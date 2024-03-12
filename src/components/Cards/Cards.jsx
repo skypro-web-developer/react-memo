@@ -63,7 +63,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     seconds: 0,
     minutes: 0,
   });
-
+  const [isTimerStoped, setIsTimerStoped] = useState(false);
+  const [isOpenAllCards, setIsOpenAllCards] = useState(false);
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
     setStatus(status);
@@ -75,6 +76,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
     setLives(isEasyMode ? 3 : 1);
+    setIsOpenAllCards(false);
   }
   function resetGame() {
     setGameStartDate(null);
@@ -213,13 +215,41 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   // Обновляем значение таймера в интервале
   useEffect(() => {
     const intervalId = setInterval(() => {
+      if (isTimerStoped) {
+        return;
+      }
       setTimer(getTimerValue(gameStartDate, gameEndDate));
     }, 300);
     return () => {
       clearInterval(intervalId);
     };
-  }, [gameStartDate, gameEndDate]);
-
+  }, [gameStartDate, gameEndDate, isTimerStoped]);
+  const openAllCards = () => {
+    setIsTimerStoped(true);
+    if (isOpenAllCards) {
+      return;
+    }
+    setCards(prev =>
+      prev.map(card => {
+        return { ...card, open: true };
+      }),
+    );
+    setTimeout(() => {
+      setCards(prev => {
+        return prev.map(card => {
+          if (card.guessed) {
+            return { ...card, open: true };
+          }
+          return { ...card, open: false };
+        });
+      });
+      setIsOpenAllCards(true);
+      setIsTimerStoped(false);
+      const newDate = new Date(gameStartDate);
+      newDate.setSeconds(newDate.getSeconds() + 5);
+      setGameStartDate(newDate);
+    }, 5000);
+  };
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -246,8 +276,14 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         {status === STATUS_IN_PROGRESS ? (
           <>
             <div className={styles.boxForces}>
-              <button className={styles.open} />
-              <button className={styles.cardsOpen} />
+              <button
+                title="Прозрение"
+                hint="На 5 секунд показываются все карты. Таймер длительности игры на это время останавливается."
+                className={styles.open}
+                onClick={openAllCards}
+                disabled={isOpenAllCards}
+              />
+              {/* <button className={styles.cardsOpen} /> */}
             </div>
             <Button onClick={resetGame}>Начать заново</Button>
           </>
@@ -276,6 +312,8 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}
+            isEasyMode={isEasyMode}
+            isOpenAllCards={isOpenAllCards}
           />
         </div>
       ) : null}

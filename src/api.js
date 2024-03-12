@@ -1,4 +1,4 @@
-const url = "https://wedev-api.sky.pro/api/leaderboard";
+const url = "https://wedev-api.sky.pro/api/v2/leaderboard";
 export const getLeaders = async () => {
   const response = await fetch(url);
   if (!response.ok) {
@@ -8,12 +8,13 @@ export const getLeaders = async () => {
   return data.leaders;
 };
 
-export const addLeader = async ({ name, time }) => {
+export const addLeader = async ({ name, time, achievements }) => {
   const response = await fetch(url, {
     method: "POST",
     body: JSON.stringify({
       name,
       time,
+      achievements,
     }),
   });
   if (!response.ok) {
