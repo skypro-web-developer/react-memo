@@ -13,7 +13,7 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
   const gameTime = gameDurationMinutes * 60 + gameDurationSeconds;
 
   useEffect(() => {
-    if (level === "3" && isWon) {
+    if (level === "9" && isWon) {
       getLeaderBoard().then(({ leaders }) => {
         leaders = leaders.sort(function (a, b) {
           return a.time - b.time;
@@ -56,6 +56,11 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
           onChange={e => {
             setLeader(e.target.value);
           }}
+          onKeyDown={e => {
+            if (e.key === " ") {
+              e.preventDefault(); // Запретить ввод пробела
+            }
+          }}
         />
       ) : (
         <div></div>
@@ -66,6 +71,17 @@ export function EndGameModal({ isWon, gameDurationSeconds, gameDurationMinutes, 
       </div>
       {newLeader ? (
         <>
+          <Link to="/leaderboard">
+            <Button
+              onClick={() => {
+                addPlayerToLeaders();
+                onClick();
+              }}
+            >
+              Отправить результат
+            </Button>
+          </Link>
+
           <Button
             onClick={() => {
               addPlayerToLeaders();

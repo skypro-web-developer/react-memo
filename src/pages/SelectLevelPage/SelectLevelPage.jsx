@@ -79,5 +79,3 @@ export function SelectLevelPage() {
     </div>
   );
 }
-
-//<Button onClick={handlePlayClick}>Играть</Button>
