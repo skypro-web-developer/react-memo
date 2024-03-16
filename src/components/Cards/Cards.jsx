@@ -135,7 +135,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
       setLeftAttempts(leftAttempts - 1);
-      if (leftAttempts === 1) finishGame(STATUS_LOST);
+      if (leftAttempts <= 1) finishGame(STATUS_LOST);
       return;
     }
 
