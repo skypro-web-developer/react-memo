@@ -53,7 +53,11 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   //Счетчик ошибок
   const [leftAttempts, setLeftAttempts] = useState(3);
-  const attemptsFlag = localStorage.getItem("attemptsFlag");
+  let attemptsFlag;
+  useEffect(() => {
+    attemptsFlag = localStorage.getItem("attemptsFlag");
+    console.log(attemptsFlag);
+  }, []);
 
   // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
   const [timer, setTimer] = useState({
