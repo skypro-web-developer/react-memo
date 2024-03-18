@@ -1,22 +1,26 @@
-// import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { Button } from "../../components/Button/Button";
 import styles from "./SelectLevelPage.module.css";
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleDifficultyModeReducer } from "../../store/gameSlice";
 
 export function SelectLevelPage() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const LEVELS = [1, 2, 3];
   const [level, setLevel] = useState(1);
-  const [attemptsFlag, setAttemptsFlag] = useState(false);
+  // const [attemptsFlag, setAttemptsFlag] = useState(false);
+  const { difficultyMode } = useSelector(state => state.game);
 
   useEffect(() => {
     // console.log(attemptsFlag);
-    localStorage.setItem("attemptsFlag", attemptsFlag);
-  }, [attemptsFlag]);
+    localStorage.setItem("difficultyMode", difficultyMode);
+  }, [difficultyMode]);
 
   const toggleAttemptsFlag = () => {
-    setAttemptsFlag(!attemptsFlag);
+    // setAttemptsFlag(!attemptsFlag);
+    dispatch(toggleDifficultyModeReducer());
   };
 
   return (
@@ -36,7 +40,13 @@ export function SelectLevelPage() {
         </ul>
 
         <label className={styles.subtitle}>
-          <input type="checkbox" name="attempts" className={styles.input} onChange={toggleAttemptsFlag} />
+          <input
+            type="checkbox"
+            name="attempts"
+            className={styles.input}
+            onChange={toggleAttemptsFlag}
+            defaultChecked={difficultyMode}
+          />
           Cчетчик попыток
         </label>
 

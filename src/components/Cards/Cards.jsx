@@ -5,6 +5,7 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { useSelector } from "react-redux";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -53,11 +54,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
   //Счетчик ошибок
   const [leftAttempts, setLeftAttempts] = useState(3);
-  let attemptsFlag;
-  useEffect(() => {
-    attemptsFlag = localStorage.getItem("attemptsFlag");
-    console.log(attemptsFlag);
-  }, []);
+
+  //Режим сложности из стора
+  const { difficultyMode } = useSelector(state => state.game);
 
   // Стейт для таймера, высчитывается в setInteval на основе gameStartDate и gameEndDate
   const [timer, setTimer] = useState({
@@ -222,7 +221,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
         ))}
       </div>
 
-      {attemptsFlag ? <div className={styles.leftAttempts}>Осталось {leftAttempts} попытки</div> : ""}
+      {difficultyMode ? <div className={styles.leftAttempts}>Осталось {leftAttempts} попытки</div> : ""}
 
       {isGameEnded ? (
         <div className={styles.modalContainer}>
