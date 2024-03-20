@@ -98,7 +98,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       return;
     }
     // Игровое поле после открытия кликнутой карты
-    const nextCards = cards.map(card => {
+    let nextCards = cards.map(card => {
       if (card.id !== clickedCard.id) {
         return card;
       }
@@ -138,7 +138,14 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
       setLeftAttempts(leftAttempts - 1);
-      if (leftAttempts <= 1) finishGame(STATUS_LOST);
+      if (leftAttempts <= 1) {
+        finishGame(STATUS_LOST);
+      } else {
+        setTimeout(() => {
+          setCards(cards.map(card => (openCardsWithoutPair.includes(card) ? { ...card, open: false } : card)));
+        }, 1000);
+      }
+
       return;
     }
 
@@ -206,7 +213,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
-        {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+        {status === STATUS_IN_PROGRESS && <Button onClick={resetGame}>Начать заново</Button>}
       </div>
 
       <div className={styles.cards}>
