@@ -93,7 +93,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
    * - "Игра продолжается", если не случилось первых двух условий
    */
   const openCard = clickedCard => {
-    // Если карта уже открыта, то ничего не делаем
+    // Если карта уже открыта, то ничего не делаем.
     if (clickedCard.open) {
       return;
     }
