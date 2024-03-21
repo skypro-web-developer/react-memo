@@ -52,9 +52,11 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
   // Дата конца игры
   const [gameEndDate, setGameEndDate] = useState(null);
 
+  //Массив открытых непарных карт
+  const [openCardsWithoutPair, setOpenCardsWithoutPair] = useState([]);
+
   //Счетчик ошибок
   const [leftAttempts, setLeftAttempts] = useState(3);
-
   //Режим сложности из стора
   const { difficultyMode } = useSelector(state => state.game);
 
@@ -93,6 +95,10 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
    * - "Игра продолжается", если не случилось первых двух условий
    */
   const openCard = clickedCard => {
+    if (openCardsWithoutPair.length >= 2) {
+      return;
+    }
+
     // Если карта уже открыта, то ничего не делаем.
     if (clickedCard.open) {
       return;
@@ -123,7 +129,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     const openCards = nextCards.filter(card => card.open);
 
     // Ищем открытые карты, у которых нет пары среди других открытых
-    const openCardsWithoutPair = openCards.filter(card => {
+    const openCardsWithoutPairTemp = openCards.filter(card => {
       const sameCards = openCards.filter(openCard => card.suit === openCard.suit && card.rank === openCard.rank);
 
       if (sameCards.length < 2) {
@@ -132,18 +138,22 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
       return false;
     });
+    setOpenCardsWithoutPair(openCardsWithoutPairTemp);
 
-    const playerLost = openCardsWithoutPair.length >= 2;
+    const playerLost = openCardsWithoutPairTemp.length >= 2;
 
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
     if (playerLost) {
+      console.log(leftAttempts);
       setLeftAttempts(leftAttempts - 1);
-      if (leftAttempts <= 1) {
+      if (leftAttempts <= 1 || !difficultyMode) {
         finishGame(STATUS_LOST);
+        setOpenCardsWithoutPair([]);
       } else {
         setTimeout(() => {
-          setCards(cards.map(card => (openCardsWithoutPair.includes(card) ? { ...card, open: false } : card)));
-        }, 1000);
+          setCards(cards.map(card => (openCardsWithoutPairTemp.includes(card) ? { ...card, open: false } : card)));
+          setOpenCardsWithoutPair([]);
+        }, 3000);
       }
 
       return;
