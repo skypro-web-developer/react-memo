@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLevel } from "../../store/slices";
 import { Button } from "../../components/Button/Button";
 import classNames from "classnames";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export function SelectLevelPage() {
   const dispatch = useDispatch();
@@ -62,9 +62,9 @@ export function SelectLevelPage() {
         <Button className={styles.buttonStart} onClick={() => navigate("/game")}>
           Играть
         </Button>
-        {/* <Link className={styles.leaderboardLink} to="/leaderboard">
+        <Link className={styles.leaderboardLink} to="/leaderboard">
           Перейти к лидерборду
-        </Link> */}
+        </Link>
       </div>
     </div>
   );
