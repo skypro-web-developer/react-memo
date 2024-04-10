@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLevel } from "../../store/slices";
 import { Button } from "../../components/Button/Button";
 import classNames from "classnames";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export function SelectLevelPage() {
   const dispatch = useDispatch();
