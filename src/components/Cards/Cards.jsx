@@ -90,6 +90,7 @@ export function Cards({ previewSeconds = 5 }) {
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
+    setCardIds([]);
   }
 
   /**
