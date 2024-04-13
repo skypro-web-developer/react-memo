@@ -57,7 +57,6 @@ export function Cards({ previewSeconds = 5 }) {
   const [cards, setCards] = useState([]);
 
   const [cardIds, setCardIds] = useState([]);
-
   // Текущий статус игры
   const [status, setStatus] = useState(STATUS_PREVIEW);
 
@@ -91,6 +90,8 @@ export function Cards({ previewSeconds = 5 }) {
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
     setCardIds([]);
+    setCards([]);
+    setInd(0);
   }
 
   /**
@@ -129,6 +130,9 @@ export function Cards({ previewSeconds = 5 }) {
     // Победа - все карты на поле открыты
     if (isPlayerWon) {
       finishGame(STATUS_WON);
+      setCards([]);
+      setCardIds([]);
+      setInd(0);
       return;
     }
 
