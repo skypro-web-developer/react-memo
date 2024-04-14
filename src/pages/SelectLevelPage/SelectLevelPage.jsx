@@ -52,8 +52,10 @@ export function SelectLevelPage() {
             id="selectMode"
             className={styles.input}
             type="checkbox"
-            value={easyMode}
-            onClick={e => dispatch(setMode({ easyMode: e.target.value }))}
+            // value={easyMode}
+            checked={easyMode}
+            // onClick={e => dispatch(setMode({ easyMode: e.target.value }))}
+            onChange={() => dispatch(setMode({ easyMode: !easyMode }))}
           />
           <label htmlFor="selectMode" className={styles.heading}>
             Легкий режим(3 жизни)
