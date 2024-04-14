@@ -28,8 +28,9 @@
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: end;
+  /* align-items: end; */
   margin-bottom: 35px;
+  align-items: end;
 }
 
 .timer {
@@ -69,4 +70,17 @@
   line-height: 32px;
 
   margin-bottom: -12px;
+}
+
+.lifes {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.lifes_counter {
+  color: #fff;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: StratosSkyeng;
+  font-size: 30px;
 }
