@@ -5,6 +5,7 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { useCheckbox } from "../../pages/SelectLevelPage/CheckboxContext";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -62,6 +63,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(status);
   }
   function startGame() {
+    setMistakesCount(0);
     const startDate = new Date();
     setGameEndDate(null);
     setGameStartDate(startDate);
@@ -69,6 +71,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
+    setMistakesCount(0);
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
@@ -82,6 +85,11 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
    * - "Игрок проиграл", если на поле есть две открытые карты без пары
    * - "Игра продолжается", если не случилось первых двух условий
    */
+
+  const [mistakesCount, setMistakesCount] = useState(0);
+
+  const { isEasyMode } = useCheckbox();
+
   const openCard = clickedCard => {
     // Если карта уже открыта, то ничего не делаем
     if (clickedCard.open) {
@@ -123,12 +131,38 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       return false;
     });
 
-    const playerLost = openCardsWithoutPair.length >= 2;
+    // Проигрыш при совершении 3 ошибок
+    if (isEasyMode) {
+      if (openCardsWithoutPair.length >= 2) {
+        setMistakesCount(prevCount => prevCount + 1);
 
-    // "Игрок проиграл", т.к на поле есть две открытые карты без пары
-    if (playerLost) {
-      finishGame(STATUS_LOST);
-      return;
+        setTimeout(() => {
+          const nextCardsWithoutPair = nextCards.map(card => {
+            if (openCardsWithoutPair.includes(card)) {
+              return {
+                ...card,
+                open: false,
+              };
+            }
+            return card;
+          });
+
+          setCards(nextCardsWithoutPair);
+
+          if (mistakesCount + 1 === 3) {
+            finishGame(STATUS_LOST);
+          }
+        }, 1000);
+      }
+    } else {
+      // Проигрыш при совершении 1 ошибки
+      const playerLost = openCardsWithoutPair.length >= 2;
+
+      // "Игрок проиграл", т.к на поле есть две открытые карты без пары
+      if (playerLost) {
+        finishGame(STATUS_LOST);
+        return;
+      }
     }
 
     // ... игра продолжается
@@ -195,6 +229,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
+
+        {isEasyMode && <div className={styles.mistakesCount}>Осталось ошибок: {3 - mistakesCount}</div>}
+
         {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
       </div>
 

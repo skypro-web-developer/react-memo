@@ -70,3 +70,11 @@
 
   margin-bottom: -12px;
 }
+
+.mistakesCount {
+  color: #fff;
+  text-align: center;
+  font-family: StratosSkyeng;
+  font-size: 16px;
+  font-weight: 400;
+}

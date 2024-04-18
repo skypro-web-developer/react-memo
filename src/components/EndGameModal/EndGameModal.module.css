@@ -49,3 +49,10 @@
 
   margin-bottom: 40px;
 }
+
+.leaderboard {
+  margin-top: 20px;
+  font-family: StratosSkyeng;
+  color: #0080c1;
+  font-size: 16px;
+}
