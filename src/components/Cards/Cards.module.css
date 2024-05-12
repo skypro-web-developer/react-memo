@@ -37,7 +37,7 @@
   align-items: end;
 
   color: #fff;
-  font-family: StratosSkyeng;
+  font-family: "StratosSkyeng";
   font-size: 64px;
   font-style: normal;
   font-weight: 400;
@@ -62,7 +62,7 @@
 .timerDescription {
   color: #fff;
   font-variant-numeric: lining-nums proportional-nums;
-  font-family: StratosSkyeng;
+  font-family: "StratosSkyeng";
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
@@ -70,3 +70,14 @@
 
   margin-bottom: -12px;
 }
+
+/* .lifeText {
+  color: #fff;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: "StratosSkyeng";
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 26px;
+  margin-bottom: 12px;
+} */

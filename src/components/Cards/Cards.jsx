@@ -5,6 +5,8 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { useGameMode } from "../hooks/useGameMode";
+// import { getLeaderList } from "../api";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -57,6 +59,9 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     minutes: 0,
   });
 
+  const { isSimpleMode } = useGameMode();
+  const [tryes, setTryes] = useState(isSimpleMode ? 3 : 1);
+
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
     setStatus(status);
@@ -69,6 +74,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
+    setTryes(isSimpleMode ? 3 : 1);
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
@@ -123,16 +129,24 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       return false;
     });
 
-    const playerLost = openCardsWithoutPair.length >= 2;
-
-    // "Игрок проиграл", т.к на поле есть две открытые карты без пары
-    if (playerLost) {
-      finishGame(STATUS_LOST);
-      return;
+    if (openCardsWithoutPair.length >= 2) {
+      setTimeout(() => {
+        openCardsWithoutPair[1].open = false;
+        openCardsWithoutPair[0].open = false;
+      }, 1000);
+      setTryes(tryes - 1);
     }
 
     // ... игра продолжается
   };
+
+  // "Игрок проиграл", т.к на поле есть две открытые карты без пары
+  useEffect(() => {
+    if (tryes === 0) {
+      finishGame(STATUS_LOST);
+      return;
+    }
+  }, [tryes]);
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
 
@@ -195,7 +209,14 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
-        {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+        {status === STATUS_IN_PROGRESS ? (
+          <>
+            <div>
+              <p className={styles.timerDescription}>{isSimpleMode && `Количество попыток: ${tryes}`}</p>
+            </div>
+            <Button onClick={resetGame}>Начать заново</Button>
+          </>
+        ) : null}
       </div>
 
       <div className={styles.cards}>
