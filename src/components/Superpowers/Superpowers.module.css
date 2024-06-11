@@ -1,0 +1,47 @@
+.sup {
+  display: flex;
+  flex-direction: row;
+}
+.icon {
+   position: relative;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   cursor: pointer;
+   transition: all 0.3s;
+ }
+ .circle{
+  position: relative;
+ }
+ .cards {
+   position: fixed;
+ }
+ 
+ .hidden {
+   position: relative;
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   cursor: pointer;
+   transition: all 0.3s;
+   opacity: 0.5;
+ }
+ .toolTip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 750px;
+  top: 250px;
+}
+
+.toolTipWithMode {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 600px;
+  top: 300px;
+}
+
+ 
