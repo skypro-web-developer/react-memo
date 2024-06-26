@@ -1,5 +1,5 @@
 .container {
-  width: 672px;
+  width: 700px;
   margin: 0 auto;
   padding: 26px;
   padding-top: 22px;
@@ -11,6 +11,7 @@
   flex-direction: row;
   gap: 10px;
   flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .modalContainer {
@@ -69,4 +70,13 @@
   line-height: 32px;
 
   margin-bottom: -12px;
+}
+
+.count {
+  color: #fff;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: StratosSkyeng;
+  font-size: 16px;
+  font-style: normal;
+  margin-right: 10px;
 }

@@ -1,0 +1,11 @@
+.toolTip{
+  display: flex;
+  position: absolute;
+  height: 78px;
+  width: 174px;
+  color: black;
+  border-radius: 12px;
+  background-color: #C2F5FF;
+  text-align: center;
+  align-items: center;
+}
