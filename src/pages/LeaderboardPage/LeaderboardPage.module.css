@@ -1,0 +1,193 @@
+.container {
+  width: 944px;
+  min-height: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #004980;
+  box-sizing: border-box;
+  margin-left: 40px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  width: 944px;
+}
+
+.title {
+  font-family: StratosSkyeng;
+  font-weight: 400;
+  font-size: 24px;
+  line-height: 32px;
+  color: #fff;
+}
+
+.header {
+  margin-top: 52px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.table {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.boxTitle,
+.boxContent {
+  width: 889px;
+  height: 32px;
+  display: flex;
+  flex-direction: row;
+  color: #999999;
+  justify-content: left;
+  align-items: center;
+  padding-top: 16px;
+  margin-left: 20px;
+}
+
+.boxTitle {
+  gap: 66px;
+}
+
+.boxContent {
+  color: #000;
+}
+
+.tableHeader,
+.tableBody {
+  width: 944px;
+  height: 64px;
+  border-radius: 12px;
+  background-color: #fff;
+  opacity: 0px;
+}
+
+.tableBody {
+  color: #000;
+}
+.userPosition,
+.userName,
+.userTime,
+.userAchievements {
+  font-family: Montserrat, Poppins;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  text-align: left;
+  margin-right: 66px;
+}
+
+.userName {
+  margin-right: 3px;
+  width: 290px;
+}
+
+.userTime {
+  margin-right: 0;
+}
+
+.position,
+.name,
+.time,
+.achievements {
+  font-family: Montserrat;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  text-align: left;
+}
+
+.position,
+.userPosition {
+  width: 178px;
+}
+
+.name {
+  width: 227px;
+}
+
+.time,
+.userTime {
+  width: 92px;
+}
+
+.achievements,
+.userAchievements {
+  width: 194px;
+}
+
+.emptySpace {
+  width: 122px;
+  margin-left: 66px;
+}
+
+.boxAchievement {
+  width: 32px;
+}
+
+.blockAchiev {
+  width: 70px;
+  display: flex;
+  flex-direction: row;
+}
+
+.spaceAchiev {
+  width: 6px;
+}
+
+.tooltip,
+.tooltip2 {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltiptext,
+.tooltip2 .tooltiptext2 {
+  visibility: hidden;
+  width: 212px;
+  height: auto;
+  background-color: #c2f5ff;
+  color: #004980;
+  font-size: 18px;
+  font-weight: 400;
+  font-family: Inter;
+  line-height: 24px;
+  text-align: center;
+  border-radius: 12px;
+  padding: 10px 0;
+  position: absolute;
+  bottom: 40px;
+  z-index: 1;
+}
+
+.tooltip2 .tooltiptext2 {
+  width: 187px;
+}
+
+.tooltip:hover .tooltiptext,
+.tooltip2:hover .tooltiptext2 {
+  visibility: visible;
+  /* -webkit-filter: brightness(70%);
+  -webkit-transition: all 2s ease;
+  -moz-transition: all 2s ease;
+  -o-transition: all 2s ease;
+  -ms-transition: all 2s ease;
+  transition: all 2s ease; */
+}
+
+.tooltip .tooltiptext::after,
+.tooltip2 .tooltiptext2::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 10%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #c2f5ff transparent transparent transparent;
+}
