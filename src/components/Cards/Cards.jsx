@@ -1,10 +1,14 @@
 import { shuffle } from "lodash";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { generateDeck } from "../../utils/cards";
 import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import { EasyModeContext } from "../../context/context";
+import { Animation } from "../Animation/Animation";
+import { Link } from "react-router-dom";
+import { SelectLevelPage } from "../../pages/SelectLevelPage/SelectLevelPage";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -41,6 +45,8 @@ function getTimerValue(startDate, endDate) {
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
 export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+  let [attempts, setAttempts] = useState(3);
+  const { easy } = useContext(EasyModeContext);
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -62,6 +68,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(status);
   }
   function startGame() {
+    setAttempts((attempts = 3));
     const startDate = new Date();
     setGameEndDate(null);
     setGameStartDate(startDate);
@@ -69,6 +76,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setStatus(STATUS_IN_PROGRESS);
   }
   function resetGame() {
+    setAttempts((attempts = 3));
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
@@ -124,9 +132,27 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     });
 
     const playerLost = openCardsWithoutPair.length >= 2;
-
+    if (easy && playerLost) {
+      setAttempts(attempts - 1);
+      if (
+        openCards.filter(card => {
+          openCards.filter(openCard => card.suit === openCard.suit && card.rank === openCard.rank);
+        })
+      ) {
+        openCardsWithoutPair.map(card => {
+          return (card.open = false);
+        });
+        console.log(openCardsWithoutPair);
+      }
+      // надо перевернуть карту
+      if (attempts === 1) {
+        finishGame(STATUS_LOST);
+      }
+       return;
+    }
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
-    if (playerLost) {
+
+    if (playerLost && !easy) {
       finishGame(STATUS_LOST);
       return;
     }
@@ -195,7 +221,18 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
-        {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+        <div className={styles.containerGame}>
+          {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+          {easy ? (
+            <p className={styles.title}>
+              Количество попыток:
+              <Animation params={attempts} />
+            </p>
+          ) : null}
+        </div>
+        <Link to={"/"} element={<SelectLevelPage />}>
+          <button className={styles.backBtn}>Назад</button>
+        </Link>
       </div>
 
       <div className={styles.cards}>
