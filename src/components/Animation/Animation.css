@@ -1,0 +1,22 @@
+.lol {
+  z-index: 8;
+  animation: mylol 1.5s linear;
+}
+
+@keyframes mylol {
+  from {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(5);
+  }
+  50% {
+    transform: scale(10);
+  }
+  75% {
+    transform: scale(5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
