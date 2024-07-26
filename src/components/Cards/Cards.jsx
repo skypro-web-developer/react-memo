@@ -4,7 +4,7 @@ import { generateDeck } from "../../utils/cards";
 import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
-import { Card } from "../../components/Card/Card";
+import { Card, ClosedCard } from "../../components/Card/Card";
 import { EasyModeContext } from "../../context/context";
 
 // Игра закончилась
@@ -129,15 +129,16 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     });
 
     const playerLost = openCardsWithoutPair.length >= 2;
-    if (easy) {
+    if (easy && playerLost) {
       setAttempts(attempts - 1);
-      if (attempts === 0) {
+      // надо перевернуть карту
+      if (attempts === 1) {
         finishGame(STATUS_LOST);
       }
     }
     // "Игрок проиграл", т.к на поле есть две открытые карты без пары
 
-    if (playerLost) {
+    if (playerLost && !easy) {
       finishGame(STATUS_LOST);
       return;
     }
