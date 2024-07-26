@@ -4,7 +4,7 @@ import { generateDeck } from "../../utils/cards";
 import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
-import { Card, ClosedCard } from "../../components/Card/Card";
+import { Card } from "../../components/Card/Card";
 import { EasyModeContext } from "../../context/context";
 
 // Игра закончилась
@@ -131,6 +131,16 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     const playerLost = openCardsWithoutPair.length >= 2;
     if (easy && playerLost) {
       setAttempts(attempts - 1);
+      if (
+        openCards.filter(card => {
+          openCards.filter(openCard => card.suit === openCard.suit && card.rank === openCard.rank);
+        })
+      ) {
+        openCardsWithoutPair.map(card => {
+          return (card.open = false);
+        });
+        console.log(openCardsWithoutPair);
+      }
       // надо перевернуть карту
       if (attempts === 1) {
         finishGame(STATUS_LOST);
