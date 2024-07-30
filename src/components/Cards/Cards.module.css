@@ -13,6 +13,16 @@
   flex-wrap: wrap;
 }
 
+.attempts {
+  display: block;
+  margin-top: 20px;
+  font-size: 20px;
+  font-family: StratosSkyeng;
+  font-style: normal;
+  font-weight: 400;
+  color: #fff;
+}
+
 .modalContainer {
   position: absolute;
   top: 0;
@@ -28,13 +38,13 @@
 .header {
   display: flex;
   justify-content: space-between;
-  align-items: end;
+  align-items: flex-end;
   margin-bottom: 35px;
 }
 
 .timer {
   display: flex;
-  align-items: end;
+  align-items: flex-end;
 
   color: #fff;
   font-family: StratosSkyeng;
@@ -50,6 +60,7 @@
   margin-top: 34px;
   margin-bottom: 10px;
 }
+
 .previewDescription {
   font-size: 18px;
   line-height: 18px;
@@ -69,4 +80,24 @@
   line-height: 32px;
 
   margin-bottom: -12px;
+}
+
+.perks {
+  display: flex;
+  gap: 15px;
+  position: relative;
+}
+
+.cardPerk {
+  cursor: pointer;
+}
+
+.counterPerk {
+  position: absolute;
+  background-color: orange;
+  border-radius: 100px;
+  padding: 5px 10px;
+  font-family: StratosSkyeng;
+  top: 45px;
+  left: 45px;
 }
