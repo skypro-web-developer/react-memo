@@ -5,6 +5,8 @@ import styles from "./Cards.module.css";
 import { EndGameModal } from "../../components/EndGameModal/EndGameModal";
 import { Button } from "../../components/Button/Button";
 import { Card } from "../../components/Card/Card";
+import CardsIcon from "../../icon/cards.svg";
+import ToolsComponent from "../Tools/ToolsComponent";
 
 // Игра закончилась
 const STATUS_LOST = "STATUS_LOST";
@@ -40,7 +42,7 @@ function getTimerValue(startDate, endDate) {
  * pairsCount - сколько пар будет в игре
  * previewSeconds - сколько секунд пользователь будет видеть все карты открытыми до начала игры
  */
-export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
+export function Cards({ pairsCount = 3, previewSeconds = 5, isGameMode }) {
   // В cards лежит игровое поле - массив карт и их состояние открыта\закрыта
   const [cards, setCards] = useState([]);
   // Текущий статус игры
@@ -57,6 +59,15 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     minutes: 0,
   });
 
+  // Стейт для счетчика попыток
+  const [numberOfAttempts, setNumberOfAttempts] = useState(2);
+
+  const [achievements, setAchievements] = useState([]);
+
+  const minusOneAttempt = () => {
+    setNumberOfAttempts(numberOfAttempts - 1);
+  };
+
   function finishGame(status = STATUS_LOST) {
     setGameEndDate(new Date());
     setStatus(status);
@@ -68,11 +79,14 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
     setTimer(getTimerValue(startDate, null));
     setStatus(STATUS_IN_PROGRESS);
   }
+  //добавлено кол-во попыток setNumberOfAttempts и ачивки setAchievements
   function resetGame() {
     setGameStartDate(null);
     setGameEndDate(null);
     setTimer(getTimerValue(null, null));
     setStatus(STATUS_PREVIEW);
+    setNumberOfAttempts(2);
+    setAchievements(prevState => prevState.filter(achieve => achieve !== 2));
   }
 
   /**
@@ -125,16 +139,46 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
 
     const playerLost = openCardsWithoutPair.length >= 2;
 
-    // "Игрок проиграл", т.к на поле есть две открытые карты без пары
-    if (playerLost) {
-      finishGame(STATUS_LOST);
-      return;
-    }
-
     // ... игра продолжается
+    if (isGameMode === "true") {
+      if (playerLost) {
+        minusOneAttempt();
+        if (numberOfAttempts < 1) {
+          finishGame(STATUS_LOST);
+          return;
+        } else {
+          setTimeout(() => {
+            setCards(cards.map(card => (openCardsWithoutPair.includes(card) ? { ...card, open: false } : card)));
+          }, 1000);
+        }
+      }
+    } else {
+      if (playerLost) {
+        finishGame(STATUS_LOST);
+        return;
+      }
+    }
   };
 
   const isGameEnded = status === STATUS_LOST || status === STATUS_WON;
+
+  //Ачивка на открытие пары карт
+  const alohomora = () => {
+    if (achievements.includes(2)) {
+      alert("Подсказкой можно воспользоваться только 1 раз");
+      return;
+    }
+
+    let closedCards = cards.filter(card => !card.open);
+    closedCards = shuffle(closedCards);
+    closedCards[0].open = true;
+    closedCards.forEach(card => {
+      if (card.suit === closedCards[0].suit && card.rank === closedCards[0].rank) {
+        card.open = true;
+      }
+    });
+    setAchievements(prevState => [...prevState, 2]);
+  };
 
   // Игровой цикл
   useEffect(() => {
@@ -171,6 +215,12 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
       clearInterval(intervalId);
     };
   }, [gameStartDate, gameEndDate]);
+  //Отслеживание состояния использования ачивки
+  useEffect(() => {
+    if (!isGameMode) {
+      setAchievements(prevState => [...prevState, 1]);
+    }
+  }, [isGameMode]);
 
   return (
     <div className={styles.container}>
@@ -195,7 +245,17 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             </>
           )}
         </div>
-        {status === STATUS_IN_PROGRESS ? <Button onClick={resetGame}>Начать заново</Button> : null}
+        {status === STATUS_IN_PROGRESS ? (
+          <>
+            {isGameMode === "true" ? (
+              <div className={styles.attemptСounter}>осталось попыток: {numberOfAttempts + 1} </div>
+            ) : null}
+            <ToolsComponent text={"Алохомора! Открывается случайная пара карт."} customClass={styles.toolsCustom}>
+              <img className={styles.iconBtn} src={CardsIcon} alt="Открыть пару карточек" onClick={alohomora} />
+            </ToolsComponent>
+            <Button onClick={resetGame}>Начать заново</Button>
+          </>
+        ) : null}
       </div>
 
       <div className={styles.cards}>
@@ -217,6 +277,7 @@ export function Cards({ pairsCount = 3, previewSeconds = 5 }) {
             gameDurationSeconds={timer.seconds}
             gameDurationMinutes={timer.minutes}
             onClick={resetGame}
+            isGameMode={isGameMode}
           />
         </div>
       ) : null}

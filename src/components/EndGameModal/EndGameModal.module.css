@@ -1,6 +1,7 @@
 .modal {
   width: 480px;
-  height: 459px;
+  padding-top: 30px;
+  padding-bottom: 30px;
   border-radius: 12px;
   background: #c2f5ff;
   display: flex;
@@ -18,19 +19,19 @@
 .title {
   color: #004980;
   font-variant-numeric: lining-nums proportional-nums;
-  font-family: StratosSkyeng;
+  font-family: Roboto;
   font-size: 40px;
   font-style: normal;
   font-weight: 400;
   line-height: 48px;
-
+  text-align: center;
   margin-bottom: 28px;
 }
 
 .description {
   color: #000;
   font-variant-numeric: lining-nums proportional-nums;
-  font-family: StratosSkyeng;
+  font-family: Roboto;
   font-size: 24px;
   font-style: normal;
   font-weight: 400;
@@ -41,11 +42,70 @@
 
 .time {
   color: #000;
-  font-family: StratosSkyeng;
+  font-family: Roboto;
   font-size: 64px;
   font-style: normal;
   font-weight: 400;
   line-height: 72px;
 
   margin-bottom: 40px;
+}
+.leaderBoardLink {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: #004980;
+  text-align: center;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: Roboto;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32px;
+  text-decoration: underline;
+}
+
+.leaderBoardLink:hover {
+  text-decoration: none;
+}
+
+.form {
+  padding-top: 10px;
+  padding-bottom: 20px;
+}
+.nameInput {
+  width: 276px;
+  height: 45px;
+  border-radius: 10px;
+  border: none;
+  color: #999999;
+  text-align: center;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: Roboto;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32px;
+}
+
+.leaderBoardLinkBox {
+  color: red;
+  font-family: Roboto;
+  text-decoration: none;
+  text-transform: uppercase;
+  padding: 10px;
+}
+
+.leaderBoardLinkBox:hover {
+  text-decoration: underline;
+}
+
+.leaderBoardLinkBox:active {
+  color: black;
+}
+
+.leaderBoardLinkBox:visited {
+  color: purple;
+}
+.LeaderBoardGlob {
+  margin: 15px;
 }

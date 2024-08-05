@@ -37,7 +37,7 @@
   align-items: end;
 
   color: #fff;
-  font-family: StratosSkyeng;
+  font-family: Roboto;
   font-size: 64px;
   font-style: normal;
   font-weight: 400;
@@ -62,11 +62,22 @@
 .timerDescription {
   color: #fff;
   font-variant-numeric: lining-nums proportional-nums;
-  font-family: StratosSkyeng;
+  font-family: Roboto;
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
   line-height: 32px;
 
   margin-bottom: -12px;
+}
+
+.attemptСounter {
+  text-align: center;
+  color: #fff;
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: Roboto;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 32px;
 }
