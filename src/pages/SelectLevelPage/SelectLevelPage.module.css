@@ -62,3 +62,54 @@
 .levelLink:visited {
   color: #0080c1;
 }
+
+.active {
+  outline: 4px dotted teal;
+}
+
+.checkbox {
+  width: 20px;
+  height: 20px;
+  border-radius: 5px;
+  border: 1px dotted teal;
+  background-color: white;
+  position: relative;
+  color: #7ac100;
+}
+.label {
+  display: flex;
+  gap: 5px;
+  flex-direction: row-reverse;
+  padding-bottom: 20px;
+  font-family: Roboto;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 32px;
+  text-align: center;
+}
+.label input {
+  appearance: none;
+}
+.label input:checked + div::after {
+  content: "\2714";
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.Link {
+  padding-top: 20px;
+  width: 192px;
+  height: 32px;
+  top: 571px;
+  left: 417px;
+  gap: 0px;
+  opacity: 0px;
+  font-family: Roboto;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 32px;
+  text-align: left;
+  color: #004980;
+}
